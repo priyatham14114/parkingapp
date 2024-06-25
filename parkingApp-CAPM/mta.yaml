@@ -1,0 +1,96 @@
+_schema-version: "3.1"
+ID: parkingApp-CAPM
+description: A simple CAP project.
+version: 1.0.0
+modules:
+  - name: parkingApp-CAPM-srv
+    type: nodejs
+    path: gen/srv
+    requires:
+      - name: parkingApp-CAPM-db
+      - name: parkingApp-CAPM-auth
+    provides:
+      - name: srv-api
+        properties:
+          srv-url: ${default-url}
+    parameters:
+      buildpack: nodejs_buildpack
+      readiness-health-check-http-endpoint: /health
+      readiness-health-check-type: http
+    build-parameters:
+      builder: npm
+  - name: parkingApp-CAPM-db-deployer
+    type: hdb
+    path: gen/db
+    requires:
+      - name: parkingApp-CAPM-db
+    parameters:
+      buildpack: nodejs_buildpack
+  - name: parkingApp-CAPM-destination-content
+    type: com.sap.application.content
+    requires:
+      - name: parkingApp-CAPM-destination-service
+        parameters:
+          content-target: true
+      - name: parkingApp-CAPM_html_repo_host
+        parameters:
+          service-key:
+            name: parkingApp-CAPM_html_repo_host-key
+      - name: parkingApp-CAPM-auth
+        parameters:
+          service-key:
+            name: parkingApp-CAPM-auth-key
+    parameters:
+      content:
+        instance:
+          destinations:
+            - Name: PrakingApp_parkingApp_CAPM_html_repo_host
+              ServiceInstanceName: parkingApp-CAPM-html5-app-host-service
+              ServiceKeyName: parkingApp-CAPM_html_repo_host-key
+              sap.cloud.service: PrakingApp
+            - Authentication: OAuth2UserTokenExchange
+              Name: PrakingApp_parkingApp_CAPM_auth
+              ServiceInstanceName: parkingApp-CAPM-auth
+              ServiceKeyName: parkingApp-CAPM-auth-key
+              sap.cloud.service: PrakingApp
+          existing_destinations_policy: ignore
+    build-parameters:
+      no-source: true
+resources:
+  - name: parkingApp-CAPM-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+  - name: parkingApp-CAPM-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      config:
+        tenant-mode: dedicated
+        xsappname: parkingApp-CAPM-${org}-${space}
+      path: ./xs-security.json
+      service: xsuaa
+      service-plan: application
+  - name: parkingApp-CAPM-destination-service
+    type: org.cloudfoundry.managed-service
+    parameters:
+      config:
+        HTML5Runtime_enabled: true
+        version: 1.0.0
+      service: destination
+      service-name: parkingApp-CAPM-destination-service
+      service-plan: lite
+  - name: parkingApp-CAPM_html_repo_host
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-name: parkingApp-CAPM-html5-app-host-service
+      service-plan: app-host
+parameters:
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npm ci
+        - npx cds build --production
