@@ -7,23 +7,34 @@
   "private": true,
   "dependencies": {
     "@sap/cds": "^7",
-    "express": "^4",
     "@sap/cds-hana": "^2",
-    "@sap/xssec": "^3"
+    "@sap/xssec": "^3",
+    "express": "^4"
   },
   "devDependencies": {
     "@cap-js/sqlite": "^1",
     "@sap/cds-dk": "^7",
     "@sap/eslint-plugin-cds": "^3",
-    "eslint": "^9"
+    "@sap/eslint-plugin-ui5-jsdocs": "^2.0.5",
+    "@sap/ux-specification": "^1.120.13",
+    "@sapui5/ts-types": "^1.92.2",
+    "eslint": "^7.32.0",
+    "rimraf": "^5.0.5"
   },
   "scripts": {
-    "start": "cds-serve"
+    "start": "cds-serve",
+    "watch-parkingappfiori": "cds watch --open parkingappfiori/webapp/index.html?sap-ui-xx-viewCache=false",
+    "undeploy": "cf undeploy parkingApp-CAPM --delete-services --delete-service-keys --delete-service-brokers",
+    "build": "rimraf resources mta_archives && mbt build --mtar archive",
+    "deploy": "cf deploy mta_archives/archive.mtar --retries 1",
+    "watch-parkingapp": "cds watch --open parkingapp/webapp/index.html?sap-ui-xx-viewCache=false"
   },
   "cds": {
     "requires": {
-      "db": "sql",
-      "auth": "xsuaa"
+      "db": "sql"
     }
-  }
+  },
+  "sapux": [
+    "app/parkingappfiori"
+  ]
 }
