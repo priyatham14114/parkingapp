@@ -1,0 +1,549 @@
+<mvc:View
+    controllerName="com.app.parkingapp.controller.HomeView"
+    xmlns="sap.uxap"
+    xmlns:layout="sap.ui.layout"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:m="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    xmlns:ui5="sap.ui.webc.main"
+    height="100%"
+    xmlns:smartTable="sap.ui.comp.smarttable"
+    xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+>
+    <ObjectPageLayout
+        id="idUserDataPage"
+        enableLazyLoading="true"
+        beforeNavigate="onBeforeNavigate"
+        useIconTabBar="true"
+        showTitleInHeaderContent="true"
+        upperCaseAnchorBar="false"
+        sectionChange="onSectionChange"
+    >
+        <headerTitle>
+            <ObjectPageDynamicHeaderTitle id="idObjectPageDynamicHeaderTitle">
+                <expandedHeading>
+                    <m:Title
+                        id="IdLibraryTitle"
+                        text="Parking Management"
+                        wrapping="true"
+                    />
+                </expandedHeading>
+
+                <snappedHeading>
+                    <m:FlexBox
+                        id="idFlexBoxHeaderContent"
+                        fitContainer="true"
+                        alignItems="Center"
+                    >
+                        <m:Title
+                            id="idUserName"
+                            text="Parking Management"
+                            wrapping="true"
+                        />
+                    </m:FlexBox>
+                </snappedHeading>
+
+                <expandedContent>
+                    <m:Text
+                        id="idWelcomeTag"
+                        text="parking space"
+                    />
+                </expandedContent>
+                <actions>
+                    <!-- <m:Button
+                                id="idLogOutbutton"
+                                type="Ghost"
+                                text="Logout"
+                                press="onLogoutPress"
+                            /> -->
+                </actions>
+            </ObjectPageDynamicHeaderTitle>
+        </headerTitle>
+
+        <headerContent>
+            <m:FlexBox
+                id="idFlexBok2"
+                wrap="Wrap"
+                fitContainer="true"
+            >
+                <layout:VerticalLayout
+                    id="idVerticalLayout"
+                    class="sapUiSmallMarginBeginEnd"
+                >
+                    <layout:HorizontalLayout
+                        id="idHorizantalLayout"
+                        class="sapUiSmallMarginBeginEnd"
+                    >
+                        <m:VBox
+                            id="idvBox1"
+                            class="Inputs"
+                        >
+                            <m:Label
+                                id="idLable1"
+                                text="Driver Name"
+                            />
+                            <m:Input
+                                id="input1"
+                                placeholder="Enter Driver Name"
+                            />
+                        </m:VBox>
+                        <m:VBox
+                            id="idvBox2"
+                            class="Inputs"
+                        >
+                            <m:Label
+                                id="idLable2"
+                                text="Driver Mobile"
+                            />
+                            <m:Input
+                                id="input2"
+                                placeholder="Enter Driver Mobile"
+                            />
+                        </m:VBox>
+                        <m:VBox
+                            id="idvBox3"
+                            class="Inputs"
+                        >
+                            <m:Label
+                                id="idLable3"
+                                text="Vehicle Number"
+                            />
+                            <m:Input
+                                id="input3"
+                                placeholder="Enter Vehicle Number"
+                            />
+                        </m:VBox>
+                    </layout:HorizontalLayout>
+                    <layout:HorizontalLayout
+                        id="idHorizantalLayout2"
+                        class="sapUiSmallMarginBeginEnd"
+                    >
+                        <m:VBox
+                            id="idvBox7"
+                            class="Inputs"
+                        >
+                            <m:Label
+                                id="_IDGenLabel555"
+                                text="Delivery Type"
+                            />
+                            <m:Select id="idTypeOfDelivery">
+                                <core:Item
+                                    id="_IDGenItem234"
+                                    key="In Bound"
+                                    text="In Bound"
+                                />
+                                <core:Item
+                                    id="_IDGenItem2344"
+                                    key="Out Bound"
+                                    text="Out Bound"
+                                />
+                            </m:Select>
+                        </m:VBox>
+                        <m:VBox
+                            id="idvBox4"
+                            class="Inputs"
+                        >
+                            <m:Label
+                                id="_IDGenLabel1"
+                                text="Parking Slot"
+                            />
+                            <m:Select
+                                id="parkingLotSelect"
+                                items="{path: '/parkingSlots', filters: [{path: 'isAvailable', operator: 'EQ', value1: 'true'}]}"
+                            >
+                                <core:Item
+                                    id="_IDGenItem3"
+                                    key="{slotNumbers}"
+                                    text="{slotNumbers}"
+                                />
+                            </m:Select>
+                        </m:VBox>
+                        <!-- <m:VBox id="idvBox5">
+                            <m:Label
+                                id="idLable5"
+                                text="Check In"
+                            />
+                            <m:Input id="input5" />
+                        </m:VBox> -->
+                        <m:VBox
+                            id="idvBox6"
+                            class="Inputs"
+                        >
+                            <m:Label id="idLable6" />
+                            <m:Button
+                                id="idButtonAssign"
+                                type="Default"
+                                text="Assign"
+                            />
+                        </m:VBox>
+
+                        <m:VBox
+                            id="idvBox8"
+                            class="Reservationsbtn"
+                        >
+                            <m:Label id="idLable8" />
+                            <m:Button
+                                id="idReservations"
+                                type="Default"
+                                text="Reservations"
+                                press="onReservationsPress"
+                            />
+                        </m:VBox>
+                    </layout:HorizontalLayout>
+                </layout:VerticalLayout>
+            </m:FlexBox>
+        </headerContent>
+
+        <sections>
+            <ObjectPageSection
+                titleUppercase="false"
+                id="idBorrowBooksSection"
+                title="Borrow Section"
+            >
+                <subSections>
+                    <ObjectPageSubSection
+                        id="idBorrowBooksSubSection"
+                        title="Assigned Slots"
+                        titleUppercase="false"
+                    >
+                        <blocks>
+                            <m:Table
+                                id="idAssignedTable"
+                                mode="MultiSelect"
+                                alternateRowColors="true"
+                                items="{/assignedSlots}"
+                            >
+                                <m:headerToolbar>
+                                    <m:OverflowToolbar id="idBooksTableHeader">
+                                        <m:Title
+                                            id="idTableHeaderTitle"
+                                            text="Assigned Slots"
+                                        />
+                                        <m:ToolbarSpacer
+                                            id="idTableHeaderSpacer"
+                                        />
+
+                                        <m:SearchField
+                                            id="idSearch"
+                                            liveChange="onSearch"
+                                            width="20%"
+                                            placeholder="Search here"
+                                        />
+                                        <m:Button
+                                            id="idRefreshBtn2"
+                                            icon="sap-icon://refresh"
+                                            type="Emphasized"
+                                            press="onRefresh"
+                                        />
+                                        <m:Button
+                                            id="idBtnEdit"
+                                            text="Edit"
+                                            icon="sap-icon://edit"
+                                            type="Emphasized"
+                                            press="onEditPress"
+                                            tooltip="Click to Edit"
+                                        />
+                                        <m:Button
+                                            id="idBtnSave"
+                                            text="Save"
+                                            icon="sap-icon://save"
+                                            type="Emphasized"
+                                            press="onSavePress"
+                                            tooltip="Click to Save"
+                                        />
+                                        <m:Button
+                                            id="idBtnCancle"
+                                            text="Cancle"
+                                            type="Emphasized"
+                                            press="onCanclePress"
+                                            tooltip="Click to Cancle"
+                                        />
+                                    </m:OverflowToolbar>
+                                </m:headerToolbar>
+                                <m:columns>
+                                    <m:Column id="idAuthorCol">
+                                        <m:Title
+                                            id="idAuthorColHead"
+                                            text="Driver Name"
+                                        />
+                                    </m:Column>
+                                    <m:Column id="idbookNameCol">
+                                        <m:Title
+                                            id="idbookNameColHead"
+                                            text="Driver Mobile"
+                                        />
+                                    </m:Column>
+                                    <m:Column id="idavailableQuantityCol">
+                                        <m:Title
+                                            id="idavailableQuantityColHead"
+                                            text="Vehicle Number"
+                                        />
+                                    </m:Column>
+                                    <m:Column id="idISBNCol">
+                                        <m:Title
+                                            id="idISBNColHead"
+                                            text="Delivery Type"
+                                        />
+                                    </m:Column>
+                                    <m:Column id="idICol">
+                                        <m:Title
+                                            id="idISBNCo"
+                                            text="Slot Number"
+                                        />
+                                    </m:Column>
+                                    <m:Column id="iICol">
+                                        <m:Title
+                                            id="idISBo"
+                                            text="Check In"
+                                        />
+                                    </m:Column>
+                                </m:columns>
+                                <m:items>
+                                    <m:ColumnListItem
+                                        id="idBooksTableColListItem"
+                                        type="Navigation"
+                                    >
+                                        <m:cells>
+                                            <!-- <m:Input
+                                                id="AuthorColValueId"
+                                                value="{driverName}"
+                                                editable="{editable}"
+                                            />
+                                            <m:Input
+                                                id="idBookNameColValue"
+                                                value="{driverMobile}"
+                                                editable="{editable}"
+                                                type="Number"
+                                            />
+                                            <m:Input
+                                                id="idavailableQuantityColValue"
+                                                value="{vehicleNumber}"
+                                                editable="{editable}"
+                                            />
+                                            <m:Input
+                                                id="idISBNColValue"
+                                                value="{deliveryType}"
+                                                editable="{editable}"
+                                            />
+                                            <m:Input
+                                                id="isd"
+                                                value="{slotNumber/slotNumbers}"
+                                                editable="{editable}"
+                                            />
+                                            <m:Input
+                                                id="ijsonmf"
+                                                value="{checkInTime}"
+                                                editable="{editable}"
+                                            /> -->
+                                            <m:Text
+                                                id="AuthorColValueId"
+                                                text="{driverName}"
+                                            />
+                                            <m:Text
+                                                id="idBookNameColValue"
+                                                text="{driverMobile}"
+                                            />
+                                            <m:Text
+                                                id="idavailableQuantityColValue"
+                                                text="{vehicleNumber}"
+                                            />
+                                            <m:Text
+                                                id="idISBNColValue"
+                                                text="{deliveryType}"
+                                            />
+                                            <m:Text
+                                                id="isd"
+                                                text="{slotNumber/slotNumbers}"
+                                            />
+                                            <m:Text
+                                                id="ijsonmf"
+                                                text="{checkInTime}"
+                                            />
+                                        </m:cells>
+                                    </m:ColumnListItem>
+                                </m:items>
+                            </m:Table>
+                        </blocks>
+                    </ObjectPageSubSection>
+                </subSections>
+            </ObjectPageSection>
+
+            <ObjectPageSection
+                titleUppercase="false"
+                id="idUserBorrowedBooksSection"
+                title="Parking Slots"
+            >
+                <subSections>
+                    <ObjectPageSubSection
+                        id="idUserBorrowedBooksSubSection"
+                        titleUppercase="false"
+                    >
+                        <blocks>
+                            <m:Table
+                                id="AllSlots"
+                                mode="MultiSelect"
+                                alternateRowColors="true"
+                                items="{/parkingSlots}"
+                            >
+                                <m:headerToolbar>
+                                    <m:OverflowToolbar
+                                        id="_IDGenOverflowToolbar1"
+                                    >
+                                        <m:Title
+                                            id="_IDGenTitle7"
+                                            text="Assigned Slots"
+                                        />
+                                        <m:ToolbarSpacer
+                                            id="_IDGenToolbarSpacer1"
+                                        />
+                                        <m:Button
+                                            id="_IDGenButton1"
+                                            icon="sap-icon://refresh"
+                                            type="Emphasized"
+                                            press="onRefresh"
+                                        />
+                                    </m:OverflowToolbar>
+                                </m:headerToolbar>
+                                <m:columns>
+                                    <m:Column id="_IDGenColumn1">
+                                        <m:Title
+                                            id="_IDGenTitle2"
+                                            text="Slot Number"
+                                        />
+                                    </m:Column>
+                                    <!-- <m:Column id="_IDGenColumn2">
+                                        <m:Title
+                                            id="_IDGenTitle3"
+                                            text="Slot Type"
+                                        />
+                                    </m:Column> -->
+                                    <!-- <m:Column id="_IDGenColumn3">
+                                        <m:Title
+                                            id="_IDGenTitle4"
+                                            text="Vehicle Number"
+                                        />
+                                    </m:Column> -->
+                                </m:columns>
+                                <m:items>
+                                    <m:ColumnListItem
+                                        id="_IDGenColumnListItem1"
+                                        type="Navigation"
+                                    >
+                                        <m:cells>
+                                            <m:Text
+                                                id="_IDGenText1"
+                                                text="{slotNumbers}"
+                                            />
+                                            <!-- <m:Text
+                                                id="_IDGenText2"
+                                                text="{slotType}"
+                                            /> -->
+                                            <!-- <m:Text
+                                                id="_IDGenText3"
+                                                text="{}"
+                                            /> -->
+                                            <!-- <m:Input
+                                                id="idInput1"
+                                                value="{slotNumbers}"
+                                                editable="{editable}"
+                                            /> -->
+                                            <!-- <m:Input
+                                                id="idInput2"
+                                                value="{slotType}"
+                                                editable="{editable}"
+                                            /> -->
+                                        </m:cells>
+                                    </m:ColumnListItem>
+                                </m:items>
+                            </m:Table>
+                        </blocks>
+                    </ObjectPageSubSection>
+                </subSections>
+            </ObjectPageSection>
+            <ObjectPageSection
+                titleUppercase="false"
+                id="_IDGenObjectPageSection1"
+                title="Reserved Slots"
+            >
+                <subSections>
+                    <ObjectPageSubSection
+                        id="_IDGenObjectPageSubSection1"
+                        titleUppercase="false"
+                    >
+                        <blocks>
+                            <m:Table
+                                id="_IDGenTable1"
+                                mode="MultiSelect"
+                                alternateRowColors="true"
+                                items="{/reservations}"
+                            >
+                                <m:headerToolbar>
+                                    <m:OverflowToolbar
+                                        id="_IDGenOverflowToolbar2"
+                                    >
+                                        <m:Title
+                                            id="_IDGenTitle4"
+                                            text="Assigned Slots"
+                                        />
+                                        <m:ToolbarSpacer
+                                            id="_IDGenToolbarSpacer2"
+                                        />
+                                        <m:Button
+                                            id="_IDGenButton2"
+                                            icon="sap-icon://refresh"
+                                            type="Emphasized"
+                                            press="onRefresh"
+                                        />
+                                    </m:OverflowToolbar>
+                                </m:headerToolbar>
+                                <m:columns>
+                                    <m:Column id="_IDGenColumn3">
+                                        <m:Title
+                                            id="_IDGenTitle5"
+                                            text="Vendor Name"
+                                        />
+                                    </m:Column>
+                                    <m:Column id="_IDGenColumn4">
+                                        <m:Title
+                                            id="_IDGenTitle6"
+                                            text="vendorMobile"
+                                        />
+                                    </m:Column>
+                                    <!-- <m:Column id="_IDGenColumn3">
+                                        <m:Title
+                                            id="_IDGenTitle4"
+                                            text="Vehicle Number"
+                                        />
+                                    </m:Column> -->
+                                </m:columns>
+                                <m:items>
+                                    <m:ColumnListItem
+                                        id="_IDGenColumnListItem2"
+                                        type="Navigation"
+                                    >
+                                        <m:cells>
+                                            <m:Text
+                                                id="_IDGenText3"
+                                                text="{vendorName}"
+                                            />
+                                            <m:Text
+                                                id="_IDGenText4"
+                                                text="{vendorMobile}"
+                                            />
+                                            <m:Text
+                                                id="_IDGenText5"
+                                                text="{dateReservedOn}"
+                                            />
+                                        </m:cells>
+                                    </m:ColumnListItem>
+                                </m:items>
+                            </m:Table>
+                        </blocks>
+                    </ObjectPageSubSection>
+                </subSections>
+            </ObjectPageSection>
+        </sections>
+    </ObjectPageLayout>
+</mvc:View>

@@ -1,1 +1,1 @@
-GET http://localhost:4004/CatalogService/parkingSlots HTTP/1.1
+GET https://port4004-workspaces-ws-vl68p.us10.trial.applicationstudio.cloud.sap/ParkingSrv/parkingSlots HTTP/1.1    

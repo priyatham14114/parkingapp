@@ -1,0 +1,84 @@
+<core:FragmentDefinition
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+    xmlns:form="sap.ui.layout.form"
+>
+    <Dialog
+        id="idActiveLoansDailog"
+        resizable="true"
+        draggable="true"
+        contentWidth="85%"
+        contentHeight="85%"
+        title="Reservations"
+    >
+        <content>
+            <Table
+                id="idLoanTable"
+                inset="false"
+                mode="SingleSelectMaster"
+                items="{/reservations}"
+            >
+                <headerToolbar>
+                    <Toolbar id="idToolBar">
+                        <!-- <Title
+                            id="_IDGenTitle1"
+                            text="Reservations"
+                        /> -->
+                        <ToolbarSpacer id="idSpacer" />
+                        <Button
+                            id="idAddButton"
+                            text="Reserve"
+                            press="onReservePress"
+                        />
+                        <Button
+                            id="idCloseBTN"
+                            text="close"
+                            press="onCloseReservations"
+                        />
+                    </Toolbar>
+                </headerToolbar>
+                <columns>
+                    <Column id="idLoanTablecol1">
+                        <Text
+                            id="idUserName1"
+                            text="Vendor Name"
+                        />
+                    </Column>
+                    <Column id="idLoanTablecol3">
+                        <Text
+                            id="idBookNameActiveloans"
+                            text="Vendor Mobile"
+                        />
+                    </Column>
+                    <Column id="idLoanTablecol4">
+                        <Text
+                            id="idDueDate"
+                            text="Date"
+                        />
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem id="idLoanTableColListItems">
+                        <cells>
+                            <Text
+                                id="idLoanTableNameValue"
+                                text="{vendorName}"
+                            />
+                            <Text
+                                id="idLoanTableUserIdValue"
+                                text="{vendorMobile}"
+                            />
+                            
+                            <Text
+                                id="idLoanTableDueDateValue"
+                                text="{dateReservedOn}"
+                            />
+                           
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
+    </Dialog>
+    
+</core:FragmentDefinition>
