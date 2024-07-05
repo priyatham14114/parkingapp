@@ -6,4 +6,5 @@ service CatalogService {
     entity parkingSlots as projection on my.parkingSlots;
     entity history as projection on my.history;
     entity reservations as projection on my.reservations;
+    entity reserved as projection on my.reserved;
 }

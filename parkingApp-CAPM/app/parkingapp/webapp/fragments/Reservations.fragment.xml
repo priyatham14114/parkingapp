@@ -41,19 +41,25 @@
                     <Column id="idLoanTablecol1">
                         <Text
                             id="idUserName1"
-                            text="Vendor Name"
+                            text="Driver Name"
                         />
                     </Column>
                     <Column id="idLoanTablecol3">
                         <Text
                             id="idBookNameActiveloans"
-                            text="Vendor Mobile"
+                            text="Driver Mobile"
                         />
                     </Column>
                     <Column id="idLoanTablecol4">
                         <Text
-                            id="idDueDate"
-                            text="Date"
+                            id="idDueDate3"
+                            text="Vehicle Number"
+                        />
+                    </Column>
+                    <Column id="idLoanTablecol5">
+                        <Text
+                            id="idwelfife"
+                            text="deliveryType"
                         />
                     </Column>
                 </columns>
@@ -62,16 +68,21 @@
                         <cells>
                             <Text
                                 id="idLoanTableNameValue"
-                                text="{vendorName}"
+                                text="{driverName}"
                             />
                             <Text
                                 id="idLoanTableUserIdValue"
-                                text="{vendorMobile}"
+                                text="{driverMobile}"
                             />
                             
                             <Text
                                 id="idLoanTableDueDateValue"
-                                text="{dateReservedOn}"
+                                text="{vehicleNumber}"
+                            />
+                           
+                            <Text
+                                id="iddeliveryType"
+                                text="{deliveryType}"
                             />
                            
                         </cells>

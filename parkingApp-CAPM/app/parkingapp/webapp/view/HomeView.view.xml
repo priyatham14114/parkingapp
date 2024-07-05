@@ -85,8 +85,9 @@
                                 text="Driver Name"
                             />
                             <m:Input
-                                id="input1"
+                                id="idDriverName"
                                 placeholder="Enter Driver Name"
+                                change="onDriverNameChange"
                             />
                         </m:VBox>
                         <m:VBox
@@ -98,8 +99,11 @@
                                 text="Driver Mobile"
                             />
                             <m:Input
-                                id="input2"
+                                id="idDriverMobile"
                                 placeholder="Enter Driver Mobile"
+                                type="Number"
+                                change="onMobileNumberChange"
+                                
                             />
                         </m:VBox>
                         <m:VBox
@@ -107,12 +111,13 @@
                             class="Inputs"
                         >
                             <m:Label
-                                id="idLable3"
+                                id="idVehicle"
                                 text="Vehicle Number"
                             />
                             <m:Input
-                                id="input3"
+                                id="idVehicleNUmber"
                                 placeholder="Enter Vehicle Number"
+                                change="onVehicleNumberChange"
                             />
                         </m:VBox>
                     </layout:HorizontalLayout>
@@ -131,13 +136,13 @@
                             <m:Select id="idTypeOfDelivery">
                                 <core:Item
                                     id="_IDGenItem234"
-                                    key="In Bound"
-                                    text="In Bound"
+                                    key="InBound"
+                                    text="InBound"
                                 />
                                 <core:Item
                                     id="_IDGenItem2344"
-                                    key="Out Bound"
-                                    text="Out Bound"
+                                    key="OutBound"
+                                    text="OutBound"
                                 />
                             </m:Select>
                         </m:VBox>
@@ -151,11 +156,11 @@
                             />
                             <m:Select
                                 id="parkingLotSelect"
-                                items="{path: '/parkingSlots', filters: [{path: 'isAvailable', operator: 'EQ', value1: 'true'}]}"
+                                items="{path: '/parkingSlots', filters: [{path: 'status', operator: 'EQ', value1: 'Available'}]}"
                             >
                                 <core:Item
                                     id="_IDGenItem3"
-                                    key="{slotNumbers}"
+                                    key="{ID}"
                                     text="{slotNumbers}"
                                 />
                             </m:Select>
@@ -176,6 +181,7 @@
                                 id="idButtonAssign"
                                 type="Default"
                                 text="Assign"
+                                press="onAssignPress"
                             />
                         </m:VBox>
 
@@ -247,11 +253,11 @@
                                         />
                                         <m:Button
                                             id="idBtnSave"
-                                            text="Save"
-                                            icon="sap-icon://save"
+                                            text="Unassign"
+                                            icon="sap-icon://sys-cancel"
                                             type="Emphasized"
-                                            press="onSavePress"
-                                            tooltip="Click to Save"
+                                            press="onUnassignPress"
+                                            tooltip="Click to Unassign"
                                         />
                                         <m:Button
                                             id="idBtnCancle"
@@ -263,6 +269,12 @@
                                     </m:OverflowToolbar>
                                 </m:headerToolbar>
                                 <m:columns>
+                                    <m:Column id="idAuth" visible="false">
+                                        <m:Title
+                                            id="idAuColHead"
+                                            text="Slot_ID"
+                                        />
+                                    </m:Column>
                                     <m:Column id="idAuthorCol">
                                         <m:Title
                                             id="idAuthorColHead"
@@ -338,6 +350,10 @@
                                                 editable="{editable}"
                                             /> -->
                                             <m:Text
+                                                id="AuColValueId"
+                                                text="{slotNumber_ID}"
+                                            />
+                                            <m:Text
                                                 id="AuthorColValueId"
                                                 text="{driverName}"
                                             />
@@ -382,7 +398,7 @@
                     >
                         <blocks>
                             <m:Table
-                                id="AllSlots"
+                                id="idAllSlots"
                                 mode="MultiSelect"
                                 alternateRowColors="true"
                                 items="{/parkingSlots}"
@@ -393,7 +409,7 @@
                                     >
                                         <m:Title
                                             id="_IDGenTitle7"
-                                            text="Assigned Slots"
+                                            text="All Parking Slots"
                                         />
                                         <m:ToolbarSpacer
                                             id="_IDGenToolbarSpacer1"
@@ -411,6 +427,12 @@
                                         <m:Title
                                             id="_IDGenTitle2"
                                             text="Slot Number"
+                                        />
+                                    </m:Column>
+                                    <m:Column id="_IDGenColumn45sdf">
+                                        <m:Title
+                                            id="_IDGenTitlsdfe2"
+                                            text="Status"
                                         />
                                     </m:Column>
                                     <!-- <m:Column id="_IDGenColumn2">
@@ -436,24 +458,10 @@
                                                 id="_IDGenText1"
                                                 text="{slotNumbers}"
                                             />
-                                            <!-- <m:Text
-                                                id="_IDGenText2"
-                                                text="{slotType}"
-                                            /> -->
-                                            <!-- <m:Text
-                                                id="_IDGenText3"
-                                                text="{}"
-                                            /> -->
-                                            <!-- <m:Input
-                                                id="idInput1"
-                                                value="{slotNumbers}"
-                                                editable="{editable}"
-                                            /> -->
-                                            <!-- <m:Input
-                                                id="idInput2"
-                                                value="{slotType}"
-                                                editable="{editable}"
-                                            /> -->
+                                            <m:Text
+                                                id="_IDGenText1jadf"
+                                                text="{status}"
+                                            />
                                         </m:cells>
                                     </m:ColumnListItem>
                                 </m:items>
@@ -477,7 +485,7 @@
                                 id="_IDGenTable1"
                                 mode="MultiSelect"
                                 alternateRowColors="true"
-                                items="{/reservations}"
+                                items="{/reserved}"
                             >
                                 <m:headerToolbar>
                                     <m:OverflowToolbar
@@ -485,7 +493,7 @@
                                     >
                                         <m:Title
                                             id="_IDGenTitle4"
-                                            text="Assigned Slots"
+                                            text="Reserved Slots"
                                         />
                                         <m:ToolbarSpacer
                                             id="_IDGenToolbarSpacer2"
@@ -502,13 +510,31 @@
                                     <m:Column id="_IDGenColumn3">
                                         <m:Title
                                             id="_IDGenTitle5"
-                                            text="Vendor Name"
+                                            text="Driver Name"
                                         />
                                     </m:Column>
                                     <m:Column id="_IDGenColumn4">
                                         <m:Title
                                             id="_IDGenTitle6"
-                                            text="vendorMobile"
+                                            text="Driver Mobile"
+                                        />
+                                    </m:Column>
+                                    <m:Column id="_IDGenColumn43">
+                                        <m:Title
+                                            id="_IDGenTitle123"
+                                            text="Vehicle Number"
+                                        />
+                                    </m:Column>
+                                    <m:Column id="_IDGenColumn4yg53">
+                                        <m:Title
+                                            id="_IDGenTitle12233"
+                                            text="Delivery Type"
+                                        />
+                                    </m:Column>
+                                    <m:Column id="_IDGenColumn2e23">
+                                        <m:Title
+                                            id="_IDGenTitle13q423"
+                                            text="Reserved Slot"
                                         />
                                     </m:Column>
                                     <!-- <m:Column id="_IDGenColumn3">
@@ -526,15 +552,23 @@
                                         <m:cells>
                                             <m:Text
                                                 id="_IDGenText3"
-                                                text="{vendorName}"
+                                                text="{driverName}"
                                             />
                                             <m:Text
                                                 id="_IDGenText4"
-                                                text="{vendorMobile}"
+                                                text="{driverMobile}"
                                             />
                                             <m:Text
-                                                id="_IDGenText5"
-                                                text="{dateReservedOn}"
+                                                id="_IDGenTextwer5"
+                                                text="{vehicleNumber}"
+                                            />
+                                            <m:Text
+                                                id="_IDGenTecvxt5"
+                                                text="{deliveryType}"
+                                            />
+                                            <m:Text
+                                                id="_IDGendsfgvText5"
+                                                text="{reservedSlot/slotNumbers}"
                                             />
                                         </m:cells>
                                     </m:ColumnListItem>
@@ -544,6 +578,135 @@
                     </ObjectPageSubSection>
                 </subSections>
             </ObjectPageSection>
+            
+        <ObjectPageSection
+                titleUppercase="false"
+                id="_IDGenObjectPageSection2"
+                title="History"
+            >
+                <subSections>
+                    <ObjectPageSubSection
+                        id="_IDGenObjectPageSubSection2"
+                        titleUppercase="false"
+                    >
+                        <blocks>
+                            <m:Table
+                                id="idHistoryTable"
+                                alternateRowColors="true"
+                                items="{/history}"
+                            >
+                                <m:headerToolbar>
+                                    <m:OverflowToolbar id="_IDGenOverflowToolbar3">
+                                        <m:Title
+                                            id="_IDGenTitle8"
+                                            text="History"
+                                        />
+                                        <m:ToolbarSpacer
+                                            id="_IDGenToolbarSpacer3"
+                                        />
+
+                                        <m:SearchField
+                                            id="_IDGenSearchField1"
+                                            liveChange="onSearchHistory"
+                                            width="20%"
+                                            placeholder="Search here"
+                                        />
+                                        <m:Button
+                                            id="_IDGenButton3"
+                                            icon="sap-icon://refresh"
+                                            type="Emphasized"
+                                            press="onRefresh"
+                                        />
+                                    </m:OverflowToolbar>
+                                </m:headerToolbar>
+                                <m:columns>
+                                    <m:Column id="_IDGenColumn5">
+                                        <m:Title
+                                            id="_IDGenTitle9"
+                                            text="Driver Name"
+                                        />
+                                    </m:Column>
+                                    <m:Column id="_IDGenColumn6">
+                                        <m:Title
+                                            id="_IDGenTitle10"
+                                            text="Driver Mobile"
+                                        />
+                                    </m:Column>
+                                    <m:Column id="_IDGenColumn7">
+                                        <m:Title
+                                            id="_IDGenTitle11"
+                                            text="Vehicle Number"
+                                        />
+                                    </m:Column>
+                                    <m:Column id="_IDGenColumn8">
+                                        <m:Title
+                                            id="_IDGenTitle12"
+                                            text="Delivery Type"
+                                        />
+                                    </m:Column>
+                                    <m:Column id="_IDGenColumn9">
+                                        <m:Title
+                                            id="_IDGenTitle13"
+                                            text="Slot Number"
+                                        />
+                                    </m:Column>
+                                    <m:Column id="_IDGenColumn10">
+                                        <m:Title
+                                            id="_IDGenTitle14"
+                                            text="Check In"
+                                        />
+                                    </m:Column>
+                                    <m:Column id="_IDGenColumn11">
+                                        <m:Title
+                                            id="_IDGenTitle15"
+                                            text="Check Out"
+                                        />
+                                    </m:Column>
+                                </m:columns>
+                                <m:items>
+                                    <m:ColumnListItem
+                                        id="_IDGenColumnListItem3"
+                                        type="Navigation"
+                                    >
+                                        <m:cells>
+                                            <m:Text
+                                                id="_IDGenText6"
+                                                text="{driverName}"
+                                            />
+                                            <m:Text
+                                                id="_IDGenText7"
+                                                text="{driverMobile}"
+                                            />
+                                            <m:Text
+                                                id="_IDGenText8"
+                                                text="{vehicleNumber}"
+                                            />
+                                            <m:Text
+                                                id="_IDGenText9"
+                                                text="{deliveryType}"
+                                            />
+                                            <m:Text
+                                                id="_IDGenText10"
+                                                text="{historySlotNumber/slotNumbers}"
+                                            />
+                                            <m:Text
+                                                id="_IDGenText11"
+                                                text="{checkInTime}"
+                                            />
+                                            <m:Text
+                                                id="_IDGenText15"
+                                                text="{checkInTime}"
+                                            />
+                                        </m:cells>
+                                    </m:ColumnListItem>
+                                </m:items>
+                            </m:Table>
+                        </blocks>
+                    </ObjectPageSubSection>
+                </subSections>
+            </ObjectPageSection>
+
+            
         </sections>
     </ObjectPageLayout>
 </mvc:View>
