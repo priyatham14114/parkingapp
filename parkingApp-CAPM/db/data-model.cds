@@ -5,8 +5,8 @@ using {cuid} from '@sap/cds/common';
 entity parkingSlots : cuid {
 
   slotNumbers : String;
-  isAvailable : Boolean;
-  editable: Boolean;
+  status : String;
+// editable: Boolean;
 
 }
 
@@ -15,23 +15,39 @@ entity assignedSlots : cuid {
   driverMobile  : String;
   vehicleNumber : String;
   deliveryType  : String;
-  checkInTime   : DateTime;
+  checkInTime   : String;
   slotNumber    : Association to parkingSlots;
-  editable: Boolean;
+// editable: Boolean;
 
 }
-
 
 entity reservations : cuid {
 
-  vendorName : String;
-  vendorMobile  : String;
-  dateReservedOn  : Date;
+  driverName    : String;
+  driverMobile  : String;
+  vehicleNumber : String;
+  deliveryType  : String;
 
 }
+
+entity reserved : cuid {
+
+  driverName    : String;
+  driverMobile  : String;
+  vehicleNumber : String;
+  deliveryType  : String;
+  reservedSlot : Association to parkingSlots;
+
+}
+
 entity history : cuid {
 
-  checkInHistory : Association to assignedSlots;
-  checkOutTime   : DateTime;
+  driverName        : String;
+  driverMobile      : String;
+  vehicleNumber     : String;
+  deliveryType      : String;
+  checkInTime       : String;
+  historySlotNumber : Association to parkingSlots;
+  checkOutTime      : String;
 
 }

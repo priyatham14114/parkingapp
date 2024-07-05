@@ -1,2 +1,2 @@
-ID,vendorName,vendorMobile,dateReservedOn
-8f3df40a-3928-11ef-869b-325096b39f47,subhash,98765434567,2024-02-12
+ID,driverName,driverMobile,vehicleNumber,deliveryType
+e2bd5aee-39d2-11ef-b1f1-325096b39f47,priyatham,9876545698,TS43PS0001
