@@ -110,7 +110,7 @@ sap.ui.define([
                 var hours = currentDate.getHours();
                 var minutes = currentDate.getMinutes();
                 var seconds = currentDate.getSeconds();
-                var FinalDate = `${year}-${month}-${day}_${hours}:${minutes}:${seconds}`
+                var FinalDate = `${year}-${month}-${day} TIME ${hours}:${minutes}:${seconds}`
                 const oUserView = this.getView(),
                     oDriverName = oUserView.byId("idDriverName").getValue(),
                     oDriverMobile = oUserView.byId("idDriverMobile").getValue(),
@@ -220,6 +220,15 @@ sap.ui.define([
                     var sDriverMobile = oSelected.getBindingContext().getObject().driverMobile
                     var dCheckInTime = oSelected.getBindingContext().getObject().checkInTime
                     var oSlotId = oSelected.getBindingContext().getObject().slotNumber_ID
+                    var currentDate = new Date();
+                var year = currentDate.getFullYear();
+                var month = currentDate.getMonth() + 1; // Months are zero-based
+                var day = currentDate.getDate();
+                var hours = currentDate.getHours();
+                var minutes = currentDate.getMinutes();
+                var seconds = currentDate.getSeconds();
+                var FinalDate = `${year}-${month}-${day} TIME ${hours}:${minutes}:${seconds}`
+                var oCheckOutTime = FinalDate
 
                     // create a record in history
                     const oNewHistory = {
@@ -229,7 +238,7 @@ sap.ui.define([
                         deliveryType: sTypeofDelivery,
                         checkInTime: dCheckInTime,
                         historySlotNumber_ID: oSlotId,
-                        checkOutTime: new Date
+                        checkOutTime: oCheckOutTime
                     }
                     const oBindlist = oModel.bindList("/history")
 

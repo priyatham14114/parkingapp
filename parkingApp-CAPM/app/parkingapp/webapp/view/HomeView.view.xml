@@ -695,7 +695,7 @@
                                             />
                                             <m:Text
                                                 id="_IDGenText15"
-                                                text="{checkInTime}"
+                                                text="{checkOutTime}"
                                             />
                                         </m:cells>
                                     </m:ColumnListItem>
