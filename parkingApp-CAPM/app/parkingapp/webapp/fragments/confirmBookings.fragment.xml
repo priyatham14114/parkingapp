@@ -1,0 +1,110 @@
+<core:FragmentDefinition
+    xmlns:core="sap.ui.core"
+    xmlns:form="sap.ui.layout.form"
+    xmlns="sap.m"
+>
+    <Dialog
+        id="_IDGenDialog1"
+        title="Confirm Booking"
+        class="dialogSlideIn"
+        resizable="true"
+        draggable="true"
+        contentWidth="45%"
+        contentHeight="30%"
+    >
+        <content>
+            <form:SimpleForm
+                id="_IDGenSimpleForm1"
+                editable="true"
+                layout="ResponsiveGridLayout"
+                labelSpanXL="3"
+                labelSpanL="3"
+                labelSpanM="3"
+                labelSpanS="12"
+                adjustLabelSpan="false"
+                emptySpanXL="4"
+                emptySpanL="4"
+                emptySpanM="4"
+                emptySpanS="0"
+                columnsXL="1"
+                columnsL="1"
+                columnsM="1"
+                singleContainerFullSize="false"
+            >
+                <Label
+                    id="_IDGenLaedgfbel1"
+                    text="Driver Name"
+                />
+                <Input id="_IDGendfgdInput1" />
+                <Label
+                    id="_IDGenLxfbvgdthabel2"
+                    text="Driver Mobile"
+                />
+                <Input id="_IDGexgrgnInput2" />
+                <Label
+                    id="_IDGenLabel3"
+                    text="Vehicle Number"
+                />
+                <Input id="idasgredhmeInput" />
+                <Label
+                    id="_IDGesfdvg654nLabel3"
+                    text="Vendor Name"
+                />
+                <Input id="idasgredhmeIn0075put" />
+                <!-- <Label
+                    id="_IDGegdbfnfnLabel4"
+                    text="Type of Devlivery"
+                /> -->
+                <!-- <Select id="_IDGewertnSelect1">
+                    <core:Item
+                        id="_IDGen34r5tgItem1"
+                        key="Select"
+                        text=""
+                    />
+                    <core:Item
+                        id="_IDGevbhge3esddnItem2"
+                        key="InBound"
+                        text="InBound"
+                    />
+                    <core:Item
+                        id="_IDGenIdfgvbntftem3"
+                        key="OutBound"
+                        text="OutBound"
+                    />
+                </Select>
+                 <Label
+                    id="_IDGegdbsdgsrtnfnLabel4"
+                    text="Slot Number"
+                /> -->
+                <Label
+                    id="_IDGenLasgfsdfbel3"
+                    text="Slot Number"
+                />
+                <Select
+                    id="id123edsqa"
+                    items="{path: '/parkingSlots', filters: [{path: 'status', operator: 'EQ', value1: 'Available'}]}"
+                >
+                    <core:Item
+                        id="asfgdhjt_IDGenItefghrm3"
+                        key="{ID}"
+                        text="{slotNumbers}"
+                    />
+                </Select>
+            </form:SimpleForm>
+        </content>
+        <beginButton>
+            <Button
+                id="dgfbdsfgsvewad"
+                text="Confirm"
+                press="onConfirmBookSlotPress"
+            />
+        </beginButton>
+        <endButton>
+            <Button
+                id="ssefgradffdeqaavfeg"
+                text="Close"
+                press="onCloseConfirmDialog"
+            />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

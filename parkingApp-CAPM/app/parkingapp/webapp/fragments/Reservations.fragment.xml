@@ -4,7 +4,7 @@
     xmlns:form="sap.ui.layout.form"
 >
     <Dialog
-        id="idActiveLoansDailog"
+        id="idReservcationsDailog"
         resizable="true"
         draggable="true"
         contentWidth="85%"
@@ -13,10 +13,11 @@
     >
         <content>
             <Table
-                id="idLoanTable"
+                id="idReservationsTable"
                 inset="false"
                 mode="SingleSelectMaster"
                 items="{/reservations}"
+                
             >
                 <headerToolbar>
                     <Toolbar id="idToolBar">
@@ -28,7 +29,7 @@
                         <Button
                             id="idAddButton"
                             text="Reserve"
-                            press="onReservePress"
+                            press="onConfirmReservePress"
                         />
                         <Button
                             id="idCloseBTN"
@@ -56,10 +57,16 @@
                             text="Vehicle Number"
                         />
                     </Column>
-                    <Column id="idLoanTablecol5">
+                    <!-- <Column id="idLoanTablecol5">
                         <Text
                             id="idwelfife"
-                            text="deliveryType"
+                            text="delivery Type"
+                        />
+                    </Column> -->
+                    <Column id="idLoanTablecol553">
+                        <Text
+                            id="idwelf4t5wergfvife"
+                            text="Vendor Name"
                         />
                     </Column>
                 </columns>
@@ -80,9 +87,13 @@
                                 text="{vehicleNumber}"
                             />
                            
-                            <Text
+                            <!-- <Text
                                 id="iddeliveryType"
                                 text="{deliveryType}"
+                            /> -->
+                            <Text
+                                id="iddeliverysegerhType"
+                                text="{vendorName}"
                             />
                            
                         </cells>

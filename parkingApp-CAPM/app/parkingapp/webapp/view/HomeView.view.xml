@@ -125,6 +125,20 @@
                         id="idHorizantalLayout2"
                         class="sapUiSmallMarginBeginEnd"
                     >
+                      <m:VBox
+                            id="idvBoasfwetfx1"
+                            class="Inputs"
+                        >
+                            <m:Label
+                                id="idLab33r__le1"
+                                text="Vendor Name"
+                            />
+                            <m:Input
+                                id="idVendorName___"
+                                placeholder="Enter Vendor Name"
+                                change=""
+                            />
+                        </m:VBox>
                         <m:VBox
                             id="idvBox7"
                             class="Inputs"
@@ -150,7 +164,7 @@
                             id="idvBox4"
                             class="Inputs"
                         >
-                            <m:Label
+                            <m:Label 
                                 id="_IDGenLabel1"
                                 text="Parking Slot"
                             />
@@ -206,7 +220,7 @@
             <ObjectPageSection
                 titleUppercase="false"
                 id="idBorrowBooksSection"
-                title="Borrow Section"
+                title="Assigned Slots"
             >
                 <subSections>
                     <ObjectPageSubSection
@@ -305,6 +319,12 @@
                                             text="Slot Number"
                                         />
                                     </m:Column>
+                                    <m:Column id="idICvendorcol">
+                                        <m:Title
+                                            id="idISBvendorCo"
+                                            text="Vendor Name"
+                                        />
+                                    </m:Column>
                                     <m:Column id="iICol">
                                         <m:Title
                                             id="idISBo"
@@ -372,6 +392,10 @@
                                             <m:Text
                                                 id="isd"
                                                 text="{slotNumber/slotNumbers}"
+                                            />
+                                            <m:Text
+                                                id="IdsewfHHisd"
+                                                text="{vendor_Name}"
                                             />
                                             <m:Text
                                                 id="ijsonmf"
@@ -482,7 +506,7 @@
                     >
                         <blocks>
                             <m:Table
-                                id="_IDGenTable1"
+                                id="idReservedTable__"
                                 mode="MultiSelect"
                                 alternateRowColors="true"
                                 items="{/reserved}"
@@ -497,6 +521,13 @@
                                         />
                                         <m:ToolbarSpacer
                                             id="_IDGenToolbarSpacer2"
+                                        />
+                                        <m:Button
+                                            id="idJVGYTFKJJPP"
+                                            icon="sap-icon://add"
+                                            text="Assign"
+                                            type="Emphasized"
+                                            press="onAssignfromReservations"
                                         />
                                         <m:Button
                                             id="_IDGenButton2"
@@ -525,24 +556,24 @@
                                             text="Vehicle Number"
                                         />
                                     </m:Column>
-                                    <m:Column id="_IDGenColumn4yg53">
+                                    <!-- <m:Column id="_IDGenColumn4yg53">
                                         <m:Title
                                             id="_IDGenTitle12233"
                                             text="Delivery Type"
                                         />
-                                    </m:Column>
+                                    </m:Column> -->
                                     <m:Column id="_IDGenColumn2e23">
                                         <m:Title
                                             id="_IDGenTitle13q423"
                                             text="Reserved Slot"
                                         />
                                     </m:Column>
-                                    <!-- <m:Column id="_IDGenColumn3">
+                                    <m:Column id="_I3488DGenColumn3">
                                         <m:Title
-                                            id="_IDGenTitle4"
-                                            text="Vehicle Number"
+                                            id="_IDGdwdw11enTitle4"
+                                            text="Vendor Name"
                                         />
-                                    </m:Column> -->
+                                    </m:Column>
                                 </m:columns>
                                 <m:items>
                                     <m:ColumnListItem
@@ -562,13 +593,17 @@
                                                 id="_IDGenTextwer5"
                                                 text="{vehicleNumber}"
                                             />
-                                            <m:Text
+                                            <!-- <m:Text
                                                 id="_IDGenTecvxt5"
                                                 text="{deliveryType}"
-                                            />
+                                            /> -->
                                             <m:Text
                                                 id="_IDGendsfgvText5"
                                                 text="{reservedSlot/slotNumbers}"
+                                            />
+                                            <m:Text
+                                                id="_IDGendssr3456frfgvText5"
+                                                text="{vendor_Name}"
                                             />
                                         </m:cells>
                                     </m:ColumnListItem>
@@ -650,6 +685,12 @@
                                             text="Slot Number"
                                         />
                                     </m:Column>
+                                    <m:Column id="_IDGenCsgdtreolumn9">
+                                        <m:Title
+                                            id="_IDGenTiq3tle13"
+                                            text="Vendor Name"
+                                        />
+                                    </m:Column>
                                     <m:Column id="_IDGenColumn10">
                                         <m:Title
                                             id="_IDGenTitle14"
@@ -690,6 +731,10 @@
                                                 text="{historySlotNumber/slotNumbers}"
                                             />
                                             <m:Text
+                                                id="_IDGenText10aefe"
+                                                text="{vendor_Name}"
+                                            />
+                                            <m:Text
                                                 id="_IDGenText11"
                                                 text="{checkInTime}"
                                             />
@@ -705,8 +750,6 @@
                     </ObjectPageSubSection>
                 </subSections>
             </ObjectPageSection>
-
-            
         </sections>
     </ObjectPageLayout>
 </mvc:View>
