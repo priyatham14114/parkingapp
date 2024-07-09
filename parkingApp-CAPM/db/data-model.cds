@@ -17,6 +17,7 @@ entity assignedSlots : cuid {
   deliveryType  : String;
   checkInTime   : String;
   slotNumber    : Association to parkingSlots;
+  vendor_Name   : String;
 // editable: Boolean;
 
 }
@@ -26,7 +27,7 @@ entity reservations : cuid {
   driverName    : String;
   driverMobile  : String;
   vehicleNumber : String;
-  deliveryType  : String;
+  vendorName    : String;
 
 }
 
@@ -35,7 +36,8 @@ entity reserved : cuid {
   driverName    : String;
   driverMobile  : String;
   vehicleNumber : String;
-  deliveryType  : String;
+  // deliveryType  : String;
+  vendor_Name    : String;
   reservedSlot : Association to parkingSlots;
 
 }
@@ -47,6 +49,7 @@ entity history : cuid {
   vehicleNumber     : String;
   deliveryType      : String;
   checkInTime       : String;
+  vendor_Name       : String;
   historySlotNumber : Association to parkingSlots;
   checkOutTime      : String;
 

@@ -22,7 +22,7 @@ sap.ui.define([
                         slotNumbers: ""
                     }
                 });
-                this.getView().setModel(newAssign, "newAssign");            
+                this.getView().setModel(newAssign, "newAssign");
             },
             onEditPress: function () {
                 debugger
@@ -115,6 +115,7 @@ sap.ui.define([
                     oDriverName = oUserView.byId("idDriverName").getValue(),
                     oDriverMobile = oUserView.byId("idDriverMobile").getValue(),
                     oVehicleNumber = oUserView.byId("idVehicleNUmber").getValue(),
+                    oVendorName = oUserView.byId("idVendorName___").getValue(),
                     odeliveryType = oUserView.byId("idTypeOfDelivery").getSelectedKey(),
                     oslotNumber = oUserView.byId("parkingLotSelect").getSelectedKey(),
                     oCheckInTime = FinalDate
@@ -124,6 +125,7 @@ sap.ui.define([
                     driverMobile: oDriverMobile,
                     vehicleNumber: oVehicleNumber,
                     deliveryType: odeliveryType,
+                    vendor_Name:oVendorName,
                     slotNumber_ID: oslotNumber,
                     checkInTime: oCheckInTime
                 }
@@ -182,6 +184,7 @@ sap.ui.define([
                     this.getView().byId("idDriverName").setValue("");
                     this.getView().byId("idDriverMobile").setValue("");
                     this.getView().byId("idVehicleNUmber").setValue("");
+                    this.getView().byId("idVendorName___").setValue("");
                     // this.refreshEntity("/parkingSlots");
                     var oParkingSlotBinding = oModel.bindList("/parkingSlots");
 
@@ -220,15 +223,16 @@ sap.ui.define([
                     var sDriverMobile = oSelected.getBindingContext().getObject().driverMobile
                     var dCheckInTime = oSelected.getBindingContext().getObject().checkInTime
                     var oSlotId = oSelected.getBindingContext().getObject().slotNumber_ID
+                    var oVendorName = oSelected.getBindingContext().getObject().vendor_Name
                     var currentDate = new Date();
-                var year = currentDate.getFullYear();
-                var month = currentDate.getMonth() + 1; // Months are zero-based
-                var day = currentDate.getDate();
-                var hours = currentDate.getHours();
-                var minutes = currentDate.getMinutes();
-                var seconds = currentDate.getSeconds();
-                var FinalDate = `${year}-${month}-${day} TIME ${hours}:${minutes}:${seconds}`
-                var oCheckOutTime = FinalDate
+                    var year = currentDate.getFullYear();
+                    var month = currentDate.getMonth() + 1; // Months are zero-based
+                    var day = currentDate.getDate();
+                    var hours = currentDate.getHours();
+                    var minutes = currentDate.getMinutes();
+                    var seconds = currentDate.getSeconds();
+                    var FinalDate = `${year}-${month}-${day} TIME ${hours}:${minutes}:${seconds}`
+                    var oCheckOutTime = FinalDate
 
                     // create a record in history
                     const oNewHistory = {
@@ -238,6 +242,7 @@ sap.ui.define([
                         deliveryType: sTypeofDelivery,
                         checkInTime: dCheckInTime,
                         historySlotNumber_ID: oSlotId,
+                        vendor_Name:oVendorName,
                         checkOutTime: oCheckOutTime
                     }
                     const oBindlist = oModel.bindList("/history")
@@ -280,6 +285,235 @@ sap.ui.define([
                     MessageToast.show("Please Select a record");
                 }
             },
+            onConfirmReservePress: async function () {
+                if (!this.confirmDialog) {
+                    this.confirmDialog = await this.loadFragment("confirmBookings")
+                }
+                const oSelected = this.getView().byId("idReservationsTable").getSelectedItem(),
+                    oSelectedObject = oSelected.getBindingContext().getObject(),
+                    oDriverName = oSelectedObject.driverName,
+                    oDriverMobile = oSelectedObject.driverMobile,
+                    oVehicleNumber = oSelectedObject.vehicleNumber,
+                    // oDeliveryType = oSelectedObject.deliveryType,
+                    oVendorName = oSelectedObject.vendorName;
+                if (oSelected) {
+                    this.confirmDialog.open()
+                    this.byId("_IDGendfgdInput1").setValue(oDriverName)
+                    this.byId("_IDGexgrgnInput2").setValue(oDriverMobile)
+                    this.byId("idasgredhmeInput").setValue(oVehicleNumber)
+                    // this.byId("_IDGewertnSelect1").setValue(oDeliveryType)
+                    this.byId("idasgredhmeIn0075put").setValue(oVendorName)
+
+                } else {
+                    MessageToast.show("Select a record to accept bookings")
+                }
+
+
+            },
+            onCloseConfirmDialog: function () {
+                if (this.confirmDialog.isOpen()) {
+                    this.confirmDialog.close()
+
+                }
+
+            },
+            onConfirmBookSlotPress: function () {
+                debugger
+                const oThis = this
+                const oDriverName = this.getView().byId("_IDGendfgdInput1").getValue(),
+                    oDriverMobile = this.getView().byId("_IDGexgrgnInput2").getValue(),
+                    oVehicleNumber = this.getView().byId("idasgredhmeInput").getValue(),
+                    oVendorName = this.getView().byId("idasgredhmeIn0075put").getValue(),
+                    // oDeliveryType = this.getView().byId("_IDGewertnSelect1").getSelectedKey(),
+                    oReservedSlot = this.getView().byId("id123edsqa").getSelectedKey()
+
+                const NewReservedRecord = {
+
+                    driverName: oDriverName,
+                    driverMobile: oDriverMobile,
+                    vehicleNumber: oVehicleNumber,
+                    vendor_Name: oVendorName,
+                    // deliveryType: oDeliveryType,
+                    reservedSlot_ID: oReservedSlot
+
+                }
+                const oModel = this.getView().getModel()
+                const oBinding = oModel.bindList("/reserved")
+                const newReservation = oBinding.create(NewReservedRecord)
+                if (newReservation) {
+                    var oSelected = this.byId("idReservationsTable").getSelectedItem();
+                    oSelected.getBindingContext().delete("$auto")
+
+                    var oParkingSlotBinding = oModel.bindList("/parkingSlots");
+
+                    oParkingSlotBinding.filter([
+                        new Filter("ID", FilterOperator.EQ, oReservedSlot)
+                    ]);
+
+                    oParkingSlotBinding.requestContexts().then(function (aParkingContexts) {
+                        if (aParkingContexts.length > 0) {
+                            var oParkingContext = aParkingContexts[0];
+                            var oParkingData = oParkingContext.getObject();
+                            // Update 
+                            oParkingData.status = "Reserved"
+                            oParkingContext.setProperty("status", oParkingData.status);
+                            oModel.submitBatch("updateGroup");
+                            oThis.getView().byId("idAllSlots").getBinding("items").refresh();
+                            oModel.refresh(); // Refresh the model to get the latest data
+
+                        } else {
+                            MessageToast.show("Slot Unavailable")
+                        }
+                    })
+                }
+
+            },
+            onAssignfromReservations: async function () {
+                debugger
+                if (!this.ConfirmAssignDialog) {
+                    this.ConfirmAssignDialog = await this.loadFragment("ConfirmAssign")
+                }
+                const oSelected = this.getView().byId("idReservedTable__").getSelectedItem(),
+                    oObject = oSelected.getBindingContext().getObject(),
+                    oDriverName = oObject.driverName,
+                    oDriverMobile = oObject.driverMobile,
+                    oVehicleNumber = oObject.vehicleNumber,
+                    oVendorName = oObject.vendor_Name,
+                    oSlot = oObject.reservedSlot.slotNumbers
+
+                if (oSelected) {
+                    this.ConfirmAssignDialog.open()
+                    this.getView().byId("_IDGen__dfgdInput1").setValue(oDriverName)
+                    this.getView().byId("_IDGexgrsdfgnIn__put2").setValue(oDriverMobile)
+                    this.getView().byId("afidasgredhmeI__nput").setValue(oVehicleNumber)
+                    this.getView().byId("idss__n0075put").setValue(oVendorName)
+                    this.getView().byId("_dhmeI__nput").setValue(oSlot)
+
+                }
+
+            },
+            onCloseAssignConfirmDialog: function () {
+                if (this.ConfirmAssignDialog.isOpen()) {
+                    this.ConfirmAssignDialog.close()
+                }
+            },
+            onConfirmAssignSlotPress: function () {
+                debugger
+                var oThis = this
+                const oSelected = this.getView().byId("idReservedTable__").getSelectedItem().getBindingContext().getObject()
+
+                var currentDate = new Date();
+                var year = currentDate.getFullYear();
+                var month = currentDate.getMonth() + 1; // Months are zero-based
+                var day = currentDate.getDate();
+                var hours = currentDate.getHours();
+                var minutes = currentDate.getMinutes();
+                var seconds = currentDate.getSeconds();
+                var FinalDate = `${year}-${month}-${day} TIME ${hours}:${minutes}:${seconds}`
+                const oUserView = this.getView(),
+                    oDriverName = oUserView.byId("_IDGen__dfgdInput1").getValue(),
+                    oDriverMobile = oUserView.byId("_IDGexgrsdfgnIn__put2").getValue(),
+                    oVehicleNumber = oUserView.byId("afidasgredhmeI__nput").getValue(),
+                    oVendorName = oUserView.byId("idss__n0075put").getValue(),
+                    odeliveryType = oUserView.byId("_IDGewertnSelect1").getSelectedKey(),
+                    oslotNumber = oUserView.byId("_dhmeI__nput").getValue(),
+                    oCheckInTime = FinalDate
+
+                const newAssign = {
+                    driverName: oDriverName,
+                    driverMobile: oDriverMobile,
+                    vehicleNumber: oVehicleNumber,
+                    deliveryType: odeliveryType,
+                    vendor_Name: oVendorName,
+                    slotNumber_ID: oSelected.reservedSlot.ID,
+                    checkInTime: oCheckInTime
+                }
+                var oModel = this.getView().getModel(),
+                    oBindList = oModel.bindList("/assignedSlots");
+                // if (!oDriverName || !oDriverMobile || !oVehicleNumber) {
+
+                //     MessageToast.show("Please Enter All Required Fields")
+                // } 
+                var bValid = true;
+                if (!oDriverName || oDriverName.length < 3) {
+                    oUserView.byId("_IDGen__dfgdInput1").setValueState("Error");
+                    oUserView.byId("_IDGen__dfgdInput1").setValueStateText("Name Must Contain 3 Characters");
+                    bValid = false;
+                } else {
+                    oUserView.byId("idDriverName").setValueState("None");
+                }
+                if (!oDriverMobile || oDriverMobile.length !== 10 || !/^\d+$/.test(oDriverMobile)) {
+                    oUserView.byId("_IDGexgrsdfgnIn__put2").setValueState("Error");
+                    oUserView.byId("_IDGexgrsdfgnIn__put2").setValueStateText("Mobile number must be a 10-digit numeric value");
+
+                    bValid = false;
+                } else {
+                    oUserView.byId("_IDGexgrsdfgnIn__put2").setValueState("None");
+                }
+                if (!oVehicleNumber || !/^[A-Za-z]{2}\d{2}[A-Za-z]{2}\d{4}$/.test(oVehicleNumber)) {
+                    oUserView.byId("afidasgredhmeI__nput").setValueState("Error");
+                    oUserView.byId("afidasgredhmeI__nput").setValueStateText("Vehicle number should follow this pattern AP12BG1234");
+
+                    bValid = false;
+                } else {
+                    oUserView.byId("afidasgredhmeI__nput").setValueState("None");
+                }
+                if (!odeliveryType) {
+                    oUserView.byId("_IDGewertnSelect1").setValueState("Error");
+                    bValid = false;
+                } else {
+                    oUserView.byId("_IDGewertnSelect1").setValueState("None");
+                }
+                if (!oslotNumber) {
+                    oUserView.byId("_dhmeI__nput").setValueState("Error");
+                    bValid = false;
+                } else {
+                    oUserView.byId("_dhmeI__nput").setValueState("None");
+                }
+
+                if (!bValid) {
+                    MessageToast.show("Please enter correct data");
+                    return; // Prevent further execution
+
+                }
+                else {
+                    const newAssignSuccess = oBindList.create(newAssign);
+                    if (newAssignSuccess) {
+                        MessageToast.show("allotment successful")
+                        this.getView().byId("idAssignedTable").getBinding("items").refresh();
+                        this.getView().byId("_IDGen__dfgdInput1").setValue("");
+                        this.getView().byId("_IDGexgrsdfgnIn__put2").setValue("");
+                        this.getView().byId("afidasgredhmeI__nput").setValue("");
+                        this.getView().byId("_dhmeI__nput").setValue("");
+                        this.getView().byId("idss__n0075put").setValue("");
+                        // this.refreshEntity("/parkingSlots");
+                        var oParkingSlotBinding = oModel.bindList("/parkingSlots");
+
+                        oParkingSlotBinding.filter([
+                            new Filter("slotNumbers", FilterOperator.EQ, oslotNumber)
+                        ]);
+
+                        oParkingSlotBinding.requestContexts().then(function (aParkingContexts) {
+                            if (aParkingContexts.length > 0) {
+                                var oParkingContext = aParkingContexts[0];
+                                var oParkingData = oParkingContext.getObject();
+
+                                // Update 
+                                oParkingData.status = "Not Available"
+                                oParkingContext.setProperty("status", oParkingData.status);
+                                oModel.submitBatch("updateGroup");
+                                // oThis.getView().byId("idAllSlots").getBinding("items").refresh();
+                                oModel.refresh(); // Refresh the model to get the latest data
+
+                            } else {
+                                MessageToast.show("Slot Unavailable")
+                            }
+                        })
+                    }
+                }
+
+
+            }
 
 
         })

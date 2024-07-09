@@ -1,5 +1,5 @@
-ID,driverName,driverMobile,vehicleNumber,deliveryType,checkInTime,historySlotNumber_ID,checkOutTime
-58c13536-39be-11ef-83a6-325096b39f47,Manoj Kumar,555-789-0123,AP07 MN 7890,inbound,2024-09-02,2e409060-2f8f-11ef-961d-325096b39f47,2024-09-01
-58c137e8-39be-11ef-ad4c-325096b39f47,Srinivas Reddy,555-890-1234,AP08 OP 8901,outbound,2024-09-02,2e408ebc-2f8f-11ef-9da1-325096b39f47,2024-09-01
-58c1387e-39be-11ef-8dee-325096b39f47,Harish Chandra,555-901-2345,AP09 QR 9012,inbound,2024-09-02,2e408df4-2f8f-11ef-827e-325096b39f47,2024-09-01
-58c138f6-39be-11ef-a123-325096b39f47,Arun Prasad,555-012-3456,AP10 ST 0123,outbound,2024-09-02,2e408d2c-2f8f-11ef-90cc-325096b39f47,2024-09-01
+ID,driverName,driverMobile,vehicleNumber,deliveryType,checkInTime,historySlotNumber_ID,checkOutTime,vendor_Name
+58c13536-39be-11ef-83a6-325096b39f47,Manoj Kumar,555-789-0123,AP07 MN 7890,inbound,2024-09-02,2e409060-2f8f-11ef-961d-325096b39f47,2024-09-01,Subhash Logistics
+58c137e8-39be-11ef-ad4c-325096b39f47,Srinivas Reddy,555-890-1234,AP08 OP 8901,outbound,2024-09-02,2e408ebc-2f8f-11ef-9da1-325096b39f47,2024-09-01,Goud Enterprises
+58c1387e-39be-11ef-8dee-325096b39f47,Harish Chandra,555-901-2345,AP09 QR 9012,inbound,2024-09-02,2e408df4-2f8f-11ef-827e-325096b39f47,2024-09-01,Gayathri Furnitures
+58c138f6-39be-11ef-a123-325096b39f47,Arun Prasad,555-012-3456,AP10 ST 0123,outbound,2024-09-02,2e408d2c-2f8f-11ef-90cc-325096b39f47,2024-09-01,Hari Enterprises

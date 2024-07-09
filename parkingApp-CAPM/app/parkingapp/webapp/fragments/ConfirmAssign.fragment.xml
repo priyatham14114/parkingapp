@@ -1,0 +1,128 @@
+<core:FragmentDefinition
+    xmlns:core="sap.ui.core"
+    xmlns:form="sap.ui.layout.form"
+    xmlns="sap.m"
+>
+    <Dialog
+        id="__adsknfjk"
+        title="Confirm Assign"
+        class="dialogSlideIn"
+        resizable="true"
+        draggable="true"
+        contentWidth="45%"
+        contentHeight="35%"
+    >
+        <content>
+            <form:SimpleForm
+                id="__sjfdjbsaed___"
+                editable="true"
+                layout="ResponsiveGridLayout"
+                labelSpanXL="3"
+                labelSpanL="3"
+                labelSpanM="3"
+                labelSpanS="12"
+                adjustLabelSpan="false"
+                emptySpanXL="4"
+                emptySpanL="4"
+                emptySpanM="4"
+                emptySpanS="0"
+                columnsXL="1"
+                columnsL="1"
+                columnsM="1"
+                singleContainerFullSize="false"
+            >
+                <Label
+                    id="___ID_GenLaedgfbel1"
+                    text="Driver Name"
+                />
+                <Input id="_IDGen__dfgdInput1" />
+                <Label
+                    id="_IDGen__thabel2"
+                    text="Driver Mobile"
+                />
+                <Input id="_IDGexgrsdfgnIn__put2" />
+                <Label
+                    id="_IDGesdf__nLabel3"
+                    text="Vehicle Number"
+                />
+                <Input id="afidasgredhmeI__nput" />
+                <Label
+                    id="_ID1__654nLabel3"
+                    text="Vendor Name"
+                />
+                <Input
+                    id="idss__n0075put"
+                    editable="false"
+                />
+                <!-- <Label
+                    id="_IDGegdbfnfnLabel4"
+                    text="Type of Devlivery"
+                /> -->
+                <!-- <Select id="_IDGewertnSelect1">
+                    <core:Item
+                        id="_IDGen34r5tgItem1"
+                        key="Select"
+                        text=""
+                    />
+                    <core:Item
+                        id="_IDGevbhge3esddnItem2"
+                        key="InBound"
+                        text="InBound"
+                    />
+                    <core:Item
+                        id="_IDGenIdfgvbntftem3"
+                        key="OutBound"
+                        text="OutBound"
+                    />
+                </Select>
+                 <Label
+                    id="_IDGegdbsdgsrtnfnLabel4"
+                    text="Slot Number"
+                /> -->
+                <Label
+                    id="_IDGenLasgf___sdfbel3"
+                    text="Slot Number"
+                />
+                <Input
+                    id="_dhmeI__nput"
+                    editable="false"
+                />
+                <Label
+                    id="_ID__sdfbel3"
+                    text="Delivery Type"
+                />
+                <Select id="_IDGewertnSelect1">
+                    <core:Item
+                        id="_IDGen34r5tgItem1"
+                        key="Select"
+                        text="Select"
+                    />
+                    <core:Item
+                        id="_IDGevbhge3esddnItem2"
+                        key="InBound"
+                        text="InBound"
+                    />
+                    <core:Item
+                        id="_IDGenIdfgvbntftem3"
+                        key="OutBound"
+                        text="OutBound"
+                    />
+                </Select>
+            </form:SimpleForm>
+        </content>
+        <beginButton>
+            <Button
+                id="__vewad"
+                text="Confirm"
+                press="onConfirmAssignSlotPress"
+            />
+        </beginButton>
+        <endButton>
+            <Button
+                id="__eqaavfe_g"
+                text="Close"
+                press="onCloseAssignConfirmDialog"
+            />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

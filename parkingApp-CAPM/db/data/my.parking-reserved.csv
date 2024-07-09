@@ -1,2 +1,2 @@
-ID,driverName,driverMobile,vehicleNumber,deliveryType,reservedSlot_ID
-278913b6-39c4-11ef-b5a6-325096b39f47,subhash,8765434562,AP05BG2389,In Bound,2e40816a-2f8f-11ef-baa6-325096b39f47
+ID,driverName,driverMobile,vehicleNumber,reservedSlot_ID
+278913b6-39c4-11ef-b5a6-325096b39f47,subhash,8765434562,AP05BG2389,2e40816a-2f8f-11ef-baa6-325096b39f47
