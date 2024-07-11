@@ -117,7 +117,7 @@ sap.ui.define([
                             oThis.getView().byId("iddrivrtmobilwInput").setValue("")
                             oThis.getView().byId("idameInput").setValue("")
                             oThis.getView().byId("idvendordadNameInput").setValue("")
-                            MessageBox.success("Reservation Sent Slot allotment will be sent to your mobile number")
+                            MessageBox.success("Reservation Sent.Slot allotment will be sent to your mobile number")
 
                         }
                     }
