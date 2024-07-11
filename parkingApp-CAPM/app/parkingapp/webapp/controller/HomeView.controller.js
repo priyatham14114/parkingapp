@@ -6,8 +6,10 @@ sap.ui.define([
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
     "sap/m/MessageToast",
+    "sap/m/MessageBox"
+
 ],
-    function (Controller, JSONModel, Fragment, Filter, FilterOperator, MessageToast) {
+    function (Controller, JSONModel, Fragment, Filter, FilterOperator, MessageToast, MessageBox) {
         "use strict";
 
         return Controller.extend("com.app.parkingapp.controller.HomeView", {
@@ -125,7 +127,7 @@ sap.ui.define([
                     driverMobile: oDriverMobile,
                     vehicleNumber: oVehicleNumber,
                     deliveryType: odeliveryType,
-                    vendor_Name:oVendorName,
+                    vendor_Name: oVendorName,
                     slotNumber_ID: oslotNumber,
                     checkInTime: oCheckInTime
                 }
@@ -171,6 +173,13 @@ sap.ui.define([
                 } else {
                     oUserView.byId("parkingLotSelect").setValueState("None");
                 }
+                if (!oVendorName || oVendorName.length < 3) {
+                    oUserView.byId("idVendorName___").setValueState("Error");
+                    oUserView.byId("idVendorName___").setValueStateText("Vendor Name Must Contain 3 Characters");
+                    bValid = false;
+                } else {
+                    oUserView.byId("idVendorName___").setValueState("None");
+                }
 
                 if (!bValid) {
                     MessageToast.show("Please enter correct data");
@@ -178,36 +187,8 @@ sap.ui.define([
 
                 }
                 else {
-                    oBindList.create(newAssign);
-                    MessageToast.show("allotment successful")
-                    this.getView().byId("idAssignedTable").getBinding("items").refresh();
-                    this.getView().byId("idDriverName").setValue("");
-                    this.getView().byId("idDriverMobile").setValue("");
-                    this.getView().byId("idVehicleNUmber").setValue("");
-                    this.getView().byId("idVendorName___").setValue("");
-                    // this.refreshEntity("/parkingSlots");
-                    var oParkingSlotBinding = oModel.bindList("/parkingSlots");
+                   
 
-                    oParkingSlotBinding.filter([
-                        new Filter("ID", FilterOperator.EQ, oslotNumber)
-                    ]);
-
-                    oParkingSlotBinding.requestContexts().then(function (aParkingContexts) {
-                        if (aParkingContexts.length > 0) {
-                            var oParkingContext = aParkingContexts[0];
-                            var oParkingData = oParkingContext.getObject();
-
-                            // Update 
-                            oParkingData.status = "Not Available"
-                            oParkingContext.setProperty("status", oParkingData.status);
-                            oModel.submitBatch("updateGroup");
-                            // oThis.getView().byId("idAllSlots").getBinding("items").refresh();
-                            oModel.refresh(); // Refresh the model to get the latest data
-
-                        } else {
-                            MessageToast.show("Slot Unavailable")
-                        }
-                    })
                 }
             },
             onUnassignPress: function (oEvent) {
@@ -242,7 +223,7 @@ sap.ui.define([
                         deliveryType: sTypeofDelivery,
                         checkInTime: dCheckInTime,
                         historySlotNumber_ID: oSlotId,
-                        vendor_Name:oVendorName,
+                        vendor_Name: oVendorName,
                         checkOutTime: oCheckOutTime
                     }
                     const oBindlist = oModel.bindList("/history")
@@ -286,17 +267,19 @@ sap.ui.define([
                 }
             },
             onConfirmReservePress: async function () {
+                debugger
                 if (!this.confirmDialog) {
                     this.confirmDialog = await this.loadFragment("confirmBookings")
                 }
-                const oSelected = this.getView().byId("idReservationsTable").getSelectedItem(),
-                    oSelectedObject = oSelected.getBindingContext().getObject(),
-                    oDriverName = oSelectedObject.driverName,
-                    oDriverMobile = oSelectedObject.driverMobile,
-                    oVehicleNumber = oSelectedObject.vehicleNumber,
-                    // oDeliveryType = oSelectedObject.deliveryType,
-                    oVendorName = oSelectedObject.vendorName;
+                const oSelected = this.getView().byId("idReservationsTable").getSelectedItem()
                 if (oSelected) {
+
+                    const oSelectedObject = oSelected.getBindingContext().getObject(),
+                        oDriverName = oSelectedObject.driverName,
+                        oDriverMobile = oSelectedObject.driverMobile,
+                        oVehicleNumber = oSelectedObject.vehicleNumber,
+                        // oDeliveryType = oSelectedObject.deliveryType,
+                        oVendorName = oSelectedObject.vendorName;
                     this.confirmDialog.open()
                     this.byId("_IDGendfgdInput1").setValue(oDriverName)
                     this.byId("_IDGexgrgnInput2").setValue(oDriverMobile)
@@ -305,7 +288,7 @@ sap.ui.define([
                     this.byId("idasgredhmeIn0075put").setValue(oVendorName)
 
                 } else {
-                    MessageToast.show("Select a record to accept bookings")
+                    MessageToast.show("Select a record to accept reservations")
                 }
 
 
@@ -337,12 +320,73 @@ sap.ui.define([
                     reservedSlot_ID: oReservedSlot
 
                 }
-                const oModel = this.getView().getModel()
+                const oModel = this.getView().getModel(),
+                    oUserView = this.getView()
                 const oBinding = oModel.bindList("/reserved")
+
+                var bValid = true;
+                if (!oDriverName || oDriverName.length < 3) {
+                    oUserView.byId("_IDGendfgdInput1").setValueState("Error");
+                    oUserView.byId("_IDGendfgdInput1").setValueStateText("Name Must Contain 3 Characters");
+                    bValid = false;
+                } else {
+                    oUserView.byId("_IDGendfgdInput1").setValueState("None");
+                }
+                if (!oDriverMobile || oDriverMobile.length !== 10 || !/^\d+$/.test(oDriverMobile)) {
+                    oUserView.byId("_IDGexgrgnInput2").setValueState("Error");
+                    oUserView.byId("_IDGexgrgnInput2").setValueStateText("Mobile number must be a 10-digit numeric value");
+
+                    bValid = false;
+                } else {
+                    oUserView.byId("_IDGexgrgnInput2").setValueState("None");
+                }
+                if (!oVehicleNumber || !/^[A-Za-z]{2}\d{2}[A-Za-z]{2}\d{4}$/.test(oVehicleNumber)) {
+                    oUserView.byId("idasgredhmeInput").setValueState("Error");
+                    oUserView.byId("idasgredhmeInput").setValueStateText("Vehicle number should follow this pattern AP12BG1234");
+
+                    bValid = false;
+                } else {
+                    oUserView.byId("idasgredhmeInput").setValueState("None");
+                }
+                // if (!odeliveryType) {
+                //     oUserView.byId("idTypeOfDelivery").setValueState("Error");
+                //     bValid = false;
+                // } else {
+                //     oUserView.byId("idTypeOfDelivery").setValueState("None");
+                // }
+                // if (!oslotNumber) {
+                //     oUserView.byId("parkingLotSelect").setValueState("Error");
+                //     bValid = false;
+                // } else {
+                //     oUserView.byId("parkingLotSelect").setValueState("None");
+                // }
+                if (!oVendorName || oVendorName.length < 3) {
+                    oUserView.byId("idasgredhmeIn0075put").setValueState("Error");
+                    oUserView.byId("idasgredhmeIn0075put").setValueStateText("Vendor Name Must Contain 3 Characters");
+                    bValid = false;
+                } else {
+                    oUserView.byId("idasgredhmeIn0075put").setValueState("None");
+                }
+
+                if (!bValid) {
+                    MessageToast.show("Please enter correct data");
+                    return; // Prevent further execution
+
+                }
+
+
                 const newReservation = oBinding.create(NewReservedRecord)
                 if (newReservation) {
                     var oSelected = this.byId("idReservationsTable").getSelectedItem();
                     oSelected.getBindingContext().delete("$auto")
+
+                    this.byId("_IDGendfgdInput1").setValue("")
+                    this.byId("_IDGexgrgnInput2").setValue("")
+                    this.byId("idasgredhmeInput").setValue("")
+                    //  this.byId("_IDGewertnSelect1").setValue(oDeliveryType)
+                    this.byId("idasgredhmeIn0075put").setValue("")
+
+                    this.confirmDialog.close()
 
                     var oParkingSlotBinding = oModel.bindList("/parkingSlots");
 
@@ -401,6 +445,7 @@ sap.ui.define([
                 debugger
                 var oThis = this
                 const oSelected = this.getView().byId("idReservedTable__").getSelectedItem().getBindingContext().getObject()
+                const oBindingContext = this.getView().byId("idReservedTable__").getSelectedItem().getBindingContext()
 
                 var currentDate = new Date();
                 var year = currentDate.getFullYear();
@@ -440,7 +485,7 @@ sap.ui.define([
                     oUserView.byId("_IDGen__dfgdInput1").setValueStateText("Name Must Contain 3 Characters");
                     bValid = false;
                 } else {
-                    oUserView.byId("idDriverName").setValueState("None");
+                    oUserView.byId("_IDGen__dfgdInput1").setValueState("None");
                 }
                 if (!oDriverMobile || oDriverMobile.length !== 10 || !/^\d+$/.test(oDriverMobile)) {
                     oUserView.byId("_IDGexgrsdfgnIn__put2").setValueState("Error");
@@ -458,8 +503,18 @@ sap.ui.define([
                 } else {
                     oUserView.byId("afidasgredhmeI__nput").setValueState("None");
                 }
-                if (!odeliveryType) {
-                    oUserView.byId("_IDGewertnSelect1").setValueState("Error");
+                if (!oVendorName || oVendorName.length < 3) {
+                    oUserView.byId("idss__n0075put").setValueState("Error");
+                    oUserView.byId("idss__n0075put").setValueStateText("Vendor Name Must Contain 3 Characters");
+                    bValid = false;
+                } else {
+                    oUserView.byId("idss__n0075put").setValueState("None");
+                }
+                if (!odeliveryType || odeliveryType === "Select") {
+                    ;
+                    oUserView.byId("_IDGewertnSelect1").setValueState("Error")
+                    oUserView.byId("_IDGewertnSelect1").setValueStateText("Please select atleast one option");
+
                     bValid = false;
                 } else {
                     oUserView.byId("_IDGewertnSelect1").setValueState("None");
@@ -486,28 +541,34 @@ sap.ui.define([
                         this.getView().byId("afidasgredhmeI__nput").setValue("");
                         this.getView().byId("_dhmeI__nput").setValue("");
                         this.getView().byId("idss__n0075put").setValue("");
-                        // this.refreshEntity("/parkingSlots");
-                        var oParkingSlotBinding = oModel.bindList("/parkingSlots");
+                        this.ConfirmAssignDialog.close()
 
-                        oParkingSlotBinding.filter([
-                            new Filter("slotNumbers", FilterOperator.EQ, oslotNumber)
-                        ]);
+                        // Remove current record from the current table
+                        oBindingContext.delete("$auto").then(function () {
 
-                        oParkingSlotBinding.requestContexts().then(function (aParkingContexts) {
-                            if (aParkingContexts.length > 0) {
-                                var oParkingContext = aParkingContexts[0];
-                                var oParkingData = oParkingContext.getObject();
+                            // Update Parking Slot Status
+                            var oParkingSlotBinding = oModel.bindList("/parkingSlots");
 
-                                // Update 
-                                oParkingData.status = "Not Available"
-                                oParkingContext.setProperty("status", oParkingData.status);
-                                oModel.submitBatch("updateGroup");
-                                // oThis.getView().byId("idAllSlots").getBinding("items").refresh();
-                                oModel.refresh(); // Refresh the model to get the latest data
+                            oParkingSlotBinding.filter([
+                                new Filter("slotNumbers", FilterOperator.EQ, oslotNumber)
+                            ]);
 
-                            } else {
-                                MessageToast.show("Slot Unavailable")
-                            }
+                            oParkingSlotBinding.requestContexts().then(function (aParkingContexts) {
+                                if (aParkingContexts.length > 0) {
+                                    var oParkingContext = aParkingContexts[0];
+                                    var oParkingData = oParkingContext.getObject();
+
+                                    // Update 
+                                    oParkingData.status = "Not Available"
+                                    oParkingContext.setProperty("status", oParkingData.status);
+                                    oModel.submitBatch("updateGroup");
+                                    // oThis.getView().byId("idAllSlots").getBinding("items").refresh();
+                                    oModel.refresh(); // Refresh the model to get the latest data
+
+                                } else {
+                                    MessageToast.show("Slot Unavailable")
+                                }
+                            })
                         })
                     }
                 }
