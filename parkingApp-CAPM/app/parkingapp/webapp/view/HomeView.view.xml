@@ -148,6 +148,11 @@
                                 text="Delivery Type"
                             />
                             <m:Select id="idTypeOfDelivery">
+                             <core:Item
+                                    id="_IDGenI23esatem234"
+                                    key="Select"
+                                    text="Select"
+                                />
                                 <core:Item
                                     id="_IDGenItem234"
                                     key="InBound"

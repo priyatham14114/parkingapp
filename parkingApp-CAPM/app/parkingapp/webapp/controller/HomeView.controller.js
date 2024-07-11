@@ -161,8 +161,10 @@ sap.ui.define([
                 } else {
                     oUserView.byId("idVehicleNUmber").setValueState("None");
                 }
-                if (!odeliveryType) {
+                if (!odeliveryType || odeliveryType === "Select") {
                     oUserView.byId("idTypeOfDelivery").setValueState("Error");
+                    oUserView.byId("idTypeOfDelivery").setValueStateText("Please select atleast one option below");
+
                     bValid = false;
                 } else {
                     oUserView.byId("idTypeOfDelivery").setValueState("None");
@@ -187,7 +189,59 @@ sap.ui.define([
 
                 }
                 else {
-                   
+                    // 
+
+
+                    var oAssignedSlotBinding = oModel.bindList("/assignedSlots");
+
+                    oAssignedSlotBinding.filter([
+                        new Filter("vehicleNumber", FilterOperator.EQ, oVehicleNumber)
+                    ]);
+
+                    oAssignedSlotBinding.requestContexts().then(function (aAssignedContext) {
+                        if (aAssignedContext.length > 0) {
+                            MessageBox.warning("You can not Assign.A Slot for Vehicle number " +oVehicleNumber+ " already assigned")
+
+                        } else {
+
+                            const newSlotAssign = oBindList.create(newAssign)
+                            if (newSlotAssign) {
+
+                                var oParkingSlotBinding = oModel.bindList("/parkingSlots");
+
+                                oParkingSlotBinding.filter([
+                                    new Filter("ID", FilterOperator.EQ, oslotNumber)
+                                ]);
+
+                                oParkingSlotBinding.requestContexts().then(function (aParkingContexts) {
+                                    if (aParkingContexts.length > 0) {
+                                        var oParkingContext = aParkingContexts[0];
+                                        var oParkingData = oParkingContext.getObject();
+                                        // Update 
+                                        oParkingData.status = "Not Available"
+                                        oParkingContext.setProperty("status", oParkingData.status);
+                                        oModel.submitBatch("updateGroup");
+                                        oThis.getView().byId("idAllSlots").getBinding("items").refresh();
+                                        oModel.refresh(); // Refresh the model to get the latest data
+
+                                        oThis.getView().byId("idDriverName").setValue("")
+                                        oThis.getView().byId("idDriverMobile").setValue("")
+                                        oThis.getView().byId("idVehicleNUmber").setValue("")
+                                        oThis.getView().byId("idTypeOfDelivery").setValue("Select")
+                                        oThis.getView().byId("idVendorName___").setValue("")
+
+                                        // add validation for existing vehicle
+
+
+
+                                    } else {
+                                        MessageToast.show("Slot Unavailable")
+                                    }
+                                })
+
+                            }
+                        }
+                    })
 
                 }
             },
@@ -246,7 +300,7 @@ sap.ui.define([
                                 oParkingContext.setProperty("status", oParkingData.status);
                                 oModel.submitBatch("updateGroup");
                                 oThis.getView().byId("idAllSlots").getBinding("items").refresh();
-                                oModel.refresh(); // Refresh the model to get the latest data
+                                oModel.refresh(); // Refresh the model to get the latest 
 
 
                             } else {
