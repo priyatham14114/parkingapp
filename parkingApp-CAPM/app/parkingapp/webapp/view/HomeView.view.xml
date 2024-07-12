@@ -32,7 +32,7 @@
                     <m:Image
                         class="logo"
                         id="idVMMLogo"
-                        src="./images/Vishal-MegaMart."
+                        src="./images/Vishal-MegaMart.png"
                     />
                 </expandedHeading>
 
@@ -55,14 +55,20 @@
                         id="idWelcomeTag"
                         text="Parking Management"
                     /> -->
+                     <!-- <m:Image
+                        id="movingImage"
+                        src="./images/Vishal-MegaMart.png"
+                        class="movingImage"
+                        visible="false"
+                    /> -->
                 </expandedContent>
                 <actions>
-                    <!-- <m:Button
-                                id="idLogOutbutton"
-                                type="Ghost"
-                                text="Logout"
-                                press="onLogoutPress"
-                            /> -->
+                    <m:Image
+                        id="movingImage"
+                        src="./images/TruckGif.gif"
+                        class="movingImage"
+                        visible="false"
+                    />
                 </actions>
             </ObjectPageDynamicHeaderTitle>
         </headerTitle>
@@ -290,6 +296,16 @@
                                         />
                                         <m:Button
                                             id="idBtnSave"
+                                            text="Save"
+                                            icon="sap-icon://save"
+                                            type="Success"
+                                            press="onSavePress"
+                                            tooltip="Save changes"
+                                            visible="false"
+                                        />
+                                        <m:Button
+                                            id="idBtUnassign"
+                                            visible="true"
                                             text="Unassign"
                                             type="Unstyled"
                                             class="buttonBlue"
@@ -297,10 +313,11 @@
                                             tooltip="Click to Unassign"
                                         />
                                         <m:Button
-                                            id="idBtnCancle"
+                                            id="idBtnCancel"
                                             text="Cancle"
                                             type="Unstyled"
                                             class="buttonRed"
+                                            visible="false"
                                             press="onCanclePress"
                                             tooltip="Click to Cancle"
                                         />
@@ -365,37 +382,6 @@
                                         type="Navigation"
                                     >
                                         <m:cells>
-                                            <!-- <m:Input
-                                                id="AuthorColValueId"
-                                                value="{driverName}"
-                                                editable="{editable}"
-                                            />
-                                            <m:Input
-                                                id="idBookNameColValue"
-                                                value="{driverMobile}"
-                                                editable="{editable}"
-                                                type="Number"
-                                            />
-                                            <m:Input
-                                                id="idavailableQuantityColValue"
-                                                value="{vehicleNumber}"
-                                                editable="{editable}"
-                                            />
-                                            <m:Input
-                                                id="idISBNColValue"
-                                                value="{deliveryType}"
-                                                editable="{editable}"
-                                            />
-                                            <m:Input
-                                                id="isd"
-                                                value="{slotNumber/slotNumbers}"
-                                                editable="{editable}"
-                                            />
-                                            <m:Input
-                                                id="ijsonmf"
-                                                value="{checkInTime}"
-                                                editable="{editable}"
-                                            /> -->
                                             <m:Text
                                                 id="AuColValueId"
                                                 text="{slotNumber_ID}"
@@ -421,7 +407,6 @@
                                                 <m:Text
                                                     id="isd"
                                                     text="{slotNumber/slotNumbers}"
-                                                    visible="true"
                                                 />
                                                 <m:Select
                                                     id="idintableparkingLotSelect"
@@ -435,6 +420,7 @@
                                                     />
                                                 </m:Select>
                                             </m:VBox>
+
                                             <m:Text
                                                 id="IdsewfHHisd"
                                                 text="{vendor_Name}"
