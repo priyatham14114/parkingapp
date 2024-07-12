@@ -24,10 +24,15 @@
         <headerTitle>
             <ObjectPageDynamicHeaderTitle id="idObjectPageDynamicHeaderTitle">
                 <expandedHeading>
-                    <m:Title
+                    <!-- <m:Title
                         id="IdLibraryTitle"
                         text="Parking Management"
                         wrapping="true"
+                    /> -->
+                    <m:Image
+                        class="logo"
+                        id="idVMMLogo"
+                        src="./images/Vishal-MegaMart."
                     />
                 </expandedHeading>
 
@@ -46,10 +51,10 @@
                 </snappedHeading>
 
                 <expandedContent>
-                    <m:Text
+                    <!-- <m:Text
                         id="idWelcomeTag"
-                        text="parking space"
-                    />
+                        text="Parking Management"
+                    /> -->
                 </expandedContent>
                 <actions>
                     <!-- <m:Button
@@ -66,11 +71,11 @@
             <m:FlexBox
                 id="idFlexBok2"
                 wrap="Wrap"
-                fitContainer="true"
+                class="Header"
             >
                 <layout:VerticalLayout
                     id="idVerticalLayout"
-                    class="sapUiSmallMarginBeginEnd"
+                    class="sapUiSmallMarginBeginEnd InputForm animatedBorder"
                 >
                     <layout:HorizontalLayout
                         id="idHorizantalLayout"
@@ -80,10 +85,11 @@
                             id="idvBox1"
                             class="Inputs"
                         >
-                            <m:Label
+                            <!-- <m:Label
                                 id="idLable1"
                                 text="Driver Name"
-                            />
+                                class="textColor"
+                            /> -->
                             <m:Input
                                 id="idDriverName"
                                 placeholder="Enter Driver Name"
@@ -94,26 +100,29 @@
                             id="idvBox2"
                             class="Inputs"
                         >
-                            <m:Label
+                            <!-- <m:Label
                                 id="idLable2"
                                 text="Driver Mobile"
-                            />
+                                class="textColor"
+
+                            /> -->
                             <m:Input
                                 id="idDriverMobile"
                                 placeholder="Enter Driver Mobile"
                                 type="Number"
                                 change="onMobileNumberChange"
-                                
                             />
                         </m:VBox>
                         <m:VBox
                             id="idvBox3"
                             class="Inputs"
                         >
-                            <m:Label
+                            <!-- <m:Label
                                 id="idVehicle"
                                 text="Vehicle Number"
-                            />
+                                class="textColor"
+
+                            /> -->
                             <m:Input
                                 id="idVehicleNUmber"
                                 placeholder="Enter Vehicle Number"
@@ -125,14 +134,16 @@
                         id="idHorizantalLayout2"
                         class="sapUiSmallMarginBeginEnd"
                     >
-                      <m:VBox
+                        <m:VBox
                             id="idvBoasfwetfx1"
                             class="Inputs"
                         >
-                            <m:Label
+                            <!-- <m:Label
                                 id="idLab33r__le1"
                                 text="Vendor Name"
-                            />
+                                class="textColor"
+
+                            /> -->
                             <m:Input
                                 id="idVendorName___"
                                 placeholder="Enter Vendor Name"
@@ -143,12 +154,14 @@
                             id="idvBox7"
                             class="Inputs"
                         >
-                            <m:Label
+                            <!-- <m:Label
                                 id="_IDGenLabel555"
                                 text="Delivery Type"
-                            />
+                                class="textColor"
+
+                            /> -->
                             <m:Select id="idTypeOfDelivery">
-                             <core:Item
+                                <core:Item
                                     id="_IDGenI23esatem234"
                                     key="Select"
                                     text="Select"
@@ -169,10 +182,12 @@
                             id="idvBox4"
                             class="Inputs"
                         >
-                            <m:Label 
+                            <!-- <m:Label
                                 id="_IDGenLabel1"
                                 text="Parking Slot"
-                            />
+                                class="textColor"
+
+                            /> -->
                             <m:Select
                                 id="parkingLotSelect"
                                 items="{path: '/parkingSlots', filters: [{path: 'status', operator: 'EQ', value1: 'Available'}]}"
@@ -195,29 +210,30 @@
                             id="idvBox6"
                             class="Inputs"
                         >
-                            <m:Label id="idLable6" />
+                            <!-- <m:Label id="idLable6" /> -->
                             <m:Button
                                 id="idButtonAssign"
-                                type="Default"
+                                type="Unstyled"
+                                class="buttonBlue"
                                 text="Assign"
                                 press="onAssignPress"
                             />
                         </m:VBox>
-
-                        <m:VBox
-                            id="idvBox8"
-                            class="Reservationsbtn"
-                        >
-                            <m:Label id="idLable8" />
-                            <m:Button
-                                id="idReservations"
-                                type="Default"
-                                text="Reservations"
-                                press="onReservationsPress"
-                            />
-                        </m:VBox>
                     </layout:HorizontalLayout>
                 </layout:VerticalLayout>
+                <m:VBox
+                    id="idvBox8"
+                    class="Reservationsbtn"
+                >
+                    <!-- <m:Label id="idLable8" /> -->
+                    <m:Button
+                        id="idReservations"
+                        type="Unstyled"
+                        class="buttonBlue"
+                        text="Reservations"
+                        press="onReservationsPress"
+                    />
+                </m:VBox>
             </m:FlexBox>
         </headerContent>
 
@@ -226,6 +242,7 @@
                 titleUppercase="false"
                 id="idBorrowBooksSection"
                 title="Assigned Slots"
+                class="Content"
             >
                 <subSections>
                     <ObjectPageSubSection
@@ -239,6 +256,7 @@
                                 mode="MultiSelect"
                                 alternateRowColors="true"
                                 items="{/assignedSlots}"
+                                class="Table"
                             >
                                 <m:headerToolbar>
                                     <m:OverflowToolbar id="idBooksTableHeader">
@@ -273,22 +291,26 @@
                                         <m:Button
                                             id="idBtnSave"
                                             text="Unassign"
-                                            icon="sap-icon://sys-cancel"
-                                            type="Emphasized"
+                                            type="Unstyled"
+                                            class="buttonBlue"
                                             press="onUnassignPress"
                                             tooltip="Click to Unassign"
                                         />
                                         <m:Button
                                             id="idBtnCancle"
                                             text="Cancle"
-                                            type="Emphasized"
+                                            type="Unstyled"
+                                            class="buttonRed"
                                             press="onCanclePress"
                                             tooltip="Click to Cancle"
                                         />
                                     </m:OverflowToolbar>
                                 </m:headerToolbar>
                                 <m:columns>
-                                    <m:Column id="idAuth" visible="false">
+                                    <m:Column
+                                        id="idAuth"
+                                        visible="false"
+                                    >
                                         <m:Title
                                             id="idAuColHead"
                                             text="Slot_ID"
@@ -394,10 +416,25 @@
                                                 id="idISBNColValue"
                                                 text="{deliveryType}"
                                             />
-                                            <m:Text
-                                                id="isd"
-                                                text="{slotNumber/slotNumbers}"
-                                            />
+
+                                            <m:VBox id="idinTablevbox">
+                                                <m:Text
+                                                    id="isd"
+                                                    text="{slotNumber/slotNumbers}"
+                                                    visible="true"
+                                                />
+                                                <m:Select
+                                                    id="idintableparkingLotSelect"
+                                                    visible="false"
+                                                    items="{path: '/parkingSlots', filters: [{path: 'status', operator: 'EQ', value1: 'Available'}]}"
+                                                >
+                                                    <core:Item
+                                                        id="I___D_IDGenItem3"
+                                                        key="{ID}"
+                                                        text="{slotNumbers}"
+                                                    />
+                                                </m:Select>
+                                            </m:VBox>
                                             <m:Text
                                                 id="IdsewfHHisd"
                                                 text="{vendor_Name}"
@@ -419,11 +456,13 @@
                 titleUppercase="false"
                 id="idUserBorrowedBooksSection"
                 title="Parking Slots"
+                class="Content"
             >
                 <subSections>
                     <ObjectPageSubSection
                         id="idUserBorrowedBooksSubSection"
                         titleUppercase="false"
+                        class="Content"
                     >
                         <blocks>
                             <m:Table
@@ -499,10 +538,12 @@
                     </ObjectPageSubSection>
                 </subSections>
             </ObjectPageSection>
+
             <ObjectPageSection
                 titleUppercase="false"
                 id="_IDGenObjectPageSection1"
                 title="Reserved Slots"
+                class="Content"
             >
                 <subSections>
                     <ObjectPageSubSection
@@ -618,11 +659,12 @@
                     </ObjectPageSubSection>
                 </subSections>
             </ObjectPageSection>
-            
-        <ObjectPageSection
+
+            <ObjectPageSection
                 titleUppercase="false"
                 id="_IDGenObjectPageSection2"
                 title="History"
+                class="Content"
             >
                 <subSections>
                     <ObjectPageSubSection
@@ -636,7 +678,9 @@
                                 items="{/history}"
                             >
                                 <m:headerToolbar>
-                                    <m:OverflowToolbar id="_IDGenOverflowToolbar3">
+                                    <m:OverflowToolbar
+                                        id="_IDGenOverflowToolbar3"
+                                    >
                                         <m:Title
                                             id="_IDGenTitle8"
                                             text="History"

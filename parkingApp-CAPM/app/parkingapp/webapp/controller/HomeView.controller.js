@@ -29,12 +29,12 @@ sap.ui.define([
             onEditPress: function () {
                 debugger
                 // var oSelected = this.getView().byId("idAssignedTable").getSelectedItem()
-                // var oViewModel = oSelected.getModel("oModel");
+                // var oViewModel = oSelected.getModel("");
                 // oViewModel.setProperty("/editable", "true");
                 // this.getView().byId("idAssignedTable").getBinding("items").refresh()
                 // var oModel = this.getView().getModel("oModel");
                 // oModel.setProperty("/editable", true);
-                // Backup original data for cancel functionality
+                // // Backup original data for cancel functionality
                 // var aProducts = oModel.getProperty("/products");
                 // var aBackup = JSON.parse(JSON.stringify(aProducts));
                 // oModel.setProperty("/backup", aBackup);
@@ -189,9 +189,6 @@ sap.ui.define([
 
                 }
                 else {
-                    // 
-
-
                     var oAssignedSlotBinding = oModel.bindList("/assignedSlots");
 
                     oAssignedSlotBinding.filter([
@@ -200,7 +197,7 @@ sap.ui.define([
 
                     oAssignedSlotBinding.requestContexts().then(function (aAssignedContext) {
                         if (aAssignedContext.length > 0) {
-                            MessageBox.warning("You can not Assign.A Slot for Vehicle number " +oVehicleNumber+ " already assigned")
+                            MessageBox.warning("You can not Assign.A Slot for Vehicle number " + oVehicleNumber + " already assigned")
 
                         } else {
 
@@ -627,8 +624,40 @@ sap.ui.define([
                     }
                 }
 
+            },
+            onRejectPress: async function () {
+                const oSelected = this.getView().byId("idReservationsTable").getSelectedItem()
 
-            }
+                if(oSelected){
+                    if (!this.confirmRejectDialog) {
+                        this.confirmRejectDialog = await this.loadFragment("RejectConfirmation")
+                    }
+                    this.confirmRejectDialog.open()
+
+                }else{
+                    MessageBox.information("Select one record to continue")
+                }
+                
+            },
+            onRejectCloseConfirmDialog: function () {
+                
+                if (this.confirmRejectDialog.isOpen()) {
+                    this.confirmRejectDialog.close()
+                }
+            },
+            onRejectReservePress: function () {
+                debugger
+                const oSelected = this.getView().byId("idReservationsTable").getSelectedItem()
+                oSelected.getBindingContext().delete("$auto").then(function () {
+                    MessageToast.show("Rejected")                    
+
+    
+                    })
+                    this.confirmRejectDialog.close()
+               
+                
+            },
+            
 
 
         })
