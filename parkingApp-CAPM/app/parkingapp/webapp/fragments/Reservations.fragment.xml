@@ -10,6 +10,7 @@
         contentWidth="85%"
         contentHeight="85%"
         title="Reservations"
+        class="Table"
     >
         <content>
             <Table
@@ -29,10 +30,20 @@
                         <Button
                             id="idAddButton"
                             text="Reserve"
+                            type="Unstyled"
+                            class="buttonBlue"
                             press="onConfirmReservePress"
                         />
                         <Button
+                            id="idRejectButton"
+                            text="Reject"
+                            type="Unstyled"
+                            class="buttonRed"
+                            press="onRejectPress"
+                        />
+                        <Button
                             id="idCloseBTN"
+                            type="Default"
                             text="close"
                             press="onCloseReservations"
                         />
