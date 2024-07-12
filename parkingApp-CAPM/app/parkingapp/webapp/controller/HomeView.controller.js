@@ -25,19 +25,145 @@ sap.ui.define([
                     }
                 });
                 this.getView().setModel(newAssign, "newAssign");
+
+                var oViewModel = new JSONModel({
+                    editable: false
+                });
+                this.getView().setModel(oViewModel, "view");
             },
             onEditPress: function () {
+                var oTable = this.byId("idAssignedTable");
+                var aSelectedItem = oTable.getSelectedItem()
+
+                if (!aSelectedItem) {
+                    MessageToast.show("Please select an item to edit.");
+                    return;
+                }
+                const oObject = aSelectedItem.getBindingContext().getObject(),
+                    oOldSlotNum = oObject.slotNumber.slotNumbers
+                aSelectedItem.getCells()[5].getItems()[0].setVisible(false)
+                aSelectedItem.getCells()[5].getItems()[1].setVisible(true)
+
+                // aSelectedItem.forEach(function (oItem) {
+                //     var aCells = oItem.getCells();
+                //     aCells.forEach(function (oCell) {
+                //         if (oCell.getId().includes("idinTablevbox")) {
+                //             var aVBoxItems = oCell.getItems();
+                //             aVBoxItems[0].setVisible(false); // Hide Text
+                //             aVBoxItems[1].setVisible(true); // Show Select
+                //         }
+                //     });
+                // });
+
+                this.byId("idBtnEdit").setVisible(false);
+                this.byId("idBtnSave").setVisible(true);
+                this.byId("idBtnCancel").setVisible(true);
+                this.byId("idBtUnassign").setVisible(false);
+            },
+            onSavePress: function () {
                 debugger
-                // var oSelected = this.getView().byId("idAssignedTable").getSelectedItem()
-                // var oViewModel = oSelected.getModel("");
-                // oViewModel.setProperty("/editable", "true");
-                // this.getView().byId("idAssignedTable").getBinding("items").refresh()
-                // var oModel = this.getView().getModel("oModel");
-                // oModel.setProperty("/editable", true);
-                // // Backup original data for cancel functionality
-                // var aProducts = oModel.getProperty("/products");
-                // var aBackup = JSON.parse(JSON.stringify(aProducts));
-                // oModel.setProperty("/backup", aBackup);
+                const oThis = this
+                var oTable = this.byId("idAssignedTable");
+                var oSelectedItem = oTable.getSelectedItem(),
+                    oObject = oSelectedItem.getBindingContext().getObject()
+
+                var oModel = this.getView().getModel()
+
+                oSelectedItem.getCells()[5].getItems()[0].setVisible(true)
+                oSelectedItem.getCells()[5].getItems()[1].setVisible(false)
+                var oOldSlotNumer = oSelectedItem.getCells()[5].getItems()[0].getText()
+                var oNewSlotNumer_ID = oSelectedItem.getCells()[5].getItems()[1].getSelectedKey()
+
+                var oAssignedSlotBinding = oModel.bindList("/assignedSlots");
+
+                oAssignedSlotBinding.filter([
+                    new Filter("slotNumber/slotNumbers", FilterOperator.EQ, oOldSlotNumer)
+                ]);
+
+                const SlotUpdate = oAssignedSlotBinding.requestContexts().then(function (aAssignedContext) {
+                    if (aAssignedContext.length > 0) {
+                        var oAssignedContext = aAssignedContext[0];
+                        var oAssignedData = oAssignedContext.getObject();
+                        // Update 
+                        oAssignedData.slotNumber = oNewSlotNumer_ID
+                        oAssignedContext.setProperty("slotNumber_ID", oAssignedData.slotNumber);
+                        oModel.submitBatch("updateGroup");
+                        oModel.refresh(); // Refresh the model to get the latest data
+
+                    }
+                })
+
+
+                var oParkingSlotBinding = oModel.bindList("/parkingSlots");
+
+                oParkingSlotBinding.filter([
+                    new Filter("ID", FilterOperator.EQ, oNewSlotNumer_ID)
+                ]);
+
+                const oNewStatusUpdate = oParkingSlotBinding.requestContexts().then(function (aParkingContexts) {
+                    if (aParkingContexts.length > 0) {
+                        var oParkingContext = aParkingContexts[0];
+                        var oParkingData = oParkingContext.getObject();
+                        // Update 
+                        oParkingData.status = "Not Available"
+                        oParkingContext.setProperty("status", oParkingData.status);
+                        oModel.submitBatch("updateGroup");
+                        oThis.getView().byId("idAllSlots").getBinding("items").refresh();
+                        oModel.refresh(); // Refresh the model to get the latest data
+
+                    } else {
+                        MessageToast.show("Something went wrong")
+                    }
+                })
+
+                var oParkingSlotBinding = oModel.bindList("/parkingSlots");
+
+                oParkingSlotBinding.filter([
+                    new Filter("slotNumbers", FilterOperator.EQ, oOldSlotNumer)
+                ]);
+
+                const oOldStatusUpdate = oParkingSlotBinding.requestContexts().then(function (aParkingContexts) {
+                    if (aParkingContexts.length > 0) {
+                        var oParkingContext = aParkingContexts[0];
+                        var oParkingData = oParkingContext.getObject();
+                        // Update 
+                        oParkingData.status = "Available"
+                        oParkingContext.setProperty("status", oParkingData.status);
+                        oModel.submitBatch("updateGroup");
+                        oThis.getView().byId("idAllSlots").getBinding("items").refresh();
+                        oModel.refresh(); // Refresh the model to get the latest data
+
+                    } else {
+                        MessageToast.show("Something went wrong")
+                    }
+                })
+
+                this.byId("idBtnSave").setVisible(false);
+                this.byId("idBtnEdit").setVisible(true);
+                this.byId("idBtnCancel").setVisible(false);
+                this.byId("idBtUnassign").setVisible(true);
+            },
+
+            onCanclePress: function () {
+                var oTable = this.byId("idAssignedTable");
+                var aSelectedItem = oTable.getSelectedItems();
+
+                aSelectedItem.forEach(function (oItem) {
+                    var aCells = oItem.getCells();
+                    aCells.forEach(function (oCell) {
+                        if (oCell.getId().includes("idinTablevbox")) {
+                            var aVBoxItems = oCell.getItems();
+                            aVBoxItems[0].setVisible(true); // Hide Text
+                            aVBoxItems[1].setVisible(false); // Show Select
+                        }
+                    });
+                });
+
+                this.byId("idBtnEdit").setVisible(true);
+                this.byId("idBtnSave").setVisible(false);
+                this.byId("idBtnCancel").setVisible(false);
+                this.byId("idBtUnassign").setVisible(true);
+
             },
             onReservationsPress: async function () {
 
@@ -104,6 +230,17 @@ sap.ui.define([
             // },
             onAssignPress: function (oEvent) {
                 debugger
+                var oImage = this.byId("movingImage");
+                this.byId("movingImage").setVisible(true);
+                // Toggle the 'animate' class to start/stop the animation
+                if (oImage.hasStyleClass("animate")) {
+                    oImage.removeStyleClass("animate");
+                } else {
+                    oImage.addStyleClass("animate");
+                }
+
+
+                // 
                 var oThis = this
                 var currentDate = new Date();
                 var year = currentDate.getFullYear();
@@ -628,19 +765,19 @@ sap.ui.define([
             onRejectPress: async function () {
                 const oSelected = this.getView().byId("idReservationsTable").getSelectedItem()
 
-                if(oSelected){
+                if (oSelected) {
                     if (!this.confirmRejectDialog) {
                         this.confirmRejectDialog = await this.loadFragment("RejectConfirmation")
                     }
                     this.confirmRejectDialog.open()
 
-                }else{
+                } else {
                     MessageBox.information("Select one record to continue")
                 }
-                
+
             },
             onRejectCloseConfirmDialog: function () {
-                
+
                 if (this.confirmRejectDialog.isOpen()) {
                     this.confirmRejectDialog.close()
                 }
@@ -649,15 +786,15 @@ sap.ui.define([
                 debugger
                 const oSelected = this.getView().byId("idReservationsTable").getSelectedItem()
                 oSelected.getBindingContext().delete("$auto").then(function () {
-                    MessageToast.show("Rejected")                    
+                    MessageToast.show("Rejected")
 
-    
-                    })
-                    this.confirmRejectDialog.close()
-               
-                
+
+                })
+                this.confirmRejectDialog.close()
+
+
             },
-            
+
 
 
         })
