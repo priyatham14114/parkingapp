@@ -29,11 +29,19 @@
                         text="Parking Management"
                         wrapping="true"
                     /> -->
-                    <m:Image
-                        class="logo"
-                        id="idVMMLogo"
-                        src="./images/Vishal-MegaMart.png"
-                    />
+                    <m:HBox id="tfhIdnsdjn_nad">
+                        <m:Image
+                            class="logo"
+                            id="idVMMLogo"
+                            src="./images/Vishal-MegaMart.png"
+                        />
+                        <m:Image
+                            id="movingImage2"
+                            src="./images/TruckReturn.gif"
+                            class="movingImageOut"
+                            visible="false"
+                        />
+                    </m:HBox>
                 </expandedHeading>
 
                 <snappedHeading>
@@ -55,17 +63,12 @@
                         id="idWelcomeTag"
                         text="Parking Management"
                     /> -->
-                     <!-- <m:Image
-                        id="movingImage"
-                        src="./images/Vishal-MegaMart.png"
-                        class="movingImage"
-                        visible="false"
-                    /> -->
                 </expandedContent>
+
                 <actions>
                     <m:Image
                         id="movingImage"
-                        src="./images/TruckGif.gif"
+                        src="./images/TruckIn.gif"
                         class="movingImage"
                         visible="false"
                     />

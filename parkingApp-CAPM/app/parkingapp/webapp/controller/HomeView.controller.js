@@ -230,16 +230,6 @@ sap.ui.define([
             // },
             onAssignPress: function (oEvent) {
                 debugger
-                var oImage = this.byId("movingImage");
-                this.byId("movingImage").setVisible(true);
-                // Toggle the 'animate' class to start/stop the animation
-                if (oImage.hasStyleClass("animate")) {
-                    oImage.removeStyleClass("animate");
-                } else {
-                    oImage.addStyleClass("animate");
-                }
-
-
                 // 
                 var oThis = this
                 var currentDate = new Date();
@@ -340,6 +330,13 @@ sap.ui.define([
 
                             const newSlotAssign = oBindList.create(newAssign)
                             if (newSlotAssign) {
+                                // Lorry Animation
+                                var oImage = oThis.byId("movingImage");
+                                oImage.setVisible(true);
+                                oImage.addStyleClass("animate");
+                                setTimeout(function () {
+                                    oImage.setVisible(false);
+                                }, 5000);
 
                                 var oParkingSlotBinding = oModel.bindList("/parkingSlots");
 
@@ -417,6 +414,13 @@ sap.ui.define([
                     const oBindlist = oModel.bindList("/history")
 
                     oSelected.getBindingContext().delete("$auto").then(function () {
+                        var oImage = oThis.byId("movingImage2");
+                        oImage.setVisible(true);
+                        oImage.addStyleClass("animate");
+                        setTimeout(function () {
+                            oImage.setVisible(false);
+                        }, 5000);
+
                         oBindlist.create(oNewHistory)
                         oThis.getView().byId("idHistoryTable").getBinding("items").refresh();
                         var oParkingSlotBinding = oModel.bindList("/parkingSlots");

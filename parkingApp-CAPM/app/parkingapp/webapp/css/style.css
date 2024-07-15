@@ -174,3 +174,23 @@
         right: 2000px;
     }
 }
+
+.movingImageOut {
+    position: relative;
+    height: 80px;
+    width: 80px;
+}
+
+.movingImageOut.animate {
+    animation: mymove2 10s infinite;
+}
+
+@keyframes mymove2 {
+    from {
+        left: 0px;
+    }
+
+    to {
+        left: 2000px;
+    }
+}
