@@ -333,6 +333,9 @@ sap.ui.define([
                             const newSlotAssign = oBindList.create(newAssign)
                             if (newSlotAssign) {
                                 // Test
+
+                        // Add sms code here
+
                                 // Function to make an announcement
                                 function makeAnnouncement(message, lang = 'en-US') {
                                     // Check if the browser supports the Web Speech API
@@ -441,6 +444,8 @@ sap.ui.define([
                     const oBindlist = oModel.bindList("/history")
 
                     oSelected.getBindingContext().delete("$auto").then(function () {
+
+                        // Add sms code here
 
                         var oImage = oThis.byId("movingImage2");
                         oImage.setVisible(true);
@@ -593,6 +598,7 @@ sap.ui.define([
 
                 const newReservation = oBinding.create(NewReservedRecord)
                 if (newReservation) {
+                    // sms code strts here
 
                     var oSelected = this.byId("idReservationsTable").getSelectedItem();
                     oSelected.getBindingContext().delete("$auto")
