@@ -14,7 +14,7 @@ sap.ui.define([
 
         return Controller.extend("com.app.parkingapp.controller.HomeView", {
             onInit: function () {
-                const newAssign = new JSONModel({
+                const newAssign = new JSONModel({  
                     driverName: "",
                     driverMobile: "",
                     vehicleNumber: "",
@@ -147,7 +147,7 @@ sap.ui.define([
                         if (oCell.getId().includes("idinTablevbox")) {
                             var aVBoxItems = oCell.getItems();
                             aVBoxItems[0].setVisible(true); // Hide Text
-                            aVBoxItems[1].setVisible(false); // Show Select
+                            aVBoxItems[1].setVisible(false); // Show 
                         }
                     });
                 });
