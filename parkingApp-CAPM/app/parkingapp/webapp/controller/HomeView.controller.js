@@ -86,8 +86,8 @@ sap.ui.define([
                     }
                 })
 
-
-                var oParkingSlotBinding = oModel.bindList("/parkingSlots");
+//  
+                var oParkingSlotBinding = oModel.bindList("/parkingSlots")
 
                 oParkingSlotBinding.filter([
                     new Filter("ID", FilterOperator.EQ, oNewSlotNumer_ID)
