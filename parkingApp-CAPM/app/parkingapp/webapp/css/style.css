@@ -1,0 +1,191 @@
+/* Enter your custom styles here */
+.Inputs {
+    margin-left: 20px;
+    margin-bottom: 10px;
+}
+
+.Header {
+    /* background-color: rgb(53, 72, 128); */
+    background-image: url("../images/Truck.jpg");
+    /* border-radius: 10px; */
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+}
+
+.logo {
+    height: 80px;
+    width: 80;
+
+}
+
+.Reservationsbtn {
+    margin-left: 85vw;
+
+}
+
+.Content {
+    /* background-color: rgb(201, 47, 109); */
+    /* background-color: rgb(53, 72, 128); */
+    background-image: url("../images/Truck.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+}
+
+.buttonBlue {
+    background-color: rgb(53, 72, 128);
+    color: white;
+    border-radius: 9px;
+    border: 0px;
+
+}
+
+.buttonRed {
+    background-color: rgb(201, 47, 109);
+    border-radius: 9px;
+    color: white;
+    border: 0px;
+
+
+}
+
+.InputForm {
+    /* background-color: rgb(53, 72, 128); */
+    background-color: rgba(94, 94, 94, 0.097);
+    /* background-image: url("../images/Truck3.jpg"); */
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 45h;
+    width: 45vw;
+    border-radius: 10px;
+    color: white;
+    padding: 20px;
+}
+
+
+
+
+
+.textColor {
+    color: white;
+    border-radius: 3px;
+    background-color: rgb(255, 255, 255);
+
+    /* text-shadow: 1px 1px 2px black; */
+}
+
+/* .inputLables{
+    color: white;
+    text-shadow: 0px 1px 0px white
+} */
+
+.dialogSlideIn {
+    animation: slideIn 1s forwards;
+}
+
+/* not Used */
+.dialogSlideOut {
+    animation: slideOut 0.5s forwards;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+
+    }
+}
+
+@keyframes slideOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+}
+
+/* border animation */
+@keyframes borderAnimation {
+    50% {
+        border-width: 2px;
+        border-color: rgb(201, 47, 109);
+    }
+
+    50% {
+        border-width: 2px;
+        border-color: rgb(34, 31, 31);
+        box-shadow: inset;
+    }
+}
+
+.animatedBorder {
+    animation: borderAnimation 5s infinite;
+    /* 3s for the duration, infinite for continuous looping */
+    border-style: double;
+
+}
+
+/* .movingImage {
+    position: relative;
+    animation: mymove 10s infinite;
+    height: 80px;
+    width: 80;
+}
+@keyframes mymove {
+    from {right: 0px;}
+    to {right: 2000px;}
+  }
+  */
+
+.movingImage {
+    position: relative;
+    /* animation: mymove 5s; */
+    height: 80px;
+    width: 80px;
+}
+
+.movingImage.animate {
+    animation: mymove 15s;
+}
+
+@keyframes mymove {
+    from {
+        right: 0px;
+    }
+
+    to {
+        right: 2000px;
+    }
+}
+
+.movingImageOut {
+    position: relative;
+    height: 80px;
+    width: 80px;
+}
+
+.movingImageOut.animate {
+    animation: mymove2 15s ;
+}
+
+@keyframes mymove2 {
+    from {
+        left: 0px;
+    }
+
+    to {
+        left: 2000px;
+    }
+}

@@ -1,0 +1,54 @@
+{
+  "name": "parkingapp-capm",
+  "version": "1.0.0",
+  "description": "A simple CAP project.",
+  "repository": {
+    "type": "git",
+    "url": "<Add your repository here>"
+  },
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@sap/cds": "^7",
+    "@sap/cds-hana": "^2",
+    "@sap/xssec": "^3",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "http-proxy-middleware": "^3.0.0",
+    "twilio": "^5.2.2"
+  },
+  "devDependencies": {
+    "@cap-js/sqlite": "^1",
+    "@sap/cds-dk": "^7",
+    "@sap/eslint-plugin-ui5-jsdocs": "^2.0.5",
+    "@sap/ux-specification": "^1.120.13",
+    "@sapui5/ts-types": "^1.92.2",
+    "eslint": "^7.32.0",
+    "rimraf": "^5.0.5"
+  },
+  "scripts": {
+    "start": "cds-serve",
+    "watch-parkingappfiori": "cds watch --open parkingappfiori/webapp/index.html?sap-ui-xx-viewCache=false",
+    "undeploy": "cf undeploy parkingApp-CAPM --delete-services --delete-service-keys --delete-service-brokers",
+    "build": "rimraf resources mta_archives && mbt build --mtar archive",
+    "deploy": "cf deploy mta_archives/archive.mtar --retries 1",
+    "watch-parkingapp": "cds watch --open parkingapp/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-vendorapp": "cds watch --open vendorapp/webapp/index.html?sap-ui-xx-viewCache=false"
+  },
+  "cds": {
+    "requires": {
+      "db": "sql"
+    }
+  },
+  "sapux": [
+    "app/parkingappfiori"
+  ],
+  "main": "eslint.config.js",
+  "directories": {
+    "test": "test"
+  },
+  "keywords": [],
+  "author": ""
+}
