@@ -10,7 +10,7 @@
         contentWidth="85%"
         contentHeight="85%"
         title="Reservations"
-        class="dialogSlideIn"
+        class="Table"
     >
         <content>
             <Table

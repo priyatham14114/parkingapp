@@ -81,7 +81,7 @@
                     text="Slot Number"
                 />
                 <Select
-                    id="idSlotReserve"
+                    id="id123edsqa"
                     items="{path: '/parkingSlots', filters: [{path: 'status', operator: 'EQ', value1: 'Available'}]}"
                 >
                     <core:Item

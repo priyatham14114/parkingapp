@@ -4,17 +4,17 @@
     xmlns="sap.m"
 >
     <Dialog
-        id="_IDGenDialog1"
-        title="Confirm Booking"
+        id="__adsknfjk"
+        title="Confirm Assign"
         class="dialogSlideIn"
         resizable="true"
         draggable="true"
         contentWidth="45%"
-        contentHeight="30%"
+        contentHeight="35%"
     >
         <content>
             <form:SimpleForm
-                id="_IDGenSimpleForm1"
+                id="__sjfdjbsaed___"
                 editable="true"
                 layout="ResponsiveGridLayout"
                 labelSpanXL="3"
@@ -32,25 +32,28 @@
                 singleContainerFullSize="false"
             >
                 <Label
-                    id="_IDGenLaedgfbel1"
+                    id="___ID_GenLaedgfbel1"
                     text="Driver Name"
                 />
-                <Input id="_IDGendfgdInput1" />
+                <Input id="_IDGen__dfgdInput1" />
                 <Label
-                    id="_IDGenLxfbvgdthabel2"
+                    id="_IDGen__thabel2"
                     text="Driver Mobile"
                 />
-                <Input id="_IDGexgrgnInput2" />
+                <Input id="_IDGexgrsdfgnIn__put2" />
                 <Label
-                    id="_IDGenLabel3"
+                    id="_IDGesdf__nLabel3"
                     text="Vehicle Number"
                 />
-                <Input id="idasgredhmeInput" />
+                <Input id="afidasgredhmeI__nput" />
                 <Label
-                    id="_IDGesfdvg654nLabel3"
+                    id="_ID1__654nLabel3"
                     text="Vendor Name"
                 />
-                <Input id="idasgredhmeIn0075put" />
+                <Input
+                    id="idss__n0075put"
+                    editable="false"
+                />
                 <!-- <Label
                     id="_IDGegdbfnfnLabel4"
                     text="Type of Devlivery"
@@ -77,33 +80,48 @@
                     text="Slot Number"
                 /> -->
                 <Label
-                    id="_IDGenLasgfsdfbel3"
+                    id="_IDGenLasgf___sdfbel3"
                     text="Slot Number"
                 />
-                <Select
-                    id="idSlotReserve"
-                    items="{path: '/parkingSlots', filters: [{path: 'status', operator: 'EQ', value1: 'Available'}]}"
-                >
+                <Input
+                    id="_dhmeI__nput"
+                    editable="false"
+                />
+                <Label
+                    id="_ID__sdfbel3"
+                    text="Delivery Type"
+                />
+                <Select id="_IDGewertnSelect1">
                     <core:Item
-                        id="asfgdhjt_IDGenItefghrm3"
-                        key="{ID}"
-                        text="{slotNumbers}"
+                        id="_IDGen34r5tgItem1"
+                        key="Select"
+                        text="Select"
+                    />
+                    <core:Item
+                        id="_IDGevbhge3esddnItem2"
+                        key="InBound"
+                        text="InBound"
+                    />
+                    <core:Item
+                        id="_IDGenIdfgvbntftem3"
+                        key="OutBound"
+                        text="OutBound"
                     />
                 </Select>
             </form:SimpleForm>
         </content>
         <beginButton>
             <Button
-                id="dgfbdsfgsvewad"
+                id="__vewad"
                 text="Confirm"
-                press="onConfirmBookSlotPress"
+                press="onConfirmAssignSlotPress"
             />
         </beginButton>
         <endButton>
             <Button
-                id="ssefgradffdeqaavfeg"
+                id="__eqaavfe_g"
                 text="Close"
-                press="onCloseConfirmDialog"
+                press="onCloseAssignConfirmDialog"
             />
         </endButton>
     </Dialog>

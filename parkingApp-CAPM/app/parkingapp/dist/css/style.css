@@ -34,6 +34,11 @@
 
 }
 
+.Table {
+    opacity: 1;
+    color: rgb(201, 47, 109);
+}
+
 .buttonBlue {
     background-color: rgb(53, 72, 128);
     color: white;
