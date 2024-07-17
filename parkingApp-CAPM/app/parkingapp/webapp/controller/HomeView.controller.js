@@ -598,7 +598,7 @@ sap.ui.define([
 
                 const newReservation = oBinding.create(NewReservedRecord)
                 if (newReservation) {
-                    // sms code strts here
+                    // sms code starts here
 
                     var oSelected = this.byId("idReservationsTable").getSelectedItem();
                     oSelected.getBindingContext().delete("$auto")
