@@ -1,0 +1,117 @@
+<core:FragmentDefinition
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+    xmlns:form="sap.ui.layout.form"
+>
+    <Dialog
+        id="idReservcationsDailog"
+        resizable="true"
+        draggable="true"
+        contentWidth="85%"
+        contentHeight="85%"
+        title="Reservations"
+        class="Table"
+    >
+        <content>
+            <Table
+                id="idReservationsTable"
+                inset="false"
+                mode="SingleSelectMaster"
+                items="{/reservations}"
+                
+            >
+                <headerToolbar>
+                    <Toolbar id="idToolBar">
+                        <!-- <Title
+                            id="_IDGenTitle1"
+                            text="Reservations"
+                        /> -->
+                        <ToolbarSpacer id="idSpacer" />
+                        <Button
+                            id="idAddButton"
+                            text="Reserve"
+                            type="Unstyled"
+                            class="buttonBlue"
+                            press="onConfirmReservePress"
+                        />
+                        <Button
+                            id="idRejectButton"
+                            text="Reject"
+                            type="Unstyled"
+                            class="buttonRed"
+                            press="onRejectPress"
+                        />
+                        <Button
+                            id="idCloseBTN"
+                            type="Default"
+                            text="close"
+                            press="onCloseReservations"
+                        />
+                    </Toolbar>
+                </headerToolbar>
+                <columns>
+                    <Column id="idLoanTablecol1">
+                        <Text
+                            id="idUserName1"
+                            text="Driver Name"
+                        />
+                    </Column>
+                    <Column id="idLoanTablecol3">
+                        <Text
+                            id="idBookNameActiveloans"
+                            text="Driver Mobile"
+                        />
+                    </Column>
+                    <Column id="idLoanTablecol4">
+                        <Text
+                            id="idDueDate3"
+                            text="Vehicle Number"
+                        />
+                    </Column>
+                    <!-- <Column id="idLoanTablecol5">
+                        <Text
+                            id="idwelfife"
+                            text="delivery Type"
+                        />
+                    </Column> -->
+                    <Column id="idLoanTablecol553">
+                        <Text
+                            id="idwelf4t5wergfvife"
+                            text="Vendor Name"
+                        />
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem id="idLoanTableColListItems">
+                        <cells>
+                            <Text
+                                id="idLoanTableNameValue"
+                                text="{driverName}"
+                            />
+                            <Text
+                                id="idLoanTableUserIdValue"
+                                text="{driverMobile}"
+                            />
+                            
+                            <Text
+                                id="idLoanTableDueDateValue"
+                                text="{vehicleNumber}"
+                            />
+                           
+                            <!-- <Text
+                                id="iddeliveryType"
+                                text="{deliveryType}"
+                            /> -->
+                            <Text
+                                id="iddeliverysegerhType"
+                                text="{vendorName}"
+                            />
+                           
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
+    </Dialog>
+    
+</core:FragmentDefinition>

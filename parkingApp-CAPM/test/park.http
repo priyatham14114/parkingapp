@@ -1,1 +1,18 @@
-GET https://port4004-workspaces-ws-vl68p.us10.trial.applicationstudio.cloud.sap/ParkingSrv/parkingSlots HTTP/1.1    
+POST http://localhost:8080/send-sms HTTP/1.1
+Content-Type: application/json
+{
+     "to": "+918886725925",
+    "message": "Hi subhash"
+
+}
+
+
+# POST http://localhost:4004/EmployeeSrv2/addres HTTP/1.1
+# Content-Type: application/json
+
+# {
+#       "door_num"  : "1-220",
+#       "street"    :"james street",
+#       "village"   :"jkpur",
+#       "city"      : "kakinada" 
+# }
