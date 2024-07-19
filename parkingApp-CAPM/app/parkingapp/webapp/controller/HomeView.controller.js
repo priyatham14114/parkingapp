@@ -492,8 +492,8 @@ sap.ui.define([
 
                         // Unassign SMS
 
-                        const accountSid = 'AC0899939225d2307095a339d7ae171af4';
-                        const authToken = '6a9b9b04d7af97e652724ff3464b4631';
+                        const accountSid = Config.twilio.accountSid;
+                        const authToken = Config.twilio.authToken;
 
                         // debugger
                         const toNumber = `+91${sDriverMobile}` // Replace with recipient's phone number
@@ -685,8 +685,8 @@ sap.ui.define([
 
                     // SMS 
 
-                    const accountSid = 'AC0899939225d2307095a339d7ae171af4';
-                    const authToken = '6a9b9b04d7af97e652724ff3464b4631';
+                    const accountSid = Config.twilio.accountSid;
+                    const authToken = Config.twilio.authToken;
 
                     // debugger
                     const toNumber = `+91${oDriverMobile}` // Replace with recipient's phone number
