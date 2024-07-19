@@ -243,6 +243,13 @@
                         text="Reservations"
                         press="onReservationsPress"
                     />
+                    <m:Button
+                        id="idRdfeservdfvbations"
+                        type="Unstyled"
+                        class="buttonRed"
+                        text="Data Analysis"
+                        press="onDataAnalysisPress"
+                    />
                 </m:VBox>
             </m:FlexBox>
         </headerContent>

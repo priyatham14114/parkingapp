@@ -1,0 +1,86 @@
+<core:FragmentDefinition
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:suite="sap.suite.ui.commons"
+    xmlns:viz="sap.viz.ui5.controls"
+    xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+    xmlns:viz.data="sap.viz.ui5.data"
+>
+    <Dialog
+        id="dataAnalysisDialog"
+        title="Data Analysis"
+        class="dialogSlideIn"
+        resizable="true"
+        draggable="true"
+        contentWidth="80%"
+        contentHeight="80%"
+    >
+        <Button
+            id="closeButton"
+            text="Close"
+            type="Unstyled"
+            class="buttonRed"
+            press="oncloseDataonDataAnalysis"
+        />
+        <suite:ChartContainer id="chartContainer">
+            <suite:content>
+                <suite:ChartContainerContent id="chartContainerContent">
+                    <suite:content>
+                        <viz:VizFrame
+                            id="idPieChart"
+                            width="auto"
+                            uiConfig="{applicationSet:'fiori'}"
+                            vizType="pie"
+                            vizProperties="{
+                                plotArea: {
+                                    dataLabel: {visible: true},
+                                    colorPalette: ['rgb(53, 72, 128)', 'rgb(201, 47, 109)','rgb(58, 173, 129)']
+                                },
+                                title: {text:'Parking Lot Availability'}
+                            }"
+                            selectData="myOnClickHandler"
+                            renderComplete="handleRenderComplete"
+                        >
+                            <viz:dataset>
+                                <viz.data:FlattenedDataset
+                                    id="flattenedDataset"
+                                    data="{ParkingLotModel>/Items}"
+                                >
+                                    <viz.data:dimensions>
+                                        <viz.data:DimensionDefinition
+                                            id="id_sdfs"
+                                            name="Status"
+                                            value="{ParkingLotModel>status}"
+                                        />
+                                    </viz.data:dimensions>
+                                    <viz.data:measures>
+                                        <viz.data:MeasureDefinition
+                                            id="id_sdfsaef_"
+                                            name="Count"
+                                            value="{ParkingLotModel>Count}"
+                                        />
+                                    </viz.data:measures>
+                                </viz.data:FlattenedDataset>
+                            </viz:dataset>
+                            <viz:feeds>
+                                <viz.feeds:FeedItem
+                                    id="idHGFDCV_"
+                                    uid="size"
+                                    type="Measure"
+                                    values="Count"
+                                />
+                                <viz.feeds:FeedItem
+                                    id="idHGFD__V_"
+                                    uid="color"
+                                    type="Dimension"
+                                    values="Status"
+                                />
+                            </viz:feeds>
+                        </viz:VizFrame>
+                    </suite:content>
+                </suite:ChartContainerContent>
+            </suite:content>
+        </suite:ChartContainer>
+    </Dialog>
+</core:FragmentDefinition>

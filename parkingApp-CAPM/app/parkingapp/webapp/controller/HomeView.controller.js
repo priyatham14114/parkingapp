@@ -6,15 +6,16 @@ sap.ui.define([
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
     "sap/m/MessageToast",
-    "sap/m/MessageBox"
+    "sap/m/MessageBox",
+    "../Secrets/Config",
 
 ],
-    function (Controller, JSONModel, Fragment, Filter, FilterOperator, MessageToast, MessageBox) {
+    function (Controller, JSONModel, Fragment, Filter, FilterOperator, MessageToast, MessageBox,Config) {
         "use strict";
 
         return Controller.extend("com.app.parkingapp.controller.HomeView", {
             onInit: function () {
-                const newAssign = new JSONModel({  
+                const newAssign = new JSONModel({
                     driverName: "",
                     driverMobile: "",
                     vehicleNumber: "",
@@ -30,6 +31,9 @@ sap.ui.define([
                     editable: false
                 });
                 this.getView().setModel(oViewModel, "view");
+                // Data Analysis
+                // this._setParkingLotModel();
+
             },
             onEditPress: function () {
                 debugger
@@ -86,7 +90,7 @@ sap.ui.define([
                     }
                 })
 
-//  
+                //  
                 var oParkingSlotBinding = oModel.bindList("/parkingSlots")
 
                 oParkingSlotBinding.filter([
@@ -334,10 +338,49 @@ sap.ui.define([
                             if (newSlotAssign) {
                                 // Test
 
-                        // Add sms code here
+                                // Add sms code here
+
+                                const accountSid = Config.twilio.accountSid;
+                                const authToken = Config.twilio.authToken;
+
+                                // debugger
+                                const toNumber = `+91${oDriverMobile}` // Replace with recipient's phone number
+                                const fromNumber = '+15856485867'; // Replace with your Twilio phone number
+                                const messageBody = `Hi ${oDriverName} a Slot number ${sSlotNumber} is alloted to you vehicle number ${oVehicleNumber} \nVendor name: ${oVendorName}. \nThank You,\nVishal Parking Management.`; // Message content
+
+                                // Twilio API endpoint for sending messages
+                                const url = `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`;
+
+
+                                // Send POST request to Twilio API using jQuery.ajax
+                                $.ajax({
+                                    url: url,
+                                    type: 'POST',
+                                    async: true,
+                                    headers: {
+                                        'Authorization': 'Basic ' + btoa(accountSid + ':' + authToken)
+                                    },
+                                    data: {
+                                        To: toNumber,
+                                        From: fromNumber,
+                                        Body: messageBody
+                                    },
+                                    success: function (data) {
+                                        // console.log('SMS sent successfully:', data);
+                                        // Handle success, e.g., show a success message
+                                        MessageToast.show('if number exists SMS will be sent!');
+                                    },
+                                    error: function (error) {
+                                        // console.error('Error sending SMS:', error);
+                                        // Handle error, e.g., show an error message
+                                        MessageToast.show('Failed to send SMS: ' + error);
+                                    }
+                                });
+
+                                // SMS END
 
                                 // Function to make an announcement
-                                function makeAnnouncement(message, lang = 'en-US') {
+                                function makeAnnouncement(message, lang = 'hi-IN') {
                                     // Check if the browser supports the Web Speech API
                                     if ('speechSynthesis' in window) {
                                         // Create a new instance of SpeechSynthesisUtterance
@@ -358,7 +401,7 @@ sap.ui.define([
 
                                 // Example usage
                                 makeAnnouncement(`कृपया ध्यान दें। वाहन नंबर ${oVehicleNumber} को स्लॉट नंबर ${sSlotNumber} द्वारा आवंटित किया गया है।`, 'hi-IN');
-
+                                makeAnnouncement(`దయచేసి వినండి. వాహనం నంబర్ ${oVehicleNumber} కు స్లాట్ నంబర్ ${sSlotNumber} కేటాయించబడింది.`, 'te-IN');
 
                                 // Lorry Animation
                                 var oImage = oThis.byId("movingImage");
@@ -446,6 +489,46 @@ sap.ui.define([
                     oSelected.getBindingContext().delete("$auto").then(function () {
 
                         // Add sms code here
+
+                        // Unassign SMS
+
+                        const accountSid = 'AC0899939225d2307095a339d7ae171af4';
+                        const authToken = '6a9b9b04d7af97e652724ff3464b4631';
+
+                        // debugger
+                        const toNumber = `+91${sDriverMobile}` // Replace with recipient's phone number
+                        const fromNumber = '+15856485867'; // Replace with your Twilio phone number
+                        const messageBody = `Hi ${sDriverName} please move the vehicle from the parking yard.\nIgnore if already left from the yard.\nThank you,\nVishal Parking Management`; // Message content
+
+                        // Twilio API endpoint for sending messages
+                        const url = `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`;
+
+
+                        // Send POST request to Twilio API using jQuery.ajax
+                        $.ajax({
+                            url: url,
+                            type: 'POST',
+                            headers: {
+                                'Authorization': 'Basic ' + btoa(accountSid + ':' + authToken)
+                            },
+                            data: {
+                                To: toNumber,
+                                From: fromNumber,
+                                Body: messageBody
+                            },
+                            success: function (data) {
+                                console.log('SMS sent successfully:', data);
+                                // Handle success, e.g., show a success message
+                                sap.m.MessageToast.show('SMS sent successfully!');
+                            },
+                            error: function (error) {
+                                console.error('Error sending SMS:', error);
+                                // Handle error, e.g., show an error message
+                                sap.m.MessageToast.show('Failed to send SMS: ' + error);
+                            }
+                        });
+
+                        // SMS END
 
                         var oImage = oThis.byId("movingImage2");
                         oImage.setVisible(true);
@@ -594,11 +677,52 @@ sap.ui.define([
                     return; // Prevent further execution
 
                 }
-
-
                 const newReservation = oBinding.create(NewReservedRecord)
                 if (newReservation) {
                     // sms code starts here
+
+                    // confirm reservations
+
+                    // SMS 
+
+                    const accountSid = 'AC0899939225d2307095a339d7ae171af4';
+                    const authToken = '6a9b9b04d7af97e652724ff3464b4631';
+
+                    // debugger
+                    const toNumber = `+91${oDriverMobile}` // Replace with recipient's phone number
+                    const fromNumber = '+15856485867'; // Replace with your Twilio phone number
+                    const messageBody = `Hi ${oDriverName} a Slot number ${sSlotNumber} is reserved on your vehicle number ${oVehicleNumber} \nVendor name: ${oVendorName}. \nThank You,\nVishal Parking Management`; // Message content
+
+                    // Twilio API endpoint for sending messages
+                    const APIendpoint = `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`;
+
+
+                    // Send POST request to Twilio API using jQuery.ajax
+                    $.ajax({
+                        url: APIendpoint,
+                        type: 'POST',
+                        headers: {
+                            'Authorization': 'Basic ' + btoa(accountSid + ':' + authToken)
+                        },
+                        data: {
+                            To: toNumber,
+                            From: fromNumber,
+                            Body: messageBody
+                        },
+                        success: function (data) {
+                            console.log('SMS sent successfully:', data);
+                            // Handle success, e.g., show a success message
+                            sap.m.MessageToast.show('SMS sent successfully!');
+                        },
+                        error: function (error) {
+                            console.error('Error sending SMS:', error);
+                            // Handle error, e.g., show an error message
+                            sap.m.MessageToast.show('Failed to send SMS: ' + error);
+                        }
+                    });
+
+                    // SMS END
+
 
                     var oSelected = this.byId("idReservationsTable").getSelectedItem();
                     oSelected.getBindingContext().delete("$auto")
@@ -823,16 +947,77 @@ sap.ui.define([
                 oSelected.getBindingContext().delete("$auto").then(function () {
                     MessageToast.show("Rejected")
 
-
                 })
                 this.confirmRejectDialog.close()
 
 
             },
+            onDataAnalysisPress: async function () {
+               
+            },
+            oncloseDataonDataAnalysis: function () {
+                if (this.oDataDialog.isOpen()) {
+                    this.oDataDialog.close()
+                }
+
+            },
+
+
+            //  Last change here
+
+            onDataAnalysisPress: async function () {
+                debugger
+                if (!this.oDataDialog) {
+                    this.oDataDialog = await this.loadFragment("DataAnalytics")
+                }
+                this.oDataDialog.open()
+                var oModel = this.getOwnerComponent().getModel();
+                var oThis = this;
+                oModel.refresh()
+
+                oModel.bindList("/parkingSlots").requestContexts().then(function (aContexts) {
+                    var aItems = aContexts.map(function (oContext) {
+                        return oContext.getObject();
+                    });
+                 
+                    var availableCount = aItems.filter((item) => item.status === "Available").length;
+                    var occupiedCount = aItems.filter((item) => item.status === "Not Available").length;
+                    var reservedCount = aItems.filter((item) => item.status === "Reserved").length;
+
+                    var aChartData = {
+                        Items: [
+                            {
+                                status: `Available-${availableCount}`,
+                                Count: availableCount,
+                            },
+                            {
+                                status: `Not Available-${occupiedCount}`,
+                                Count: occupiedCount,
+
+                            },
+                            {
+                                status: `Reserved-${reservedCount}`,
+                                Count: reservedCount,
+
+                            }
+                        ]
+                    };
+
+                    var oParkingLotModel = new JSONModel();
+                    oParkingLotModel.setData(aChartData);
+                    oThis.getView().setModel(oParkingLotModel, "ParkingLotModel");
+
+                }).catch(function (oError) {
+                    console.error(oError);
+                });
+            }
 
 
 
         })
     });
 
-    // last push
+
+
+
+// last push

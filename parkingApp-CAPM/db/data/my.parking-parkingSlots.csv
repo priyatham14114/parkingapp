@@ -1,10 +1,10 @@
 ID,slotNumbers,status
-2e407c06-2f8f-11ef-b557-325096b39f47,PS-001,Not Available
-2e407f44-2f8f-11ef-8b62-325096b39f47,PS-002,Not Available
-2e407ff8-2f8f-11ef-881d-325096b39f47,PS-003,Not Available
-2e40807a-2f8f-11ef-970d-325096b39f47,PS-004,Not Available
-2e4080fc-2f8f-11ef-80b0-325096b39f47,PS-005,Not Available
-2e40816a-2f8f-11ef-baa6-325096b39f47,PS-006,Reserved
+2e407c06-2f8f-11ef-b557-325096b39f47,PS-001,Available
+2e407f44-2f8f-11ef-8b62-325096b39f47,PS-002,Available
+2e407ff8-2f8f-11ef-881d-325096b39f47,PS-003,Available
+2e40807a-2f8f-11ef-970d-325096b39f47,PS-004,Available
+2e4080fc-2f8f-11ef-80b0-325096b39f47,PS-005,Available
+2e40816a-2f8f-11ef-baa6-325096b39f47,PS-006,Available
 2e4081d8-2f8f-11ef-b1e9-325096b39f47,PS-007,Available
 2e40823c-2f8f-11ef-bb41-325096b39f47,PS-008,Available
 2e4082aa-2f8f-11ef-b5cf-325096b39f47,PS-009,Available
@@ -40,12 +40,12 @@ ID,slotNumbers,status
 2e408c64-2f8f-11ef-8df9-325096b39f47,PS-039,Available
 2e408ca0-2f8f-11ef-bd66-325096b39f47,PS-040,Available
 2e408ce6-2f8f-11ef-b829-325096b39f47,PS-041,Available
-2e408d2c-2f8f-11ef-90cc-325096b39f47,PS-042,Not Available
+2e408d2c-2f8f-11ef-90cc-325096b39f47,PS-042,Available
 2e408d72-2f8f-11ef-a23f-325096b39f47,PS-043,Available
 2e408dae-2f8f-11ef-9ab7-325096b39f47,PS-044,Available
-2e408df4-2f8f-11ef-827e-325096b39f47,PS-045,Not Available
+2e408df4-2f8f-11ef-827e-325096b39f47,PS-045,Available
 2e408e3a-2f8f-11ef-80f3-325096b39f47,PS-046,Available
 2e408e76-2f8f-11ef-8d18-325096b39f47,PS-047,Available
-2e408ebc-2f8f-11ef-9da1-325096b39f47,PS-048,Not Available
-2e409060-2f8f-11ef-961d-325096b39f47,PS-049,Not Available
-2e4090ba-2f8f-11ef-969f-325096b39f47,PS-050,Not Available
+2e408ebc-2f8f-11ef-9da1-325096b39f47,PS-048,Available
+2e409060-2f8f-11ef-961d-325096b39f47,PS-049,Available
+2e4090ba-2f8f-11ef-969f-325096b39f47,PS-050,Available

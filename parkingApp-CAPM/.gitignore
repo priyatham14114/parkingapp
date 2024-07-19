@@ -26,6 +26,9 @@ mta_archives/
 *.iml
 *.flattened-pom.xml
 
+# .gitignore
+webapp/config.js
+
 # IDEs
 # .vscode
 # .idea
