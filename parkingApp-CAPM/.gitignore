@@ -27,7 +27,7 @@ mta_archives/
 *.flattened-pom.xml
 
 # .gitignore
-webapp/config.js
+parkingApp-CAPM/app/parkingapp/webapp/Secrets/Config.js
 
 # IDEs
 # .vscode
