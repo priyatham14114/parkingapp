@@ -231,7 +231,7 @@
                         </m:VBox>
                     </layout:HorizontalLayout>
                 </layout:VerticalLayout>
-                <m:VBox
+                <m:HBox
                     id="idvBox8"
                     class="Reservationsbtn"
                 >
@@ -242,15 +242,24 @@
                         class="buttonBlue"
                         text="Reservations"
                         press="onReservationsPress"
-                    />
+                    >
+                        <m:customData>
+                            <m:BadgeCustomData
+                                id="idbadghqwe"
+                                value="{/reservations/$count}"
+                                visible="true"
+                                animation="Update"
+                            />
+                        </m:customData>
+                    </m:Button>
                     <m:Button
                         id="idRdfeservdfvbations"
                         type="Unstyled"
                         class="buttonRed"
-                        text="Data Analysis"
+                        text="Parking Analysis"
                         press="onDataAnalysisPress"
                     />
-                </m:VBox>
+                </m:HBox>
             </m:FlexBox>
         </headerContent>
 
@@ -675,6 +684,7 @@
                                 id="idHistoryTable"
                                 alternateRowColors="true"
                                 items="{/history}"
+                                mode="None"
                             >
                                 <m:headerToolbar>
                                     <m:OverflowToolbar
