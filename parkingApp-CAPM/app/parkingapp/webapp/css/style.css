@@ -4,8 +4,16 @@
     margin-bottom: 10px;
     border-width: 0px;
 }
+.Barcode{
+    width:40%;
+    height: 10%;
+}
 .close{
     margin-left: 95%;
+}
+.receiptback{
+    background-image: url("../images/Truck.jpeg");
+
 }
 
 .Header {
@@ -21,6 +29,19 @@
     height: 80px;
     width: 80;
 
+}
+.logoReceipt {
+    height: 50px;
+    width: 50;
+
+}
+.logoBarcode{
+  height: 50px;
+  width: 50;
+
+}
+.receiptlogovbox{
+  margin-left: 60%;
 }
 
 .Reservationsbtn {

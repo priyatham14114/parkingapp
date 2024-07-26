@@ -4,18 +4,64 @@
   "description": "Security profile of called application",
   "scopes": [
     {
-      "name": "uaa.user",
-      "description": "UAA"
+      "name": "$XSAPPNAME.Supervisor",
+      "description": "Supervisor Scope"
+    },
+    {
+      "name": "$XSAPPNAME.Security",
+      "description": "Security Scope"
+    },
+    {
+      "name": "$XSAPPNAME.Vendor",
+      "description": "Vendor Scope"
     }
   ],
   "role-templates": [
     {
-      "name": "Token_Exchange",
-      "description": "UAA",
+      "name": "Supervisor",
+      "description": "Supervisor Role Template",
       "scope-references": [
-        "uaa.user"
+        "$XSAPPNAME.Supervisor"
+      ]
+    },
+    {
+      "name": "Security",
+      "description": "Security Role Template",
+      "scope-references": [
+        "$XSAPPNAME.Security"
+      ]
+    },
+    {
+      "name": "Vendor",
+      "description": "Vendor Role Template",
+      "scope-references": [
+        "$XSAPPNAME.Vendor"
       ]
     }
   ],
-  "attributes": []
+  "role-collections": [
+    {
+      "name": "Rolecollection Supervisor",
+      "description": "Supervisor can do anything",
+      "role-template-references": [
+        "$XSAPPNAME.Supervisor"
+      ]
+    },
+    {
+      "name": "Rolecollection Security",
+      "description": "Security restricted by reservations creations",
+      "role-template-references": [
+        "$XSAPPNAME.Security"
+      ]
+    },
+    {
+      "name": "Rolecollection Vendor",
+      "description": "Vendor Can Create reservations only",
+      "role-template-references": [
+        "$XSAPPNAME.Vendor"
+      ]
+    }
+  ],
+  "attributes": [],
+  "authorities-inheritance": false
 }

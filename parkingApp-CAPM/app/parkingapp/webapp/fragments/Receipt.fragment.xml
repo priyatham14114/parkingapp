@@ -1,0 +1,115 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+>
+    <Dialog
+        id="idprintparking"
+        title="Print Receipt"
+        resizable="true"
+        draggable="true"
+        contentWidth="60%"
+        contentHeight="50%"
+    >
+        <content>
+            <f:SimpleForm
+                id="idSimpleForm"
+                layout="ResponsiveGridLayout"
+                editable="true"
+                title=""
+            >
+                <f:content>
+                    <!-- <Image
+                            id="idnbdgfdfg"
+                            class="logoBarcode"
+                            src="./images/barcode.png"
+                        /> -->
+
+                    <VBox id="Id45tghjuyt_">
+                        <Text
+                            id="__iuygbvfres"
+                            text="Barcode:"
+                        />
+                        <core:HTML id="barcodeContainer"/>
+                    </VBox>
+                    <Label
+                        text="Vehicle Number"
+                        width="120px"
+                        id="labelprint1"
+                    />
+                    <Text
+                        text=""
+                        id="textprint1"
+                    />
+                    <Label
+                        text="Parking Lot Number"
+                        width="120px"
+                        id="labelprint5"
+                    />
+                    <Text
+                        text=""
+                        id="textprint5"
+                    />
+                    <Label
+                        text="Driver Name"
+                        width="120px"
+                        id="labelprint2"
+                    />
+                    <Text
+                        text=""
+                        id="textprint2"
+                    />
+
+                    <Label
+                        text="Driver Phone Number"
+                        class="bold-red-label"
+                        width="120px"
+                        id="labelprint3"
+                    />
+                    <Text
+                        text=""
+                        id="textprint3"
+                    />
+
+                    <Label
+                        text="Delivery Type"
+                        width="120px"
+                        id="labelprint4"
+                    />
+                    <Text
+                        text=""
+                        id="textprint4"
+                    />
+                    <VBox
+                        id="_iuytgjIS"
+                        class="receiptlogovbox"
+                    >
+                        <Image
+                            id="idnbgfdfg"
+                            class="logoReceipt"
+                            src="./images/Vishal-MegaMart.png"
+                        />
+
+                        <Text
+                            text=""
+                            id="dfvtextprint1"
+                        />
+                    </VBox>
+                </f:content>
+            </f:SimpleForm>
+        </content>
+        <buttons>
+            <Button
+                id="createButton"
+                text="Print"
+                press="onprint"
+            />
+            <Button
+                id="cancelButton"
+                text="Cancel"
+                press="closeReceiptDailog"
+            />
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>

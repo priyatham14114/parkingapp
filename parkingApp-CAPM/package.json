@@ -38,7 +38,9 @@
     "watch-vendorapp": "cds watch --open vendorapp/webapp/index.html?sap-ui-xx-viewCache=false"
   },
   "cds": {
-    "requires": {}
+    "requires": {
+     
+    }
   },
   "sapux": [
     "app/parkingappfiori"

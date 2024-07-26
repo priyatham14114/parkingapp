@@ -335,7 +335,7 @@
                                         />
                                         <m:Button
                                             id="idBtnCancel"
-                                            text="Cancle"
+                                            text="Cancel"
                                             type="Unstyled"
                                             class="buttonRed"
                                             visible="false"

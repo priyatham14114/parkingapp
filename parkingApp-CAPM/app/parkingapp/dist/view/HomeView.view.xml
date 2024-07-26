@@ -4,7 +4,6 @@
     xmlns:layout="sap.ui.layout"
     xmlns:form="sap.ui.layout.form"
     xmlns:m="sap.m"
-    xmlns:badge="sap.ui.core.BadgeCustomData"
     xmlns:core="sap.ui.core"
     xmlns:mvc="sap.ui.core.mvc"
     displayBlock="true"
@@ -336,7 +335,7 @@
                                         />
                                         <m:Button
                                             id="idBtnCancel"
-                                            text="Cancle"
+                                            text="Cancel"
                                             type="Unstyled"
                                             class="buttonRed"
                                             visible="false"

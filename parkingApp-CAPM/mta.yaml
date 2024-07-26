@@ -2,6 +2,7 @@ _schema-version: "3.1"
 ID: parkingApp-CAPM
 description: A simple CAP project.
 version: 1.0.0
+
 modules:
   - name: parkingApp-CAPM-srv
     type: nodejs

@@ -15,6 +15,10 @@ sap.ui.define([
 
         return Controller.extend("com.app.parkingapp.controller.HomeView", {
             onInit: function () {
+                // // brcode
+                // var obj = { name: "subhash", age: 24 };
+                // var jsonString = JSON.stringify(obj);
+                // this._generateBarcode(jsonString)
                 const newAssign = new JSONModel({
                     driverName: "",
                     driverMobile: "",
@@ -227,10 +231,11 @@ sap.ui.define([
             //     var oModel = this.getView().getModel();
             //     oModel.refresh(true); // Refresh the model to get the latest data
             // },
-            onAssignPress: function (oEvent) {
+            onAssignPress: async function (oEvent) {
                 debugger
                 // 
                 var oThis = this
+
                 var currentDate = new Date();
                 var year = currentDate.getFullYear();
                 var month = currentDate.getMonth() + 1; // Months are zero-based
@@ -329,7 +334,7 @@ sap.ui.define([
                         new Filter("vehicleNumber", FilterOperator.EQ, oVehicleNumber)
                     ]);
 
-                    oAssignedSlotBinding.requestContexts().then(function (aAssignedContext) {
+                    oAssignedSlotBinding.requestContexts().then(async function (aAssignedContext) {
                         if (aAssignedContext.length > 0) {
                             MessageBox.warning("You can not Assign.A Slot for Vehicle number " + oVehicleNumber + " already assigned")
 
@@ -343,7 +348,7 @@ sap.ui.define([
                                 const authToken = Config.twilio.authToken;
 
                                 // debugger
-                                const toNumber = `+91${oDriverMobile}` 
+                                const toNumber = `+91${oDriverMobile}`
                                 const fromNumber = '+15856485867';
                                 const messageBody = `Hi ${oDriverName} a Slot number ${sSlotNumber} is alloted to you vehicle number ${oVehicleNumber} \nVendor name: ${oVendorName}. \nThank You,\nVishal Parking Management.`; // Message content
 
@@ -440,11 +445,30 @@ sap.ui.define([
                                         MessageToast.show("Slot Unavailable")
                                     }
                                 })
+                                // open receipt    
+                                // test
+                                if (!oThis.ReceiptDailog) {
+                                    oThis.ReceiptDailog = await oThis.loadFragment("Receipt")
+                                }
+                                oThis.ReceiptDailog.open();
+                                var obj = { vehicleNumber: oVehicleNumber };
+                                var jsonString = JSON.stringify(obj);
+                                oThis._generateBarcode(jsonString)
+                                oThis.byId("textprint1").setText(oVehicleNumber)
+                                oThis.byId("textprint5").setText(sSlotNumber)
+                                oThis.byId("textprint2").setText(oDriverName)
+                                oThis.byId("textprint3").setText(oDriverMobile)
+                                oThis.byId("textprint4").setText(odeliveryType)
+                                oThis.byId("dfvtextprint1").setText(`Date: ${year}-${month}-${day} \nTIME: ${hours}:${minutes}:${seconds}`)
 
                             }
                         }
                     })
-
+                }
+            },
+            closeReceiptDailog: function () {
+                if (this.ReceiptDailog.isOpen()) {
+                    this.ReceiptDailog.close()
                 }
             },
             onUnassignPress: function (oEvent) {
@@ -1066,6 +1090,29 @@ sap.ui.define([
                     Items: Object.values(oData)
                 };
             },
+            _generateBarcode: function (barcodeValue) {
+                // Get the HTML control where the barcode will be rendered
+                var oHtmlControl = this.byId("barcodeContainer");
+
+                if (oHtmlControl) {
+                    // Set the HTML content to an SVG element
+                    oHtmlControl.setContent('<svg id="barcode" class="Barcode"></svg>');
+
+                    // Ensure the content is fully rendered before using JsBarcode
+                    setTimeout(function () {
+                        // Generate the barcode using JsBarcode
+                        JsBarcode("#barcode", barcodeValue, {
+                            // format: "EAN:", // Barcode format
+                            // lineColor: "#0aa", // Line color
+                            // width: 4, // Width of each bar
+                            // height: 40, // Height of the barcode
+                            displayValue: false // Hide the value
+                        });
+                    }, 0); // Delay to ensure the SVG element is rendered
+                } else {
+                    console.error("HTML control not found or not initialized.");
+                }
+            }
 
 
             // onSelectData: function (oEvent) {
