@@ -39,6 +39,7 @@ entity reserved : cuid {
   // deliveryType  : String;
   vendor_Name    : String;
   reservedSlot : Association to parkingSlots;
+  reservedDate:String;
 
 }
 

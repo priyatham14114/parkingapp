@@ -229,8 +229,15 @@
                                 press="onAssignPress"
                             />
                         </m:VBox>
+                        <m:VBox
+                            id="idvBodcfvfdx6"
+                            class="Inputs"
+                        >
+                            <!-- <m:Label id="idLable6" /> -->
+                        </m:VBox>
                     </layout:HorizontalLayout>
                 </layout:VerticalLayout>
+
                 <m:HBox
                     id="idvBox8"
                     class="Reservationsbtn"
@@ -341,6 +348,13 @@
                                             visible="false"
                                             press="onCanclePress"
                                             tooltip="Click to Cancle"
+                                        />
+                                        <m:Button
+                                            id="idButtoidScan"
+                                            type="Default"
+                                            text="Scan to UnAssign"
+                                            icon="sap-icon://bar-code"
+                                            press="onScanPress"
                                         />
                                     </m:OverflowToolbar>
                                 </m:headerToolbar>
@@ -628,6 +642,12 @@
                                             text="Vendor Name"
                                         />
                                     </m:Column>
+                                    <m:Column id="_I3488DGenCofvgdvlumn3">
+                                        <m:Title
+                                            id="_IDGdwdw11enTitedcgle4"
+                                            text="Reserved Date"
+                                        />
+                                    </m:Column>
                                 </m:columns>
                                 <m:items>
                                     <m:ColumnListItem
@@ -656,8 +676,12 @@
                                                 text="{reservedSlot/slotNumbers}"
                                             />
                                             <m:Text
-                                                id="_IDGendssr3456frfgvText5"
+                                                id="_IDGendssr45tyhgf3456frfgvText5"
                                                 text="{vendor_Name}"
+                                            />
+                                            <m:Text
+                                                id="_IDGendssr0_3456frfgvText5"
+                                                text="{reservedDate}"
                                             />
                                         </m:cells>
                                     </m:ColumnListItem>

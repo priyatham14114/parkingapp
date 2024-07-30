@@ -8,9 +8,10 @@ sap.ui.define([
     "sap/m/MessageToast",
     "sap/m/MessageBox",
     "../Secrets/Config",
+    "sap/ndc/BarcodeScanner"
 
 ],
-    function (Controller, JSONModel, Fragment, Filter, FilterOperator, MessageToast, MessageBox, Config) {
+    function (Controller, JSONModel, Fragment, Filter, FilterOperator, MessageToast, MessageBox, Config, BarcodeScanner) {
         "use strict";
 
         return Controller.extend("com.app.parkingapp.controller.HomeView", {
@@ -179,6 +180,9 @@ sap.ui.define([
             onCloseReservations: function () {
                 if (this.Reservationspopup.isOpen()) {
                     this.Reservationspopup.close()
+                    const oModel = this.getView().getModel()
+                    oModel.refresh()
+
                 }
 
             },
@@ -451,9 +455,9 @@ sap.ui.define([
                                     oThis.ReceiptDailog = await oThis.loadFragment("Receipt")
                                 }
                                 oThis.ReceiptDailog.open();
-                                var obj = { vehicleNumber: oVehicleNumber };
-                                var jsonString = JSON.stringify(obj);
-                                oThis._generateBarcode(jsonString)
+                                // barcode generations with value
+                                var obj = oVehicleNumber
+                                oThis._generateBarcode(obj)
                                 oThis.byId("textprint1").setText(oVehicleNumber)
                                 oThis.byId("textprint5").setText(sSlotNumber)
                                 oThis.byId("textprint2").setText(oDriverName)
@@ -580,7 +584,7 @@ sap.ui.define([
 
 
                             } else {
-                                MessageToast.show("Slot Unavailable")
+                                MessageToast.show("Something went wrong")
                             }
                         })
 
@@ -617,6 +621,19 @@ sap.ui.define([
                     // this.byId("_IDGewertnSelect1").setValue(oDeliveryType)
                     this.byId("idasgredhmeIn0075put").setValue(oVendorName)
 
+                    // Restrict date
+                    debugger
+                    var oDatePicker = this.getView().byId("idDatePicker");
+                    var oCurrentDate = new Date();
+                    oDatePicker.setMinDate(oCurrentDate);
+
+                    var oMaxDate = new Date();
+                    oMaxDate.setDate(oMaxDate.getDate() + 7);
+
+                    oDatePicker.setMaxDate(oMaxDate);
+
+                    this.getView().getModel().refresh()
+
                 } else {
                     MessageToast.show("Select a record to accept reservations")
                 }
@@ -632,13 +649,22 @@ sap.ui.define([
             },
             onConfirmBookSlotPress: function () {
                 debugger
+                let currentDate = new Date();
+                let year = currentDate.getFullYear();
+                let month = currentDate.getMonth() + 1;
+                let day = currentDate.getDate();
+                const currentDay = `${year}-${month}-${day}`
+
                 const oThis = this
                 const oDriverName = this.getView().byId("_IDGendfgdInput1").getValue(),
                     oDriverMobile = this.getView().byId("_IDGexgrgnInput2").getValue(),
                     oVehicleNumber = this.getView().byId("idasgredhmeInput").getValue(),
                     oVendorName = this.getView().byId("idasgredhmeIn0075put").getValue(),
                     // oDeliveryType = this.getView().byId("_IDGewertnSelect1").getSelectedKey(),
-                    oReservedSlot = this.getView().byId("idSlotReserve").getSelectedKey()
+                    oReservedSlot = this.getView().byId("idSlotReserve").getSelectedKey(),
+                    oBookedDate = this.getView().byId("idDatePicker").getValue()
+
+
 
                 var oSelect = this.byId("idSlotReserve");
                 var oSelectedItem = oSelect.getSelectedItem();
@@ -655,7 +681,8 @@ sap.ui.define([
                     vehicleNumber: oVehicleNumber,
                     vendor_Name: oVendorName,
                     // deliveryType: oDeliveryType,
-                    reservedSlot_ID: oReservedSlot
+                    reservedSlot_ID: oReservedSlot,
+                    reservedDate: oBookedDate
 
                 }
                 const oModel = this.getView().getModel(),
@@ -692,6 +719,13 @@ sap.ui.define([
                     bValid = false;
                 } else {
                     oUserView.byId("idasgredhmeIn0075put").setValueState("None");
+                }
+                if (!oBookedDate) {
+                    oUserView.byId("idDatePicker").setValueState("Error");
+                    oUserView.byId("idDatePicker").setValueStateText("Select Date");
+                    bValid = false;
+                } else {
+                    oUserView.byId("idDatePicker").setValueState("None");
                 }
 
                 if (!bValid) {
@@ -767,11 +801,13 @@ sap.ui.define([
                             var oParkingContext = aParkingContexts[0];
                             var oParkingData = oParkingContext.getObject();
                             // Update 
-                            oParkingData.status = "Reserved"
-                            oParkingContext.setProperty("status", oParkingData.status);
-                            oModel.submitBatch("updateGroup");
-                            oThis.getView().byId("idAllSlots").getBinding("items").refresh();
-                            oModel.refresh(); // Refresh the model to get the latest data
+                            if (oBookedDate ===currentDay) {
+                                oParkingData.status = "Reserved"
+                                oParkingContext.setProperty("status", oParkingData.status);
+                                oModel.submitBatch("updateGroup");
+                                oThis.getView().byId("idAllSlots").getBinding("items").refresh();
+                                oModel.refresh(); // Refresh the model to get the latest data
+                            }
 
                         } else {
                             MessageToast.show("Slot Unavailable")
@@ -964,13 +1000,48 @@ sap.ui.define([
             },
             onRejectReservePress: function () {
                 debugger
-                const oSelected = this.getView().byId("idReservationsTable").getSelectedItem()
+                const oSelected = this.getView().byId("idReservationsTable").getSelectedItem(),
+                    sDriverMobile = oSelected.getBindingContext().getObject().driverMobile,
+                    sDriverName = oSelected.getBindingContext().getObject().driverName
                 oSelected.getBindingContext().delete("$auto").then(function () {
-                    MessageToast.show("Rejected")
 
+                    MessageBox.information("Rejected and SMS will be sent")
+                    // Unassign SMS
+
+                    const accountSid = Config.twilio.accountSid;
+                    const authToken = Config.twilio.authToken;
+
+                    // debugger
+                    const toNumber = `+91${sDriverMobile}`
+                    const fromNumber = '+15856485867';
+                    const messageBody = `Hi ${sDriverName} We regret to inform you that\nCurrently we can not proceed with your reservation.\nThank you,\nVishal Parking Management`; // Message content
+
+                    // Twilio API endpoint for sending messages
+                    const url = `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`;
+
+
+                    // Send POST request to Twilio API using jQuery.ajax
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        headers: {
+                            'Authorization': 'Basic ' + btoa(accountSid + ':' + authToken)
+                        },
+                        data: {
+                            To: toNumber,
+                            From: fromNumber,
+                            Body: messageBody
+                        },
+                        success: function (data) {
+                            sap.m.MessageToast.show('SMS sent successfully!');
+                        },
+                        error: function (error) {
+                            sap.m.MessageToast.show('Failed to send SMS: ' + error);
+                        }
+                    });
+                    // SMS END
                 })
                 this.confirmRejectDialog.close()
-
 
             },
             oncloseDataonDataAnalysis: function () {
@@ -1096,7 +1167,7 @@ sap.ui.define([
 
                 if (oHtmlControl) {
                     // Set the HTML content to an SVG element
-                    oHtmlControl.setContent('<svg id="barcode" class="Barcode"></svg>');
+                    oHtmlControl.setContent('<svg id="barcode" ></svg>');
 
                     // Ensure the content is fully rendered before using JsBarcode
                     setTimeout(function () {
@@ -1104,33 +1175,215 @@ sap.ui.define([
                         JsBarcode("#barcode", barcodeValue, {
                             // format: "EAN:", // Barcode format
                             // lineColor: "#0aa", // Line color
-                            // width: 4, // Width of each bar
-                            // height: 40, // Height of the barcode
+                            // width: 20, // Width of each bar
+                            // height: 100, // Height of the barcode
                             displayValue: false // Hide the value
                         });
                     }, 0); // Delay to ensure the SVG element is rendered
                 } else {
                     console.error("HTML control not found or not initialized.");
                 }
-            }
+            },
+            onPrint: function () {
+                var oView = this.getView();
+                var oElement = oView.byId("idSimpleForm");
+
+                var oDomRef = oElement.getDomRef();
+
+                // Check if domtoimage is available
+                if (typeof domtoimage === 'undefined') {
+                    console.error('domtoimage library is not loaded.');
+                    return;
+                }
+
+                // Convert the element to PNG image
+                domtoimage.toPng(oDomRef).then(function (dataUrl) {
+                    // Create a new PDF document
+                    var doc = new jsPDF({
+                        orientation: 'landscape',
+                    });
+
+                    // Add image to the PDF
+                    doc.addImage(dataUrl, 'JPEG', 25, 25, 250, 150);
+
+                    // Save the PDF to a Blob
+                    var pdfBlob = doc.output('blob');
+
+                    // Create an URL for the Blob
+                    var pdfUrl = URL.createObjectURL(pdfBlob);
+
+                    // Open the PDF in a new window for printing
+                    var printWindow = window.open(pdfUrl, '_blank');
+
+                    // Ensure the new window is loaded before calling print
+                    printWindow.onload = function () {
+                        printWindow.print();
+                    };
+                })
+                    .catch(function (error) {
+                        console.error('Error:', error);
+                    });
+                // var oVBox = this.byId("idSimpleForm");
+                // if (!oVBox) {
+                //     console.error("VBox with ID 'idSimpleForm' not found.");
+                //     return;
+                // }
+
+                // // Get the HTML content of the VBox
+                // var sHtml = oVBox.getDomRef().innerHTML;
+
+                // // Create a new window for print
+                // var oPrintWindow = window.open('', '', 'height=600,width=800');
+                // oPrintWindow.document.open();
+                // oPrintWindow.document.write(`
+                //     <html>
+                //     <head>
+                //         <title>Print</title>
+                //         <style>
+                //             body { font-family: Arial, sans-serif; }
+                //             .print-container { width: 100%; margin: 0 auto; }
+                //             /* Add any additional print styles here */
+                //         </style>
+                //     </head>
+                //     <body>
+                //         <div class="print-container">
+                //             ${sHtml}
+                //         </div>
+                //     </body>
+                //     </html>
+                // `);
+                // oPrintWindow.document.close();
+                // oPrintWindow.focus();
+                // oPrintWindow.print();
+
+            },
+
+            onScanPress: function (oEvent) {
+                debugger
+                const oThis = this;
+                var currentDate = new Date();
+                var year = currentDate.getFullYear();
+                var month = currentDate.getMonth() + 1; // Months are zero-based
+                var day = currentDate.getDate();
+                var hours = currentDate.getHours();
+                var minutes = currentDate.getMinutes();
+                var seconds = currentDate.getSeconds();
+                var FinalDate = `${year}-${month}-${day} TIME ${hours}:${minutes}:${seconds}`
+                var oCheckOutTime = FinalDate
+                const oModel = this.getView().getModel()
+                BarcodeScanner.scan(
+                    function (mResult) {
+                        if (mResult && mResult.text) {
+                            var scannedText = mResult.text;
+
+                            var oAssignedSlotsBinding = oModel.bindList("/assignedSlots");
+
+                            oAssignedSlotsBinding.filter([
+                                new Filter("vehicleNumber", FilterOperator.EQ, scannedText)
+                            ]);
+
+                            oAssignedSlotsBinding.requestContexts().then(function (aAssignedContexts) {
+                                if (aAssignedContexts.length > 0) {
+                                    var oAssignedContext = aAssignedContexts[0];
+                                    var oAssignedDataObject = oAssignedContext.getObject(),
+                                        sVehicle = oAssignedDataObject.vehicleNumber,
+                                        sDriverName = oAssignedDataObject.driverName,
+                                        sTypeofDelivery = oAssignedDataObject.deliveryType,
+                                        sDriverMobile = oAssignedDataObject.driverMobile,
+                                        dCheckInTime = oAssignedDataObject.checkInTime,
+                                        oSlotId = oAssignedDataObject.slotNumber_ID,
+                                        oVendorName = oAssignedDataObject.vendor_Name;
+                                    //  payload for history
+                                    const oNewHistory = {
+                                        driverName: sDriverName,
+                                        driverMobile: sDriverMobile,
+                                        vehicleNumber: sVehicle,
+                                        deliveryType: sTypeofDelivery,
+                                        checkInTime: dCheckInTime,
+                                        historySlotNumber_ID: oSlotId,
+                                        vendor_Name: oVendorName,
+                                        checkOutTime: oCheckOutTime
+                                    }
+                                    const oBindlist = oModel.bindList("/history")
+                                    // Remove the object
+                                    oAssignedContext.delete().then(function () {
+                                        MessageBox.success(`${sVehicle} UnAssigned successfully`);
+                                        // send SMS
+                                        // Unassign SMS
+
+                                        const accountSid = Config.twilio.accountSid;
+                                        const authToken = Config.twilio.authToken;
+
+                                        // debugger
+                                        const toNumber = `+91${sDriverMobile}`
+                                        const fromNumber = '+15856485867';
+                                        const messageBody = `Hi ${sDriverName} please move the vehicle from the parking yard.\nIgnore if already left from the yard.\nThank you,\nVishal Parking Management`; // Message content
+
+                                        // Twilio API endpoint for sending messages
+                                        const url = `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`;
 
 
-            // onSelectData: function (oEvent) {
-            //     debugger
-            //     var oSelectedData = oEvent.getParameter("data")[0]
-            //     if(oSelectedData.data.InBound === undefined){
-            //         var Inbound = oSelectedData.target.__addition_data__.InBound
-            //     }
-            //     if(oSelectedData.data.OutBound === undefined){
-            //         var Outbound = oSelectedData.target.__addition_data__.OutBound
-            //     }
-            //     sap.m.MessageToast.show("Date:" + oSelectedData.Date + "\nType:" + oSelectedData.measureNames + "\nInbound Count  :" + Inbound + "\nOutbound Count  :" + Outbound + "\nTotal Entries  :" + oSelectedData.target.__addition_data__.TotalEntries );
-            // },
+                                        // Send POST request to Twilio API using jQuery.ajax
+                                        $.ajax({
+                                            url: url,
+                                            type: 'POST',
+                                            headers: {
+                                                'Authorization': 'Basic ' + btoa(accountSid + ':' + authToken)
+                                            },
+                                            data: {
+                                                To: toNumber,
+                                                From: fromNumber,
+                                                Body: messageBody
+                                            },
+                                            success: function (data) {
+                                                sap.m.MessageToast.show('SMS sent successfully!');
+                                            },
+                                            error: function (error) {
+                                                sap.m.MessageToast.show('Failed to send SMS: ' + error);
+                                            }
+                                        });
 
-            // handleRenderComplete: function (oEvent) {
-            //     console.log("Chart rendering complete.");
-            // }
+                                        // SMS END
+                                        // history creation..
+                                        oBindlist.create(oNewHistory)
+                                        // update slot
+                                        var oParkingSlotBinding = oModel.bindList("/parkingSlots");
 
+                                        oParkingSlotBinding.filter([
+                                            new Filter("ID", FilterOperator.EQ, oSlotId)
+                                        ]);
+
+                                        oParkingSlotBinding.requestContexts().then(function (aParkingContexts) {
+                                            if (aParkingContexts.length > 0) {
+                                                var oParkingContext = aParkingContexts[0];
+                                                var oParkingData = oParkingContext.getObject();
+                                                // Update 
+                                                oParkingData.status = "Available"
+                                                oParkingContext.setProperty("status", oParkingData.status);
+                                                oModel.submitBatch("updateGroup");
+                                                oThis.getView().byId("idAllSlots").getBinding("items").refresh();
+                                                oModel.refresh();
+                                            } else {
+                                                MessageToast.show("Slot Unavailable")
+                                            }
+                                        })
+                                    }).catch(function (oError) {
+                                        MessageBox.error("Deletion failed: " + oError.message);
+                                    });
+                                } else {
+                                    MessageBox.information(`Vehicle number ${scannedText} dose not exist in our records`)
+                                }
+                            })
+
+                        } else {
+                            MessageBox.error("Barcode scan failed or no result.");
+                        }
+                    }.bind(this), // Bind 'this' context to access the view
+                    function (oError) {
+                        MessageBox.error("Barcode scanning failed: " + oError);
+                    }
+                );
+            },
 
 
         })

@@ -27,6 +27,7 @@
                         /> -->
 
                     <VBox id="Id45tghjuyt_">
+                    <Title id="idreceiptTitle" text="Gate Pass"/>
                         <Text
                             id="__iuygbvfres"
                             text="Barcode:"
@@ -103,7 +104,7 @@
             <Button
                 id="createButton"
                 text="Print"
-                press="onprint"
+                press="onPrint"
             />
             <Button
                 id="cancelButton"

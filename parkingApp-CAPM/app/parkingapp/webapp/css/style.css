@@ -49,6 +49,10 @@
     padding: 20px;
 
 }
+/* .barcodeScanner {
+    margin-left: 85vw;
+
+} */
 
 .Content {
     /* background-color: rgb(58, 173, 129); */
@@ -57,7 +61,7 @@
     background-position: center;
     height: 100vh;
     background-size: cover;
-    /* background-repeat: no-repeat; */
+    background-repeat: repeat;
 
 
 }

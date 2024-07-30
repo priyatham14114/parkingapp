@@ -51,31 +51,6 @@
                     text="Vendor Name"
                 />
                 <Input id="idasgredhmeIn0075put" />
-                <!-- <Label
-                    id="_IDGegdbfnfnLabel4"
-                    text="Type of Devlivery"
-                /> -->
-                <!-- <Select id="_IDGewertnSelect1">
-                    <core:Item
-                        id="_IDGen34r5tgItem1"
-                        key="Select"
-                        text=""
-                    />
-                    <core:Item
-                        id="_IDGevbhge3esddnItem2"
-                        key="InBound"
-                        text="InBound"
-                    />
-                    <core:Item
-                        id="_IDGenIdfgvbntftem3"
-                        key="OutBound"
-                        text="OutBound"
-                    />
-                </Select>
-                 <Label
-                    id="_IDGegdbsdgsrtnfnLabel4"
-                    text="Slot Number"
-                /> -->
                 <Label
                     id="_IDGenLasgfsdfbel3"
                     text="Slot Number"
@@ -90,6 +65,22 @@
                         text="{slotNumbers}"
                     />
                 </Select>
+                <Label
+                    id="_IDGesfdvg65_"
+                    text="Select Date"
+                />
+                <DatePicker
+                    id="idDatePicker"
+                    value="{
+            path: '/date',
+            type: 'sap.ui.model.type.Date',
+            formatOptions: {
+                pattern: 'yyyy-MM-dd'
+            }
+        }"
+                    displayFormat="yyyy-MM-dd"
+                    valueFormat="yyyy-MM-dd"
+                />
             </form:SimpleForm>
         </content>
         <beginButton>

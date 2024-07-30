@@ -1,36 +1,36 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Parking application</title>
     <style>
-        html, body, body > div, #container, #container-uiarea {
+        html,
+        body,
+        body>div,
+        #container,
+        #container-uiarea {
             height: 100%;
         }
     </style>
-    <script
-        id="sap-ui-bootstrap"
-        src="https://sapui5.hana.ondemand.com/1.125.1/resources/sap-ui-core.js"
-        data-sap-ui-theme="sap_horizon"
-        data-sap-ui-resourceroots='{
+    <script id="sap-ui-bootstrap" src="https://sapui5.hana.ondemand.com/1.125.1/resources/sap-ui-core.js"
+        data-sap-ui-theme="sap_horizon" data-sap-ui-resourceroots='{
             "com.app.parkingapp": "./"
-        }'
-        data-sap-ui-oninit="module:sap/ui/core/ComponentSupport"
-        data-sap-ui-compatVersion="edge"
-        data-sap-ui-async="true"
-        data-sap-ui-frameOptions="trusted"
-    ></script>
+        }' data-sap-ui-oninit="module:sap/ui/core/ComponentSupport" data-sap-ui-compatVersion="edge"
+        data-sap-ui-async="true" data-sap-ui-frameOptions="trusted"></script>
+    <!-- barcode -->
     <script src="JsBarcode.all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+
 </head>
+
 <body class="sapUiBody sapUiSizeCompact" id="content">
-    <div
-        data-sap-ui-component
-        data-name="com.app.parkingapp"
-        data-id="container"
-        data-settings='{"id" : "com.app.parkingapp"}'
-        data-handle-validation="true"
-    ></div>
+    <div data-sap-ui-component data-name="com.app.parkingapp" data-id="container"
+        data-settings='{"id" : "com.app.parkingapp"}' data-handle-validation="true"></div>
 </body>
+
 </html>

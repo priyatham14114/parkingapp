@@ -41,7 +41,7 @@ sap.ui.define([
                 this.oReserve.open()
             },
             onBookSlotPress: function () {
-            debugger
+                debugger
                 const oModel = this.getView().getModel(),
                     oUserView = this.getView(),
                     oThis = this
@@ -100,7 +100,7 @@ sap.ui.define([
 
                 }
 
-                var oReadReservedSlots = oModel.bindList("/reserved");
+                var oReadReservedSlots = oModel.bindList("/reservations");
 
                 oReadReservedSlots.filter([
                     new Filter("vehicleNumber", FilterOperator.EQ, sVehicle)
@@ -108,11 +108,12 @@ sap.ui.define([
 
                 oReadReservedSlots.requestContexts().then(function (aReservedContext) {
                     if (aReservedContext.length > 0) {
-                        MessageBox.warning("You can not reserve.vehicle number " + oVehicleNumber + " already reserved")
+                        MessageBox.warning("You can not reserve.vehicle number " + sVehicle + " already reserved")
                     } else {
 
                         const Reservation = oBinding.create(newReserveModel)
                         if (Reservation) {
+                            oModel.refresh()
                             oThis.getView().byId("idkdjgbrrddrivername").setValue("")
                             oThis.getView().byId("iddrivrtmobilwInput").setValue("")
                             oThis.getView().byId("idameInput").setValue("")
