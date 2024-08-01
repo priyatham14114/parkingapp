@@ -262,10 +262,17 @@
                     <m:Button
                         id="idRdfeservdfvbations"
                         type="Unstyled"
-                        class="buttonRed"
+                        class="buttonRed parkingAnalysis"
                         text="Parking Analysis"
                         press="onDataAnalysisPress"
                     />
+                    <!-- <m:Button
+                        id="id_rvdfvbations"
+                        type="Unstyled"
+                        class="buttonRed"
+                        text="TEST"
+                        press="updateSoltsStatusbyDate"
+                    /> -->
                 </m:HBox>
             </m:FlexBox>
         </headerContent>
@@ -287,7 +294,6 @@
                             <m:Table
                                 id="idAssignedTable"
                                 mode="MultiSelect"
-                                alternateRowColors="true"
                                 items="{/assignedSlots}"
                                 class="Table"
                             >
@@ -415,43 +421,52 @@
                                     <m:ColumnListItem
                                         id="idBooksTableColListItem"
                                         type="Navigation"
+                                        class="TableContent"
                                     >
                                         <m:cells>
                                             <m:Text
                                                 id="AuColValueId"
                                                 text="{slotNumber_ID}"
+                                                class="TableContent"
                                             />
                                             <m:Text
                                                 id="AuthorColValueId"
                                                 text="{driverName}"
+                                                class="TableContent"
                                             />
                                             <m:Text
                                                 id="idBookNameColValue"
                                                 text="{driverMobile}"
+                                                class="TableContent"
                                             />
                                             <m:Text
                                                 id="idavailableQuantityColValue"
                                                 text="{vehicleNumber}"
+                                                class="TableContent"
                                             />
                                             <m:Text
                                                 id="idISBNColValue"
                                                 text="{deliveryType}"
+                                                class="TableContent"
                                             />
 
                                             <m:VBox id="idinTablevbox">
                                                 <m:Text
                                                     id="isd"
                                                     text="{slotNumber/slotNumbers}"
+                                                    class="TableContent"
                                                 />
                                                 <m:Select
                                                     id="idintableparkingLotSelect"
                                                     visible="false"
                                                     items="{path: '/parkingSlots', filters: [{path: 'status', operator: 'EQ', value1: 'Available'}]}"
+                                                    class="TableContent"
                                                 >
                                                     <core:Item
                                                         id="I___D_IDGenItem3"
                                                         key="{ID}"
                                                         text="{slotNumbers}"
+                                                        class="TableContent"
                                                     />
                                                 </m:Select>
                                             </m:VBox>
@@ -459,10 +474,12 @@
                                             <m:Text
                                                 id="IdsewfHHisd"
                                                 text="{vendor_Name}"
+                                                class="TableContent"
                                             />
                                             <m:Text
                                                 id="ijsonmf"
                                                 text="{checkInTime}"
+                                                class="TableContent"
                                             />
                                         </m:cells>
                                     </m:ColumnListItem>
@@ -489,7 +506,6 @@
                             <m:Table
                                 id="idAllSlots"
                                 mode="MultiSelect"
-                                alternateRowColors="true"
                                 items="{/parkingSlots}"
                             >
                                 <m:headerToolbar>
@@ -541,15 +557,18 @@
                                     <m:ColumnListItem
                                         id="_IDGenColumnListItem1"
                                         type="Navigation"
+                                        class="TableContent"
                                     >
                                         <m:cells>
                                             <m:Text
                                                 id="_IDGenText1"
                                                 text="{slotNumbers}"
+                                                class="TableContent"
                                             />
                                             <m:Text
                                                 id="_IDGenText1jadf"
                                                 text="{status}"
+                                                class="TableContent"
                                             />
                                         </m:cells>
                                     </m:ColumnListItem>
@@ -653,19 +672,23 @@
                                     <m:ColumnListItem
                                         id="_IDGenColumnListItem2"
                                         type="Navigation"
+                                        class="TableContent"
                                     >
                                         <m:cells>
                                             <m:Text
                                                 id="_IDGenText3"
                                                 text="{driverName}"
+                                                class="TableContent"
                                             />
                                             <m:Text
                                                 id="_IDGenText4"
                                                 text="{driverMobile}"
+                                                class="TableContent"
                                             />
                                             <m:Text
                                                 id="_IDGenTextwer5"
                                                 text="{vehicleNumber}"
+                                                class="TableContent"
                                             />
                                             <!-- <m:Text
                                                 id="_IDGenTecvxt5"
@@ -674,14 +697,17 @@
                                             <m:Text
                                                 id="_IDGendsfgvText5"
                                                 text="{reservedSlot/slotNumbers}"
+                                                class="TableContent"
                                             />
                                             <m:Text
                                                 id="_IDGendssr45tyhgf3456frfgvText5"
                                                 text="{vendor_Name}"
+                                                class="TableContent"
                                             />
                                             <m:Text
                                                 id="_IDGendssr0_3456frfgvText5"
                                                 text="{reservedDate}"
+                                                class="TableContent"
                                             />
                                         </m:cells>
                                     </m:ColumnListItem>
@@ -706,7 +732,6 @@
                         <blocks>
                             <m:Table
                                 id="idHistoryTable"
-                                alternateRowColors="true"
                                 items="{/history}"
                                 mode="None"
                             >
@@ -790,39 +815,48 @@
                                     <m:ColumnListItem
                                         id="_IDGenColumnListItem3"
                                         type="Navigation"
+                                        class="TableContent"
                                     >
                                         <m:cells>
                                             <m:Text
                                                 id="_IDGenText6"
                                                 text="{driverName}"
+                                                class="TableContent"
                                             />
                                             <m:Text
                                                 id="_IDGenText7"
                                                 text="{driverMobile}"
+                                                class="TableContent"
                                             />
                                             <m:Text
                                                 id="_IDGenText8"
                                                 text="{vehicleNumber}"
+                                                class="TableContent"
                                             />
                                             <m:Text
                                                 id="_IDGenText9"
                                                 text="{deliveryType}"
+                                                class="TableContent"
                                             />
                                             <m:Text
                                                 id="_IDGenText10"
                                                 text="{historySlotNumber/slotNumbers}"
+                                                class="TableContent"
                                             />
                                             <m:Text
                                                 id="_IDGenText10aefe"
                                                 text="{vendor_Name}"
+                                                class="TableContent"
                                             />
                                             <m:Text
                                                 id="_IDGenText11"
                                                 text="{checkInTime}"
+                                                class="TableContent"
                                             />
                                             <m:Text
                                                 id="_IDGenText15"
                                                 text="{checkOutTime}"
+                                                class="TableContent"
                                             />
                                         </m:cells>
                                     </m:ColumnListItem>

@@ -57,7 +57,7 @@
                 />
                 <Select
                     id="idSlotReserve"
-                    items="{path: '/parkingSlots', filters: [{path: 'status', operator: 'EQ', value1: 'Available'}]}"
+                    items="{path: '/parkingSlots'}"
                 >
                     <core:Item
                         id="asfgdhjt_IDGenItefghrm3"

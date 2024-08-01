@@ -8,14 +8,26 @@ sap.ui.define([
     "sap/m/MessageToast",
     "sap/m/MessageBox",
     "../Secrets/Config",
-    "sap/ndc/BarcodeScanner"
+    "sap/ndc/BarcodeScanner",
+    "sap/ui/model/odata/v4/ODataModel"
 
 ],
-    function (Controller, JSONModel, Fragment, Filter, FilterOperator, MessageToast, MessageBox, Config, BarcodeScanner) {
+    function (Controller, JSONModel, Fragment, Filter, FilterOperator, MessageToast, MessageBox, Config, BarcodeScanner, ODataModel) {
         "use strict";
 
         return Controller.extend("com.app.parkingapp.controller.HomeView", {
             onInit: function () {
+
+                // var oModel = new ODataModel({
+                //     serviceUrl: "/ParkingSrv/",
+                //     synchronizationMode: "None"
+                // });
+                // this.getView().setModel(oModel);
+
+                // // by date slot status updation
+                // this.updateSoltsStatusbyDate();
+
+
                 // // brcode
                 // var obj = { name: "subhash", age: 24 };
                 // var jsonString = JSON.stringify(obj);
@@ -32,13 +44,14 @@ sap.ui.define([
                 });
                 this.getView().setModel(newAssign, "newAssign");
 
-                var oViewModel = new JSONModel({
-                    editable: false
-                });
-                this.getView().setModel(oViewModel, "view");
                 // Data Analysis
                 // this._setHistoryModel();
                 // this._setParkingLotModel();
+
+            },
+            onBeforeRendering: function () {
+                debugger
+                this.updateSoltsStatusbyDate();
 
             },
             onEditPress: function () {
@@ -651,8 +664,8 @@ sap.ui.define([
                 debugger
                 let currentDate = new Date();
                 let year = currentDate.getFullYear();
-                let month = currentDate.getMonth() + 1;
-                let day = currentDate.getDate();
+                let month = String(currentDate.getMonth() + 1).padStart(2, '0');
+                let day = String(currentDate.getDate()).padStart(2, '0');
                 const currentDay = `${year}-${month}-${day}`
 
                 const oThis = this
@@ -733,88 +746,157 @@ sap.ui.define([
                     return; // Prevent further execution
 
                 }
-                const newReservation = oBinding.create(NewReservedRecord)
-                if (newReservation) {
-                    // sms code starts here
+                var oReservedSlotBinding = oModel.bindList("/reserved");
 
-                    // confirm reservations
+                oReservedSlotBinding.filter([
+                    new Filter("reservedSlot_ID", FilterOperator.EQ, oReservedSlot),
+                    new Filter("reservedDate", FilterOperator.EQ, oBookedDate)
+                ]);
 
-                    // SMS 
+                oReservedSlotBinding.requestContexts().then(function (aReservedContexts) {
+                    if (aReservedContexts.length === 0) {
 
-                    const accountSid = Config.twilio.accountSid;
-                    const authToken = Config.twilio.authToken;
+                        const newReservation = oBinding.create(NewReservedRecord)
+                        if (newReservation) {
+                            // sms code starts here
 
-                    // debugger
-                    const toNumber = `+91${oDriverMobile}` // Replace with recipient's phone number
-                    const fromNumber = '+15856485867'; // Replace with your Twilio phone number
-                    const messageBody = `Hi ${oDriverName} a Slot number ${sSlotNumber} is reserved on your vehicle number ${oVehicleNumber} \nVendor name: ${oVendorName}. \nThank You,\nVishal Parking Management`; // Message content
+                            // confirm reservations
 
-                    // Twilio API endpoint for sending messages
-                    const APIendpoint = `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`;
+                            // SMS 
+
+                            const accountSid = Config.twilio.accountSid;
+                            const authToken = Config.twilio.authToken;
+
+                            // debugger
+                            const toNumber = `+91${oDriverMobile}` // Replace with recipient's phone number
+                            const fromNumber = '+15856485867'; // Replace with your Twilio phone number
+                            const messageBody = `Hi ${oDriverName} a Slot number ${sSlotNumber} is reserved on your vehicle number ${oVehicleNumber} \nVendor name: ${oVendorName}. \nThank You,\nVishal Parking Management`; // Message content
+
+                            // Twilio API endpoint for sending messages
+                            const APIendpoint = `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`;
 
 
-                    // Send POST request to Twilio API using jQuery.ajax
-                    $.ajax({
-                        url: APIendpoint,
-                        type: 'POST',
-                        headers: {
-                            'Authorization': 'Basic ' + btoa(accountSid + ':' + authToken)
-                        },
-                        data: {
-                            To: toNumber,
-                            From: fromNumber,
-                            Body: messageBody
-                        },
-                        success: function (data) {
-                            console.log('SMS sent successfully:', data);
-                            // Handle success, e.g., show a success message
-                            sap.m.MessageToast.show('SMS sent successfully!');
-                        },
-                        error: function (error) {
-                            console.error('Error sending SMS:', error);
-                            // Handle error, e.g., show an error message
-                            sap.m.MessageToast.show('Failed to send SMS: ' + error);
+                            // Send POST request to Twilio API using jQuery.ajax
+                            $.ajax({
+                                url: APIendpoint,
+                                type: 'POST',
+                                headers: {
+                                    'Authorization': 'Basic ' + btoa(accountSid + ':' + authToken)
+                                },
+                                data: {
+                                    To: toNumber,
+                                    From: fromNumber,
+                                    Body: messageBody
+                                },
+                                success: function (data) {
+                                    // console.log('SMS sent successfully:', data);
+                                    MessageToast.show('SMS sent successfully!');
+                                },
+                                error: function (error) {
+                                    // console.error('Error sending SMS:', error);
+                                    MessageToast.show('Failed to send SMS: ' + error);
+                                }
+                            });
+
+                            // SMS END
+
+                            var oSelected = oThis.byId("idReservationsTable").getSelectedItem();
+                            oSelected.getBindingContext().delete("$auto")
+
+                            oThis.byId("_IDGendfgdInput1").setValue("")
+                            oThis.byId("_IDGexgrgnInput2").setValue("")
+                            oThis.byId("idasgredhmeInput").setValue("")
+                            //  this.byId("_IDGewertnSelect1").setValue(oDeliveryType)
+                            oThis.byId("idasgredhmeIn0075put").setValue("")
+
+                            oThis.confirmDialog.close()
+
+                            var oParkingSlotBinding = oModel.bindList("/parkingSlots");
+
+                            oParkingSlotBinding.filter([
+                                new Filter("ID", FilterOperator.EQ, oReservedSlot)
+                            ]);
+
+                            oParkingSlotBinding.requestContexts().then(function (aParkingContexts) {
+                                if (aParkingContexts.length > 0) {
+                                    var oParkingContext = aParkingContexts[0];
+                                    var oParkingData = oParkingContext.getObject();
+                                    // Update 
+                                    if (oBookedDate === currentDay) {
+                                        oParkingData.status = "Reserved"
+                                        oParkingContext.setProperty("status", oParkingData.status);
+                                        oModel.submitBatch("updateGroup");
+                                        oThis.getView().byId("idAllSlots").getBinding("items").refresh();
+                                        oModel.refresh(); // Refresh the model to get the latest data
+                                    }
+
+                                } else {
+                                    MessageToast.show("Slot Unavailable")
+                                }
+                            })
                         }
-                    });
 
-                    // SMS END
+                    } else {
+                        MessageBox.information("Slot Unavailable on selected date")
+                    }
+                })
 
-                    var oSelected = this.byId("idReservationsTable").getSelectedItem();
-                    oSelected.getBindingContext().delete("$auto")
+            },
+            // Updation of slots status based on date
+            updateSoltsStatusbyDate: function () {
+                debugger
+                const oThis = this;
+                let currentDate = new Date();
+                let year = currentDate.getFullYear();
+                let month = String(currentDate.getMonth() + 1).padStart(2, '0');
+                let day = String(currentDate.getDate()).padStart(2, '0');
+                const currentDay = `${year}-${month}-${day}`;
 
-                    this.byId("_IDGendfgdInput1").setValue("")
-                    this.byId("_IDGexgrgnInput2").setValue("")
-                    this.byId("idasgredhmeInput").setValue("")
-                    //  this.byId("_IDGewertnSelect1").setValue(oDeliveryType)
-                    this.byId("idasgredhmeIn0075put").setValue("")
+                const oModel = this.getView().getModel();
 
-                    this.confirmDialog.close()
-
-                    var oParkingSlotBinding = oModel.bindList("/parkingSlots");
-
-                    oParkingSlotBinding.filter([
-                        new Filter("ID", FilterOperator.EQ, oReservedSlot)
-                    ]);
-
-                    oParkingSlotBinding.requestContexts().then(function (aParkingContexts) {
-                        if (aParkingContexts.length > 0) {
-                            var oParkingContext = aParkingContexts[0];
-                            var oParkingData = oParkingContext.getObject();
-                            // Update 
-                            if (oBookedDate ===currentDay) {
-                                oParkingData.status = "Reserved"
-                                oParkingContext.setProperty("status", oParkingData.status);
-                                oModel.submitBatch("updateGroup");
-                                oThis.getView().byId("idAllSlots").getBinding("items").refresh();
-                                oModel.refresh(); // Refresh the model to get the latest data
-                            }
-
-                        } else {
-                            MessageToast.show("Slot Unavailable")
-                        }
-                    })
+                if (!oModel) {
+                    MessageToast.show("Model is not defined");
+                    return;
                 }
 
+                var oreservedSlotBinding = oModel.bindList("/reserved");
+
+                oreservedSlotBinding.requestContexts().then(function (areservedContexts) {
+                    debugger
+                    if (areservedContexts.length > 0) {
+                        areservedContexts.forEach((element) => {
+                            var oReservedDate = element.getObject().reservedDate
+                            if (oReservedDate === currentDay) {
+                                var oReservedSlot = element.getObject().reservedSlot_ID
+                                // update slot Status
+                                var oreservedSlotBinding = oModel.bindList("/parkingSlots");
+
+                                oreservedSlotBinding.filter([
+                                    new Filter("ID", FilterOperator.EQ, oReservedSlot)
+                                ]);
+
+                                oreservedSlotBinding.requestContexts().then(function (aParkingContexts) {
+                                    if (aParkingContexts.length > 0) {
+                                        var oParkingContext = aParkingContexts[0];
+                                        var oParkingData = oParkingContext.getObject();
+                                        // Update 
+                                        oParkingData.status = "Reserved"
+                                        oParkingContext.setProperty("status", oParkingData.status);
+                                        oModel.submitBatch("updateGroup");
+                                        oThis.getView().byId("idAllSlots").getBinding("items").refresh();
+                                        MessageToast.show("Refresh Successful")
+                                    }
+                                })
+                            }
+                        });
+
+                        this.getView().byId("idAllSlots").getBinding("items").refresh();
+                    } else {
+                        MessageBox.information("No reserved slots found today");
+                    }
+                }.bind(this)).catch(function (error) {
+                    MessageToast.show("Error while fetching parking slots: " + error.message);
+                });
             },
             onAssignfromReservations: async function () {
                 debugger
@@ -849,16 +931,19 @@ sap.ui.define([
                 debugger
                 var oThis = this
                 const oSelected = this.getView().byId("idReservedTable__").getSelectedItem().getBindingContext().getObject()
-                const oBindingContext = this.getView().byId("idReservedTable__").getSelectedItem().getBindingContext()
+                const oBindingContext = this.getView().byId("idReservedTable__").getSelectedItem().getBindingContext(),
+                    oBookedDate = oSelected.reservedDate
 
                 var currentDate = new Date();
                 var year = currentDate.getFullYear();
-                var month = currentDate.getMonth() + 1; // Months are zero-based
-                var day = currentDate.getDate();
-                var hours = currentDate.getHours();
-                var minutes = currentDate.getMinutes();
-                var seconds = currentDate.getSeconds();
-                var FinalDate = `${year}-${month}-${day} TIME ${hours}:${minutes}:${seconds}`
+                var month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+                var day = String(currentDate.getDate()).padStart(2, '0');
+                var hours = String(currentDate.getHours()).padStart(2, '0');
+                var minutes = String(currentDate.getMinutes()).padStart(2, '0');
+                var seconds = String(currentDate.getSeconds()).padStart(2, '0');
+                var FinalDate = `${year}-${month}-${day} TIME ${hours}:${minutes}:${seconds}`;
+                var currentDate = `${year}-${month}-${day}`
+
                 const oUserView = this.getView(),
                     oDriverName = oUserView.byId("_IDGen__dfgdInput1").getValue(),
                     oDriverMobile = oUserView.byId("_IDGexgrsdfgnIn__put2").getValue(),
@@ -936,44 +1021,53 @@ sap.ui.define([
 
                 }
                 else {
-                    const newAssignSuccess = oBindList.create(newAssign);
+                    if (oBookedDate === currentDate) {
+                        newAssignSuccess = oBindList.create(newAssign); 
+
+                    } else {
+                        MessageBox.information("You can assign current date reservations only");
+                    }
                     if (newAssignSuccess) {
-                        MessageToast.show("allotment successful")
-                        this.getView().byId("idAssignedTable").getBinding("items").refresh();
-                        this.getView().byId("_IDGen__dfgdInput1").setValue("");
-                        this.getView().byId("_IDGexgrsdfgnIn__put2").setValue("");
-                        this.getView().byId("afidasgredhmeI__nput").setValue("");
-                        this.getView().byId("_dhmeI__nput").setValue("");
-                        this.getView().byId("idss__n0075put").setValue("");
-                        this.ConfirmAssignDialog.close()
+                        // function Next() {
+                            MessageToast.show("allotment successful")
+                            this.getView().byId("idAssignedTable").getBinding("items").refresh();
+                            this.getView().byId("_IDGen__dfgdInput1").setValue("");
+                            this.getView().byId("_IDGexgrsdfgnIn__put2").setValue("");
+                            this.getView().byId("afidasgredhmeI__nput").setValue("");
+                            this.getView().byId("_dhmeI__nput").setValue("");
+                            this.getView().byId("idss__n0075put").setValue("");
+                            this.ConfirmAssignDialog.close()
 
-                        // Remove current record from the current table
-                        oBindingContext.delete("$auto").then(function () {
+                            // Remove current record from the current table
+                            oBindingContext.delete("$auto").then(function () {
 
-                            // Update Parking Slot Status
-                            var oParkingSlotBinding = oModel.bindList("/parkingSlots");
+                                // Update Parking Slot Status
+                                var oParkingSlotBinding = oModel.bindList("/parkingSlots");
 
-                            oParkingSlotBinding.filter([
-                                new Filter("slotNumbers", FilterOperator.EQ, oslotNumber)
-                            ]);
+                                oParkingSlotBinding.filter([
+                                    new Filter("slotNumbers", FilterOperator.EQ, oslotNumber)
+                                ]);
 
-                            oParkingSlotBinding.requestContexts().then(function (aParkingContexts) {
-                                if (aParkingContexts.length > 0) {
-                                    var oParkingContext = aParkingContexts[0];
-                                    var oParkingData = oParkingContext.getObject();
+                                oParkingSlotBinding.requestContexts().then(function (aParkingContexts) {
+                                    if (aParkingContexts.length > 0) {
+                                        var oParkingContext = aParkingContexts[0];
+                                        var oParkingData = oParkingContext.getObject();
 
-                                    // Update 
-                                    oParkingData.status = "Not Available"
-                                    oParkingContext.setProperty("status", oParkingData.status);
-                                    oModel.submitBatch("updateGroup");
-                                    // oThis.getView().byId("idAllSlots").getBinding("items").refresh();
-                                    oModel.refresh(); // Refresh the model to get the latest data
+                                        // Update 
+                                        oParkingData.status = "Not Available"
+                                        oParkingContext.setProperty("status", oParkingData.status);
+                                        oModel.submitBatch("updateGroup");
+                                        // oThis.getView().byId("idAllSlots").getBinding("items").refresh();
+                                        oModel.refresh(); // Refresh the model to get the latest data
 
-                                } else {
-                                    MessageToast.show("Slot Unavailable")
-                                }
+                                    } else {
+                                        MessageToast.show("Slot Unavailable")
+                                    }
+                                })
                             })
-                        })
+
+                        // }
+                        // Next() //calling 
                     }
                 }
 

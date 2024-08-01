@@ -15,6 +15,12 @@
     background-image: url("../images/Truck.jpeg");
 
 }
+.TableContent:hover{
+    background-color: rgb(175, 66, 110);
+    color: white;
+    box-shadow: 10px 10px 5px rgb(203, 200, 200);
+    border-radius: 5px;
+}
 
 .Header {
     /* background-color: rgb(53, 72, 128); */
@@ -46,8 +52,10 @@
 
 .Reservationsbtn {
     margin-left: 77vw;
-    padding: 20px;
 
+}
+.parkingAnalysis {
+    margin-left:10px;
 }
 /* .barcodeScanner {
     margin-left: 85vw;
@@ -59,7 +67,7 @@
     /* background-color: rgb(53, 72, 128); */
     background-image: url("../images/Truck.jpeg");
     background-position: center;
-    height: 100vh;
+    /* height: 100vh; */
     background-size: cover;
     background-repeat: repeat;
 
@@ -71,6 +79,15 @@
     color: white;
     border-radius: 9px;
     border: 0px;
+
+}
+.buttonBlue:hover{
+    background-color: rgb(201, 47, 109);
+    cursor: pointer;
+}
+.buttonRed:hover{
+    background-color: rgb(53, 72, 128);
+    cursor: pointer;
 
 }
 

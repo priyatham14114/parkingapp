@@ -10,7 +10,7 @@
         resizable="true"
         draggable="true"
         contentWidth="60%"
-        contentHeight="50%"
+        contentHeight="60%"
     >
         <content>
             <f:SimpleForm

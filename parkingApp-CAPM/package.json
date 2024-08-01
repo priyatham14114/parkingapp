@@ -39,7 +39,7 @@
   },
   "cds": {
     "requires": {
-     
+      "db": "sqlite"
     }
   },
   "sapux": [
