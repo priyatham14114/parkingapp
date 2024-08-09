@@ -842,6 +842,101 @@ sap.ui.define([
                 })
 
             },
+            onDeleteReservedPressToConfirm: async function () {
+                const oSelected = this.getView().byId("idReservedTable__").getSelectedItem()
+                if (oSelected) {
+                    if (!this.ConfirmDeleteDialog) {
+                        this.ConfirmDeleteDialog = await this.loadFragment("DeleteReserved")
+                    }
+                    this.ConfirmDeleteDialog.open()
+                } else {
+                    MessageBox.information("Please Select one record")
+                }
+
+            },
+            onCloseDeleteReservedPressToConfirm: function () {
+
+                if (this.ConfirmDeleteDialog.isOpen()) {
+                    this.ConfirmDeleteDialog.close()
+                }
+            },
+            onDeleteReservedPress: function () {
+                debugger
+                const oThis = this;
+                let currentDate = new Date();
+                let year = currentDate.getFullYear();
+                let month = String(currentDate.getMonth() + 1).padStart(2, '0');
+                let day = String(currentDate.getDate()).padStart(2, '0');
+                const currentDay = `${year}-${month}-${day}`;
+                const  oModel = this.getView().getModel() 
+
+                const oSelected = this.getView().byId("idReservedTable__").getSelectedItem()
+
+                const sDriverMobile = oSelected.getBindingContext().getObject().driverMobile,
+                    sDriverName = oSelected.getBindingContext().getObject().driverName,
+                    sSlotNumber = oSelected.getBindingContext().getObject().reservedSlot.slotNumbers,
+                dReservedDate = oSelected.getBindingContext().getObject().reservedDate
+                oSelected.getBindingContext().delete("$auto").then(function async() {
+                    if (dReservedDate === currentDay) {
+                        var oParkingBinding = oModel.bindList("/parkingSlots");
+
+                        oParkingBinding.filter([
+                            new Filter("slotNumbers", FilterOperator.EQ, sSlotNumber)
+                        ]);
+
+                        oParkingBinding.requestContexts().then(function (aParkingContexts) {
+                            if (aParkingContexts.length > 0) {
+                                var oParkingContext = aParkingContexts[0];
+                                var oParkingData = oParkingContext.getObject();
+                                // Update 
+                                oParkingData.status = "Available"
+                                oParkingContext.setProperty("status", oParkingData.status);
+                                oModel.submitBatch("updateGroup");
+                                oThis.getView().byId("idAllSlots").getBinding("items").refresh();
+                                oModel.refresh()
+                            }
+                        })
+
+                    }
+                    MessageBox.information("Rejected and SMS will be sent")
+                    this.ConfirmDeleteDialog.close()
+                    // Unassign SMS
+
+                    const accountSid = Config.twilio.accountSid;
+                    const authToken = Config.twilio.authToken;
+
+                    // debugger
+                    const toNumber = `+91${sDriverMobile}`
+                    const fromNumber = '+15856485867';
+                    const messageBody = `Hi ${sDriverName} We regret to inform you that \nCurrently we can not proceed with your reservation.\nyou are failed to come on reserved day\nThank you,\nVishal Parking Management`; // Message content
+
+                    // Twilio API endpoint for sending messages
+                    const url = `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`;
+
+
+                    // Send POST request to Twilio API using jQuery.ajax
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        headers: {
+                            'Authorization': 'Basic ' + btoa(accountSid + ':' + authToken)
+                        },
+                        data: {
+                            To: toNumber,
+                            From: fromNumber,
+                            Body: messageBody
+                        },
+                        success: function (data) {
+                            sap.m.MessageToast.show('SMS sent successfully!');
+                        },
+                        error: function (error) {
+                            sap.m.MessageToast.show('Failed to send SMS: ' + error);
+                        }
+                    });
+                    // SMS END
+                })
+
+            },
             // Updation of slots status based on date
             updateSoltsStatusbyDate: function () {
                 debugger
@@ -1022,49 +1117,49 @@ sap.ui.define([
                 }
                 else {
                     if (oBookedDate === currentDate) {
-                        newAssignSuccess = oBindList.create(newAssign); 
+                        newAssignSuccess = oBindList.create(newAssign);
 
                     } else {
                         MessageBox.information("You can assign current date reservations only");
                     }
                     if (newAssignSuccess) {
                         // function Next() {
-                            MessageToast.show("allotment successful")
-                            this.getView().byId("idAssignedTable").getBinding("items").refresh();
-                            this.getView().byId("_IDGen__dfgdInput1").setValue("");
-                            this.getView().byId("_IDGexgrsdfgnIn__put2").setValue("");
-                            this.getView().byId("afidasgredhmeI__nput").setValue("");
-                            this.getView().byId("_dhmeI__nput").setValue("");
-                            this.getView().byId("idss__n0075put").setValue("");
-                            this.ConfirmAssignDialog.close()
+                        MessageToast.show("allotment successful")
+                        this.getView().byId("idAssignedTable").getBinding("items").refresh();
+                        this.getView().byId("_IDGen__dfgdInput1").setValue("");
+                        this.getView().byId("_IDGexgrsdfgnIn__put2").setValue("");
+                        this.getView().byId("afidasgredhmeI__nput").setValue("");
+                        this.getView().byId("_dhmeI__nput").setValue("");
+                        this.getView().byId("idss__n0075put").setValue("");
+                        this.ConfirmAssignDialog.close()
 
-                            // Remove current record from the current table
-                            oBindingContext.delete("$auto").then(function () {
+                        // Remove current record from the current table
+                        oBindingContext.delete("$auto").then(function () {
 
-                                // Update Parking Slot Status
-                                var oParkingSlotBinding = oModel.bindList("/parkingSlots");
+                            // Update Parking Slot Status
+                            var oParkingSlotBinding = oModel.bindList("/parkingSlots");
 
-                                oParkingSlotBinding.filter([
-                                    new Filter("slotNumbers", FilterOperator.EQ, oslotNumber)
-                                ]);
+                            oParkingSlotBinding.filter([
+                                new Filter("slotNumbers", FilterOperator.EQ, oslotNumber)
+                            ]);
 
-                                oParkingSlotBinding.requestContexts().then(function (aParkingContexts) {
-                                    if (aParkingContexts.length > 0) {
-                                        var oParkingContext = aParkingContexts[0];
-                                        var oParkingData = oParkingContext.getObject();
+                            oParkingSlotBinding.requestContexts().then(function (aParkingContexts) {
+                                if (aParkingContexts.length > 0) {
+                                    var oParkingContext = aParkingContexts[0];
+                                    var oParkingData = oParkingContext.getObject();
 
-                                        // Update 
-                                        oParkingData.status = "Not Available"
-                                        oParkingContext.setProperty("status", oParkingData.status);
-                                        oModel.submitBatch("updateGroup");
-                                        // oThis.getView().byId("idAllSlots").getBinding("items").refresh();
-                                        oModel.refresh(); // Refresh the model to get the latest data
+                                    // Update 
+                                    oParkingData.status = "Not Available"
+                                    oParkingContext.setProperty("status", oParkingData.status);
+                                    oModel.submitBatch("updateGroup");
+                                    // oThis.getView().byId("idAllSlots").getBinding("items").refresh();
+                                    oModel.refresh(); // Refresh the model to get the latest data
 
-                                    } else {
-                                        MessageToast.show("Slot Unavailable")
-                                    }
-                                })
+                                } else {
+                                    MessageToast.show("Slot Unavailable")
+                                }
                             })
+                        })
 
                         // }
                         // Next() //calling 
@@ -1478,6 +1573,84 @@ sap.ui.define([
                     }
                 );
             },
+            // onPhotoClick: function () {
+            //     debugger
+            //     var oView = this.getView();
+            //     var oCanvas = oView.byId("photoCanvas");
+            //     var oImage = oView.byId("photoImage");
+
+            //     // Create and configure video element
+            //     var video = document.createElement('video');
+            //     video.style.width = '100%';  // Set video width to fit container
+            //     video.style.height = '100%'; // Set video height to fit container
+            //     video.autoplay = true; // Ensure video plays automatically
+            //     video.playsInline = true; // Ensure video plays inline on mobile devices
+
+            //     // Add video element to the view
+            //     var videoContainer = document.getElementById('videoContainer');
+            //     videoContainer.appendChild(video);
+
+            //     navigator.mediaDevices.getUserMedia({ video: true })
+            //         .then(function (stream) {
+            //             video.srcObject = stream;
+
+            //             // Create a button to capture the photo
+            //             var captureButton = document.createElement('button');
+            //             captureButton.textContent = "Capture";
+            //             document.body.appendChild(captureButton);
+
+            //             captureButton.addEventListener('click', function () {
+            //                 var context = oCanvas.getDomRef().getContext('2d');
+            //                 context.drawImage(video, 0, 0, oCanvas.getWidth(), oCanvas.getHeight());
+
+            //                 // Convert canvas image to base64
+            //                 var dataUrl = oCanvas.getDomRef().toDataURL('image/jpeg');
+            //                 oImage.setSrc(dataUrl); // Set the captured image to UI5 Image control
+            //                 oImage.setVisible(true);
+
+            //                 // Convert base64 to Blob
+            //                 fetch(dataUrl)
+            //                     .then(res => res.blob())
+            //                     .then(blob => {
+            //                         var formData = new FormData();
+            //                         formData.append('image', blob, 'photo.jpg');
+
+            //                         // Upload to your API
+            //                         $.ajax({
+            //                             method: 'POST',
+            //                             url: 'https://api.api-ninjas.com/v1/imagetotext',
+            //                             data: formData,
+            //                             enctype: 'multipart/form-data',
+            //                             processData: false,
+            //                             contentType: false,
+            //                             success: function (result) {
+            //                                 console.log(result); // Handle the result
+            //                             },
+            //                             error: function ajaxError(jqXHR, textStatus, errorThrown) {
+            //                                 alert(jqXHR.responseText);
+            //                             }
+            //                         });
+            //                     })
+            //                     .catch(error => {
+            //                         console.error('Error converting to Blob:', error);
+            //                     })
+            //                     .finally(() => {
+            //                         // Clean up: stop the video stream and remove elements
+            //                         var stream = video.srcObject;
+            //                         if (stream) {
+            //                             var tracks = stream.getTracks();
+            //                             tracks.forEach(track => track.stop());
+            //                         }
+            //                         videoContainer.removeChild(video);
+            //                         document.body.removeChild(captureButton);
+            //                     });
+            //             });
+            //         })
+            //         .catch(function (err) {
+            //             console.error("Error accessing the camera:", err);
+            //         });
+
+            // }
 
 
         })

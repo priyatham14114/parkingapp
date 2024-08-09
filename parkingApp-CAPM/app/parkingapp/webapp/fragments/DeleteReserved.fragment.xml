@@ -1,0 +1,55 @@
+<core:FragmentDefinition
+    xmlns:core="sap.ui.core"
+    xmlns:form="sap.ui.layout.form"
+    xmlns="sap.m"
+>
+    <Dialog
+        id="1ytghji87yt"
+        title="Confirm Rejection"
+        class="dialogSlideIn"
+        resizable="true"
+        draggable="true"
+        contentWidth="35%"
+        contentHeight="15%"
+    >
+        <content>
+            <form:SimpleForm
+                id="_I23enSimpleForm1"
+                editable="true"
+                layout="ResponsiveGridLayout"
+                labelSpanXL="3"
+                labelSpanL="3"
+                labelSpanM="3"
+                labelSpanS="12"
+                adjustLabelSpan="false"
+                emptySpanXL="4"
+                emptySpanL="4"
+                emptySpanM="4"
+                emptySpanS="0"
+                columnsXL="1"
+                columnsL="1"
+                columnsM="1"
+                singleContainerFullSize="false"
+            >
+                
+                <Text id="sdkf_" text="CAUTION:" />
+                <Text id="idhnbhy" text="Are you sure you want to reject reserved record....?" />
+            </form:SimpleForm>
+        </content>
+        <beginButton>
+            <Button
+                id="drefsdcszvewad"
+                text="Reject"
+                type="Negative"
+                press="onDeleteReservedPress"
+            />
+        </beginButton>
+        <endButton>
+            <Button
+                id="aavfeg"
+                text="Close"
+                press="onCloseDeleteReservedPressToConfirm"
+            />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

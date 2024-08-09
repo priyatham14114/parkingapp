@@ -27,7 +27,7 @@
                         /> -->
 
                     <VBox id="Id45tghjuyt_">
-                    <Title id="idreceiptTitle" text="Gate Pass"/>
+                    <Title id="idreceiptTitle" text="Parking Pass"/>
                         <Text
                             id="__iuygbvfres"
                             text="Barcode:"

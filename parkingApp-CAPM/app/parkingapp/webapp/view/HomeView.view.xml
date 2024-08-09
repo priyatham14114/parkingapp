@@ -11,6 +11,8 @@
     height="100%"
     xmlns:smartTable="sap.ui.comp.smarttable"
     xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+    xmlns:ui="sap.ui.commons"
+    xmlns:html="http://www.w3.org/1999/xhtml"
 >
     <ObjectPageLayout
         id="idUserDataPage"
@@ -228,7 +230,23 @@
                                 text="Assign"
                                 press="onAssignPress"
                             />
+                            <!-- <m:Image
+                                id="photoImage"
+                                width="320px"
+                                height="240px"
+                            />
+                            <html:canvas
+                                id="video"
+                                width="320px"
+                                height="240px"
+                            />
+                            <html:div
+                                id="videoContainer"
+                                style="width: 640px; height: 480px;"
+                            >
+                            </html:div> -->
                         </m:VBox>
+
                         <m:VBox
                             id="idvBodcfvfdx6"
                             class="Inputs"
@@ -615,6 +633,14 @@
                                             type="Unstyled"
                                             class="buttonBlue"
                                             press="onAssignfromReservations"
+                                        />
+                                        <m:Button
+                                            id="idJJPP"
+                                            icon="sap-icon://reject"
+                                            text="Delete"
+                                            type="Unstyled"
+                                            class="buttonRed"
+                                            press="onDeleteReservedPressToConfirm"
                                         />
                                         <m:Button
                                             id="_IDGenButton2"
